@@ -1,4 +1,17 @@
 {
+  "master": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bccapp-master-232844-authRole",
+      "UnauthRoleArn": "arn:aws:iam::544160245808:role/amplify-bccapp-master-232844-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::544160245808:role/amplify-bccapp-master-232844-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-bccapp-master-232844-deployment",
+      "UnauthRoleName": "amplify-bccapp-master-232844-unauthRole",
+      "StackName": "amplify-bccapp-master-232844",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:544160245808:stack/amplify-bccapp-master-232844/04890250-8eb7-11ec-aa63-0ead57ba246d",
+      "AmplifyAppId": "d259mard8ld388"
+    }
+  },
   "staging": {
     "awscloudformation": {
       "AuthRoleName": "amplify-amplify1113e92e9a4c4-staging-150130-authRole",
