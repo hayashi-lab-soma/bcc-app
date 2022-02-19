@@ -7,13 +7,13 @@
 /* eslint-disable */
 import React from "react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Flex, Icon, Text } from "@aws-amplify/ui-react";
+import { Button, Flex, Icon, Text } from "@aws-amplify/ui-react";
 export default function MainNavBar(props) {
-  const { overrides: overridesProp, ...rest } = props;
+  const { username, overrides: overridesProp, ...rest } = props;
   const overrides = { ...overridesProp };
   return (
     <Flex
-      gap="20px"
+      gap="10px"
       direction="row"
       width="1440px"
       alignItems="center"
@@ -24,9 +24,9 @@ export default function MainNavBar(props) {
       {...getOverrideProps(overrides, "Flex")}
     >
       <Flex
-        gap="10px"
+        gap="5px"
         direction="row"
-        height="24px"
+        height="36px"
         justifyContent="center"
         alignItems="center"
         shrink="0"
@@ -36,33 +36,48 @@ export default function MainNavBar(props) {
         {...getOverrideProps(overrides, "Flex.Flex[0]")}
       >
         <Icon
-          width="20px"
-          height="20px"
-          pathData="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM5.07 16.28C5.5 15.38 8.12 14.5 10 14.5C11.88 14.5 14.51 15.38 14.93 16.28C13.57 17.36 11.86 18 10 18C8.14 18 6.43 17.36 5.07 16.28ZM16.36 14.83C14.93 13.09 11.46 12.5 10 12.5C8.54 12.5 5.07 13.09 3.64 14.83C2.62 13.49 2 11.82 2 10C2 5.59 5.59 2 10 2C14.41 2 18 5.59 18 10C18 11.82 17.38 13.49 16.36 14.83L16.36 14.83ZM10 4C8.06 4 6.5 5.56 6.5 7.5C6.5 9.44 8.06 11 10 11C11.94 11 13.5 9.44 13.5 7.5C13.5 5.56 11.94 4 10 4ZM10 9C9.17 9 8.5 8.33 8.5 7.5C8.5 6.67 9.17 6 10 6C10.83 6 11.5 6.67 11.5 7.5C11.5 8.33 10.83 9 10 9Z"
-          viewBox={{ minX: 0, minY: 0, width: 20, height: 20 }}
+          width="30px"
+          height="30px"
+          pathData="M15 0C6.72 0 0 6.72 0 15C0 23.28 6.72 30 15 30C23.28 30 30 23.28 30 15C30 6.72 23.28 0 15 0ZM7.605 24.42C8.25 23.07 12.18 21.75 15 21.75C17.82 21.75 21.765 23.07 22.395 24.42C20.355 26.04 17.79 27 15 27C12.21 27 9.645 26.04 7.605 24.42ZM24.54 22.245C22.395 19.635 17.19 18.75 15 18.75C12.81 18.75 7.605 19.635 5.46 22.245C3.93 20.235 3 17.73 3 15C3 8.385 8.385 3 15 3C21.615 3 27 8.385 27 15C27 17.73 26.07 20.235 24.54 22.245ZM15 6C12.09 6 9.75 8.34 9.75 11.25C9.75 14.16 12.09 16.5 15 16.5C17.91 16.5 20.25 14.16 20.25 11.25C20.25 8.34 17.91 6 15 6ZM15 13.5C13.755 13.5 12.75 12.495 12.75 11.25C12.75 10.005 13.755 9 15 9C16.245 9 17.25 10.005 17.25 11.25C17.25 12.495 16.245 13.5 15 13.5Z"
+          viewBox={{ minX: 0, minY: 0, width: 30, height: 30 }}
           color="rgba(13.000000175088644,26.000000350177288,38.0000015348196,1)"
           shrink="0"
           position="relative"
           {...getOverrideProps(overrides, "Flex.Flex[0].Icon[0]")}
         ></Icon>
+      </Flex>
+      <Button
+        display="flex"
+        gap="5px"
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        shrink="0"
+        height="36px"
+        position="relative"
+        border="0px SOLID rgba(174.00000482797623,179.000004529953,183.00000429153442,1)"
+        borderRadius="4px"
+        padding="8px 16px 8px 16px"
+        {...getOverrideProps(overrides, "Flex.Button[0]")}
+      >
         <Text
           fontFamily="Inter"
-          fontSize="20px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          textTransform="capitalize"
-          lineHeight="23.4375px"
-          textAlign="left"
+          fontSize="16px"
+          fontWeight="700"
+          color="rgba(13.000000175088644,26.000000350177288,38.0000015348196,1)"
+          lineHeight="20px"
+          textAlign="center"
           display="flex"
           direction="column"
-          justifyContent="flex-start"
+          justifyContent="center"
+          letterSpacing="0.49px"
           shrink="0"
           position="relative"
           padding="0px 0px 0px 0px"
-          children="UserName"
-          {...getOverrideProps(overrides, "Flex.Flex[0].Text[0]")}
+          children={username}
+          {...getOverrideProps(overrides, "Flex.Button[0].Text[0]")}
         ></Text>
-      </Flex>
+      </Button>
     </Flex>
   );
 }

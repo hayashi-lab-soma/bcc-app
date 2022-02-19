@@ -10,6 +10,11 @@
       "StackName": "amplify-bccapp-master-232844",
       "StackId": "arn:aws:cloudformation:ap-northeast-1:544160245808:stack/amplify-bccapp-master-232844/04890250-8eb7-11ec-aa63-0ead57ba246d",
       "AmplifyAppId": "d259mard8ld388"
+    },
+    "categories": {
+      "auth": {
+        "bccapp": {}
+      }
     }
   },
   "staging": {

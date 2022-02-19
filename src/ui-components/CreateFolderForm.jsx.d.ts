@@ -7,9 +7,9 @@
 import React from "react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { FlexProps } from "@aws-amplify/ui-react";
-export declare type MainNavBarProps = React.PropsWithChildren<Partial<FlexProps> & {
-    username?: String;
+export declare type CreateFolderFormProps = React.PropsWithChildren<Partial<FlexProps> & {
+    folderName?: String;
 } & {
     overrides?: EscapeHatchProps | undefined | null;
 }>;
-export default function MainNavBar(props: MainNavBarProps): React.ReactElement;
+export default function CreateFolderForm(props: CreateFolderFormProps): React.ReactElement;
