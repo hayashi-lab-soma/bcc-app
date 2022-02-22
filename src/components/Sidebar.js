@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box, ListItemText, ListSubheader, } from '@mui/material'
-import { List, ListItemButton, ListItemIcon, } from '@mui/material'
+import { Box, ListSubheader, } from '@mui/material'
+import { List, } from '@mui/material'
 import { Divider, } from '@mui/material'
 import FolderIcon from '@mui/icons-material/Folder'
 import CameraIcon from '@mui/icons-material/Camera'
@@ -21,22 +21,16 @@ const Sidebar = () => {
         height: '100%',
         minWidth: 100,
         maxWidth: 200,
+        minHeight: '500px',
         textAlign: 'left',
-        ml: '5px',
-        mr: '5px',
       }}
+      p={'5px'}
     >
 
       <List>
         <SidebarItem
           title='Folder'
           icon={<FolderIcon />} />
-
-        <SidebarItem
-          title='Camera open'
-          icon={<CameraIcon />}
-          onClick={handleCameraOpen} />
-
       </List>
 
       <Divider />
@@ -52,7 +46,8 @@ const Sidebar = () => {
 
         <SidebarItem
           title='Camera open'
-          icon={<CameraIcon />} />
+          icon={<CameraIcon />}
+          onClick={handleCameraOpen} />
 
         <SidebarItem
           title='None'

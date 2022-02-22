@@ -10,10 +10,10 @@ const FileBrowser = (props) => {
   return (
     <Box
       sx={{
-        height: '500px',
         width: '100%',
-        ml: '10px',
-      }}>
+      }}
+      p={1}>
+
       <FullFileBrowser
         files={props.files}
         folderChain={props.folderChain}

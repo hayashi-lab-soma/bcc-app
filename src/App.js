@@ -11,6 +11,7 @@ import awsconfig from './aws-exports';
 import { Box, } from '@mui/material'
 import { MainNavBar, } from './ui-components/index'
 import { ChonkyActions } from 'chonky'
+import Appbar from './components/Appbar';
 import FileBrowser from './components/FileBrowser'
 import FileUploadDialog from './components/FileUploadDialog';
 import SideBar from './components/Sidebar'
@@ -55,82 +56,82 @@ const App = ({ signOut, user }) => {
   const fetchS3Bucket = () => {
     {
       isFetch &&
-      (async () => {
-        if (!credentials.current) return
-        if (!s3.current) return
+        (async () => {
+          if (!credentials.current) return
+          if (!s3.current) return
 
-        // Storage.list('')
-        // .then((res) => {
-        //   console.log(res)
-        // })
+          // Storage.list('')
+          // .then((res) => {
+          //   console.log(res)
+          // })
 
 
-        Storage.list('', { level: 'protected' })
-          .then((res) => {
-            console.debug('res: ', res)
+          Storage.list('', { level: 'protected' })
+            .then((res) => {
+              console.debug('res: ', res)
 
-            const chonkyFiles = []
-            chonkyFiles.push(
-              ...res.map((object, index) => ({
-                id: object.key,
-                name: object.key,
-                isDir: false,
-                // thumbnailUrl: ''
-              }))
-            )
+              const chonkyFiles = []
+              chonkyFiles.push(
+                ...res.map((object, index) => ({
+                  id: object.key,
+                  name: object.key,
+                  isDir: false,
+                  // thumbnailUrl: ''
+                }))
+              )
 
-            setFiles(chonkyFiles)
+              setFiles(chonkyFiles)
 
-          })
-          .catch((err) => {
-            console.err(err)
-          })
+            })
+            .catch((err) => {
+              console.err(err)
+            })
 
-        // const params = {
-        //   Bucket: awsconfig.aws_user_files_s3_bucket,
-        //   Delimiter: '/',
-        //   Prefix: prefix !== '/' ? prefix : 'public/'
-        // }
+          // const params = {
+          //   Bucket: awsconfig.aws_user_files_s3_bucket,
+          //   Delimiter: '/',
+          //   Prefix: prefix !== '/' ? prefix : 'public/'
+          // }
 
-        // s3.current.listObjectsV2(params)
-        //   .promise()
-        //   .then((res) => {
+          // s3.current.listObjectsV2(params)
+          //   .promise()
+          //   .then((res) => {
 
-        //     const chonkyFiles = []
-        //     const s3Objects = res.Contents
-        //     const s3Prefixes = res.CommonPrefixes
+          //     const chonkyFiles = []
+          //     const s3Objects = res.Contents
+          //     const s3Prefixes = res.CommonPrefixes
 
-        //     if (s3Objects) {
-        //       chonkyFiles.push(
-        //         ...s3Objects.map((object, index) => ({
-        //           id: object.Key,
-        //           name: object.Key.split('/').reverse()[0], //get file name
-        //           isDir: false,
-        //           // thumbnailUrl: ''
-        //         }))
-        //       )
-        //     }
-        //     console.log(chonkyFiles)
-        //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
+          //     if (s3Objects) {
+          //       chonkyFiles.push(
+          //         ...s3Objects.map((object, index) => ({
+          //           id: object.Key,
+          //           name: object.Key.split('/').reverse()[0], //get file name
+          //           isDir: false,
+          //           // thumbnailUrl: ''
+          //         }))
+          //       )
+          //     }
+          //     console.log(chonkyFiles)
+          //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
 
-        //     if (s3Prefixes) {
-        //       chonkyFiles.push(
-        //         ...s3Prefixes.map((prefix, index) => ({
-        //           id: prefix.Prefix,
-        //           name: prefix.Prefix.split('/').reverse()[1],
-        //           isDir: true
-        //         }))
-        //       )
-        //     }
+          //     if (s3Prefixes) {
+          //       chonkyFiles.push(
+          //         ...s3Prefixes.map((prefix, index) => ({
+          //           id: prefix.Prefix,
+          //           name: prefix.Prefix.split('/').reverse()[1],
+          //           isDir: true
+          //         }))
+          //       )
+          //     }
 
-        //     console.debug('ChonkyFiles', chonkyFiles)
-        //     setFiles(chonkyFiles)
-        //   })
-        //   .catch((err) => {
-        //     console.error(err)
-        //   })
+          //     console.debug('ChonkyFiles', chonkyFiles)
+          //     setFiles(chonkyFiles)
+          //   })
+          //   .catch((err) => {
+          //     console.error(err)
+          //   })
 
-      })()
+        })()
     }
   }
 
@@ -162,7 +163,8 @@ const App = ({ signOut, user }) => {
     chain.unshift(
       {
         id: '/',
-        name: 'bccs/public/', //root directory name
+        //name: 'bccs/public/', //root directory name
+        name: '/',
         isDir: true
       }
     )
@@ -227,28 +229,37 @@ const App = ({ signOut, user }) => {
   //
   //--------------------------------------------------
   return (
-    <div className='App'>
-      <MainNavBar
-        username={user.username}
-        onClick={signOut}
-      />
+    <div>
+      <Box
+        sx={{
+          width: '100%',
+        }}
+        p={'10px'}
+        >
 
-      <div>
+        <Appbar
+          username={user.username}
+          onClick={signOut} />
+
         <Box
           sx={{
             width: '100%',
-            height: '100%',
+            minHeight: '500px',
             display: 'flex',
-          }}>
+          }}
+          p={'10px'}
+          >
+
           <SideBar />
+
           <FileBrowser
             files={files}
             folderChain={folderChain}
             handleFileAction={handleFileAction}
           />
-        </Box>
 
-      </div>
+        </Box>
+      </Box>
 
       <FileUploadDialog
         open={isOpenFileUploadDialog}
