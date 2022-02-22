@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "bccapp": {}
+      },
+      "function": {
+        "bccappFuncMakeThumbnail": {
+          "deploymentBucketName": "amplify-bccapp-master-232844-deployment",
+          "s3Key": "amplify-builds/bccappFuncMakeThumbnail-304b506c443575673979-build.zip"
+        }
       }
     }
   },

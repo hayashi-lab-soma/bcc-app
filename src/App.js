@@ -8,14 +8,16 @@ import '@aws-amplify/ui-react/styles.css'
 
 import awsconfig from './aws-exports';
 
+import { Box, } from '@mui/material'
 import { MainNavBar, } from './ui-components/index'
-
 import { ChonkyActions } from 'chonky'
 import FileBrowser from './components/FileBrowser'
-
 import FileUploadDialog from './components/FileUploadDialog';
+import SideBar from './components/Sidebar'
 
 Amplify.configure(awsconfig);
+
+const isFetch = false
 
 const App = ({ signOut, user }) => {
   const credentials = useRef(null)
@@ -51,54 +53,85 @@ const App = ({ signOut, user }) => {
   }, [prefix])
 
   const fetchS3Bucket = () => {
-    (async () => {
-      if (!credentials.current) return
-      if (!s3.current) return
+    {
+      isFetch &&
+      (async () => {
+        if (!credentials.current) return
+        if (!s3.current) return
 
-      const params = {
-        Bucket: awsconfig.aws_user_files_s3_bucket,
-        Delimiter: '/',
-        Prefix: prefix !== '/' ? prefix : 'public/'
-      }
+        // Storage.list('')
+        // .then((res) => {
+        //   console.log(res)
+        // })
 
-      s3.current.listObjectsV2(params)
-        .promise()
-        .then((res) => {
 
-          const chonkyFiles = []
-          const s3Objects = res.Contents
-          const s3Prefixes = res.CommonPrefixes
+        Storage.list('', { level: 'protected' })
+          .then((res) => {
+            console.debug('res: ', res)
 
-          if (s3Objects) {
+            const chonkyFiles = []
             chonkyFiles.push(
-              ...s3Objects.map((object, index) => ({
-                id: object.Key,
-                name: object.Key.split('/').reverse()[0], //get file name
+              ...res.map((object, index) => ({
+                id: object.key,
+                name: object.key,
                 isDir: false,
                 // thumbnailUrl: ''
               }))
             )
-          }
-          console.log(chonkyFiles)
-          // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
 
-          if (s3Prefixes) {
-            chonkyFiles.push(
-              ...s3Prefixes.map((prefix, index) => ({
-                id: prefix.Prefix,
-                name: prefix.Prefix.split('/').reverse()[1],
-                isDir: true
-              }))
-            )
-          }
+            setFiles(chonkyFiles)
 
-          console.debug('ChonkyFiles', chonkyFiles)
-          setFiles(chonkyFiles)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    })()
+          })
+          .catch((err) => {
+            console.err(err)
+          })
+
+        // const params = {
+        //   Bucket: awsconfig.aws_user_files_s3_bucket,
+        //   Delimiter: '/',
+        //   Prefix: prefix !== '/' ? prefix : 'public/'
+        // }
+
+        // s3.current.listObjectsV2(params)
+        //   .promise()
+        //   .then((res) => {
+
+        //     const chonkyFiles = []
+        //     const s3Objects = res.Contents
+        //     const s3Prefixes = res.CommonPrefixes
+
+        //     if (s3Objects) {
+        //       chonkyFiles.push(
+        //         ...s3Objects.map((object, index) => ({
+        //           id: object.Key,
+        //           name: object.Key.split('/').reverse()[0], //get file name
+        //           isDir: false,
+        //           // thumbnailUrl: ''
+        //         }))
+        //       )
+        //     }
+        //     console.log(chonkyFiles)
+        //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
+
+        //     if (s3Prefixes) {
+        //       chonkyFiles.push(
+        //         ...s3Prefixes.map((prefix, index) => ({
+        //           id: prefix.Prefix,
+        //           name: prefix.Prefix.split('/').reverse()[1],
+        //           isDir: true
+        //         }))
+        //       )
+        //     }
+
+        //     console.debug('ChonkyFiles', chonkyFiles)
+        //     setFiles(chonkyFiles)
+        //   })
+        //   .catch((err) => {
+        //     console.error(err)
+        //   })
+
+      })()
+    }
   }
 
   const updateFolderChain = () => {
@@ -194,17 +227,28 @@ const App = ({ signOut, user }) => {
   //
   //--------------------------------------------------
   return (
-    <div className="App">
+    <div className='App'>
       <MainNavBar
         username={user.username}
         onClick={signOut}
       />
 
-      <FileBrowser
-        files={files}
-        folderChain={folderChain}
-        handleFileAction={handleFileAction}
-      />
+      <div>
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+          }}>
+          <SideBar />
+          <FileBrowser
+            files={files}
+            folderChain={folderChain}
+            handleFileAction={handleFileAction}
+          />
+        </Box>
+
+      </div>
 
       <FileUploadDialog
         open={isOpenFileUploadDialog}
@@ -221,7 +265,7 @@ const App = ({ signOut, user }) => {
 
           files.map((file, index) => {
             return (
-              Storage.put(file.name, file)
+              Storage.put(file.name, file, { level: 'protected' })
                 .then((res) => {
                   console.log('Upload success', res)
                   fetchS3Bucket()
