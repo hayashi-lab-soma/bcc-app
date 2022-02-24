@@ -8,7 +8,7 @@ import SendIcon from '@mui/icons-material/Send'
 
 import SidebarItem from './SideBarItem'
 
-const Sidebar = (props) => {
+const SideBar = (props) => {
   return (
     <div>
       <Box
@@ -74,4 +74,4 @@ const Sidebar = (props) => {
   )
 }
 
-export default Sidebar
+export default SideBar

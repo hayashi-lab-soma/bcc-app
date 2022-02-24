@@ -1,6 +1,6 @@
 import React from 'react'
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, } from '@mui/material'
-const SidebarItem = (props) => {
+const SideBarItem = (props) => {
   return (
 
     <ListItemButton
@@ -22,4 +22,4 @@ const SidebarItem = (props) => {
   )
 }
 
-export default SidebarItem
+export default SideBarItem

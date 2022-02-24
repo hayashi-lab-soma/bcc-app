@@ -60,11 +60,5 @@
       "dependsOn": []
     }
   },
-  "function": {
-    "bccappFuncMakeThumbnail": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  }
+  "function": {}
 }
