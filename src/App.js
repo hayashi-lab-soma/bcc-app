@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import {Buffer} from 'buffer'
+import { Buffer } from 'buffer'
 import './App.css';
 
 import { Amplify, Auth, Storage, DataStore, } from 'aws-amplify';
@@ -36,7 +36,7 @@ const App = ({ signOut, user }) => {
   //----------------------------------------
   // Camera and image cupture
   const [openCameraDialog, setCameraDialog] = useState(false)
-  const [capturedImage, setCapturedImage] = useState(null)
+  const [capturedImage, setCapturedImage] = useState(null) //Captured image instance
   const [openCapturedImageDialog, setCapturedImageDialog] = useState(false)
 
   const callbackSetCapturedImage = useCallback((img) => {
@@ -71,76 +71,76 @@ const App = ({ signOut, user }) => {
   const fetchS3Bucket = () => {
     {
       isFetch &&
-      (async () => {
-        if (!credentials.current) return
-        if (!s3.current) return
+        (async () => {
+          if (!credentials.current) return
+          if (!s3.current) return
 
-        Storage.list('', { level: 'protected' })
-          .then((res) => {
-            console.debug('res: ', res)
+          Storage.list('', { level: 'protected' })
+            .then((res) => {
+              console.debug('res: ', res)
 
-            const chonkyFiles = []
-            chonkyFiles.push(
-              ...res.map((object, index) => ({
-                id: object.key,
-                name: object.key,
-                isDir: false,
-                // thumbnailUrl: ''
-              }))
-            )
+              const chonkyFiles = []
+              chonkyFiles.push(
+                ...res.map((object, index) => ({
+                  id: object.key,
+                  name: object.key,
+                  isDir: false,
+                  // thumbnailUrl: ''
+                }))
+              )
 
-            setFiles(chonkyFiles)
+              setFiles(chonkyFiles)
 
-          })
-          .catch((err) => {
-            console.err(err)
-          })
+            })
+            .catch((err) => {
+              console.err(err)
+            })
 
-        // const params = {
-        //   Bucket: awsconfig.aws_user_files_s3_bucket,
-        //   Delimiter: '/',
-        //   Prefix: prefix !== '/' ? prefix : 'public/'
-        // }
+          // const params = {
+          //   Bucket: awsconfig.aws_user_files_s3_bucket,
+          //   Delimiter: '/',
+          //   Prefix: prefix !== '/' ? prefix : 'public/'
+          // }
 
-        // s3.current.listObjectsV2(params)
-        //   .promise()
-        //   .then((res) => {
+          // s3.current.listObjectsV2(params)
+          //   .promise()
+          //   .then((res) => {
 
-        //     const chonkyFiles = []
-        //     const s3Objects = res.Contents
-        //     const s3Prefixes = res.CommonPrefixes
+          //     const chonkyFiles = []
+          //     const s3Objects = res.Contents
+          //     const s3Prefixes = res.CommonPrefixes
 
-        //     if (s3Objects) {
-        //       chonkyFiles.push(
-        //         ...s3Objects.map((object, index) => ({
-        //           id: object.Key,
-        //           name: object.Key.split('/').reverse()[0], //get file name
-        //           isDir: false,
-        //           // thumbnailUrl: ''
-        //         }))
-        //       )
-        //     }
-        //     console.log(chonkyFiles)
-        //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
+          //     if (s3Objects) {
+          //       chonkyFiles.push(
+          //         ...s3Objects.map((object, index) => ({
+          //           id: object.Key,
+          //           name: object.Key.split('/').reverse()[0], //get file name
+          //           isDir: false,
+          //           // thumbnailUrl: ''
+          //         }))
+          //       )
+          //     }
+          //     console.log(chonkyFiles)
+          //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
 
-        //     if (s3Prefixes) {
-        //       chonkyFiles.push(
-        //         ...s3Prefixes.map((prefix, index) => ({
-        //           id: prefix.Prefix,
-        //           name: prefix.Prefix.split('/').reverse()[1],
-        //           isDir: true
-        //         }))
-        //       )
-        //     }
+          //     if (s3Prefixes) {
+          //       chonkyFiles.push(
+          //         ...s3Prefixes.map((prefix, index) => ({
+          //           id: prefix.Prefix,
+          //           name: prefix.Prefix.split('/').reverse()[1],
+          //           isDir: true
+          //         }))
+          //       )
+          //     }
 
-        //     console.debug('ChonkyFiles', chonkyFiles)
-        //     setFiles(chonkyFiles)
-        //   })
-        //   .catch((err) => {
-        //     console.error(err)
-        //   })
+          //     console.debug('ChonkyFiles', chonkyFiles)
+          //     setFiles(chonkyFiles)
+          //   })
+          //   .catch((err) => {
+          //     console.error(err)
+          //   })
 
-      })()
+        })()
     }
   }
 
@@ -251,11 +251,13 @@ const App = ({ signOut, user }) => {
             new Image({
               "name": file.name,
               "size": file.size,
-              "path": "sample image path",
+              "path": "",
             })
           )
             .then((res) => {
               console.log('Datastore save success', res)
+
+              fetchS3Bucket() //call fetch method -> rendaring
             })
             .catch((err) => {
               console.error(err)
@@ -325,13 +327,20 @@ const App = ({ signOut, user }) => {
         onClose={() => { setCapturedImageDialog(false) }}
         srcImg={capturedImage}
         onSubmit={() => {
+
           // console.debug('onSubmit')
           let tmp = capturedImage
           tmp = tmp.replace("data:image/jpeg;base64", '')
-
           // console.debug(tmp)
           let bin = Buffer.from(tmp, 'base64')
-          let file = new File([bin.buffer], 'test.jpg', {type: "image/jpeg"})
+
+          let now = new Date();
+          let strTime = now.toUTCString()
+
+          let file = new File(
+            [bin.buffer],       //body
+            strTime + '.jpg',   //file name
+            { type: "image/jpeg" })
           // console.debug(file)
 
           onFileUpload([file]) //call file upload function
