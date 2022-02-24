@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppBar, Button, Toolbar } from '@mui/material'
 
-const Appbar = (props) => {
+const NemuBar = (props) => {
   return (
     <div>
       <AppBar position='static'>
@@ -13,4 +13,4 @@ const Appbar = (props) => {
   )
 }
 
-export default Appbar
+export default NemuBar

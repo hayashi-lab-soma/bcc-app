@@ -1,4 +1,26 @@
-type User @model @auth(rules: [{allow: public}]) {
+type Rect @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  x: Int
+  y: Int
+  width: Int
+  height: Int
+  labelID: ID! @index(name: "byLabel")
+}
+
+type Label @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
+  imageID: ID! @index(name: "byImage")
+  Rect: [Rect] @hasMany(indexName: "byLabel", fields: ["id"])
 }
+
+type Image @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  auth: String
+  name: String
+  size: Int
+  path: String
+  Labels: [Label] @hasMany(indexName: "byImage", fields: ["id"])
+  createdAt: AWSDateTime
+}
+ 

@@ -1,24 +1,24 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
+import {Buffer} from 'buffer'
 import './App.css';
 
-import { Amplify, Auth, Storage } from 'aws-amplify';
+import { Amplify, Auth, Storage, DataStore, } from 'aws-amplify';
 import { withAuthenticator, } from '@aws-amplify/ui-react'
+import { Image, } from './models'
 import AWS from 'aws-sdk'
 import '@aws-amplify/ui-react/styles.css'
 
 import awsconfig from './aws-exports';
 
 import { Box, } from '@mui/material'
-import { MainNavBar, } from './ui-components/index'
 import { ChonkyActions } from 'chonky'
-import Appbar from './components/Appbar';
-import FileBrowser from './components/FileBrowser'
-import FileUploadDialog from './components/FileUploadDialog';
-import SideBar from './components/Sidebar'
+import { DropzoneDialog, } from 'material-ui-dropzone'
+
+import { NemuBar, SideBar, FileBrowser, FileUploadDialog, CameraDialog, CapturedImageDialog } from './components'
 
 Amplify.configure(awsconfig);
 
-const isFetch = false
+const isFetch = true
 
 const App = ({ signOut, user }) => {
   const credentials = useRef(null)
@@ -28,8 +28,23 @@ const App = ({ signOut, user }) => {
   const [folderChain, setFolderChain] = useState([])
   const [prefix, setPrefix] = useState('')
 
+  //----------------------------------------
+  // File upload
   // const [isOpenFolderCreateForm, setFolderCreateForm] = useState(false)
-  const [isOpenFileUploadDialog, setFileUploadDialog] = useState(false)
+  const [openFileUploadDialog, setFileUploadDialog] = useState(false)
+
+  //----------------------------------------
+  // Camera and image cupture
+  const [openCameraDialog, setCameraDialog] = useState(false)
+  const [capturedImage, setCapturedImage] = useState(null)
+  const [openCapturedImageDialog, setCapturedImageDialog] = useState(false)
+
+  const callbackSetCapturedImage = useCallback((img) => {
+    setCapturedImage(img)   //set current camera image
+    setCameraDialog(false)  //close camera dialog
+    setCapturedImageDialog(true) //open cuptured image dialog
+  }, [])
+  //----------------------------------------
 
   // Effect (componentDidMount)
   useEffect(() => {
@@ -51,87 +66,81 @@ const App = ({ signOut, user }) => {
   useEffect(() => {
     fetchS3Bucket()       //fetch process
     updateFolderChain()   //folder chain update process
-  }, [prefix])
+  }, [prefix,])
 
   const fetchS3Bucket = () => {
     {
       isFetch &&
-        (async () => {
-          if (!credentials.current) return
-          if (!s3.current) return
+      (async () => {
+        if (!credentials.current) return
+        if (!s3.current) return
 
-          // Storage.list('')
-          // .then((res) => {
-          //   console.log(res)
-          // })
+        Storage.list('', { level: 'protected' })
+          .then((res) => {
+            console.debug('res: ', res)
 
+            const chonkyFiles = []
+            chonkyFiles.push(
+              ...res.map((object, index) => ({
+                id: object.key,
+                name: object.key,
+                isDir: false,
+                // thumbnailUrl: ''
+              }))
+            )
 
-          Storage.list('', { level: 'protected' })
-            .then((res) => {
-              console.debug('res: ', res)
+            setFiles(chonkyFiles)
 
-              const chonkyFiles = []
-              chonkyFiles.push(
-                ...res.map((object, index) => ({
-                  id: object.key,
-                  name: object.key,
-                  isDir: false,
-                  // thumbnailUrl: ''
-                }))
-              )
+          })
+          .catch((err) => {
+            console.err(err)
+          })
 
-              setFiles(chonkyFiles)
+        // const params = {
+        //   Bucket: awsconfig.aws_user_files_s3_bucket,
+        //   Delimiter: '/',
+        //   Prefix: prefix !== '/' ? prefix : 'public/'
+        // }
 
-            })
-            .catch((err) => {
-              console.err(err)
-            })
+        // s3.current.listObjectsV2(params)
+        //   .promise()
+        //   .then((res) => {
 
-          // const params = {
-          //   Bucket: awsconfig.aws_user_files_s3_bucket,
-          //   Delimiter: '/',
-          //   Prefix: prefix !== '/' ? prefix : 'public/'
-          // }
+        //     const chonkyFiles = []
+        //     const s3Objects = res.Contents
+        //     const s3Prefixes = res.CommonPrefixes
 
-          // s3.current.listObjectsV2(params)
-          //   .promise()
-          //   .then((res) => {
+        //     if (s3Objects) {
+        //       chonkyFiles.push(
+        //         ...s3Objects.map((object, index) => ({
+        //           id: object.Key,
+        //           name: object.Key.split('/').reverse()[0], //get file name
+        //           isDir: false,
+        //           // thumbnailUrl: ''
+        //         }))
+        //       )
+        //     }
+        //     console.log(chonkyFiles)
+        //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
 
-          //     const chonkyFiles = []
-          //     const s3Objects = res.Contents
-          //     const s3Prefixes = res.CommonPrefixes
+        //     if (s3Prefixes) {
+        //       chonkyFiles.push(
+        //         ...s3Prefixes.map((prefix, index) => ({
+        //           id: prefix.Prefix,
+        //           name: prefix.Prefix.split('/').reverse()[1],
+        //           isDir: true
+        //         }))
+        //       )
+        //     }
 
-          //     if (s3Objects) {
-          //       chonkyFiles.push(
-          //         ...s3Objects.map((object, index) => ({
-          //           id: object.Key,
-          //           name: object.Key.split('/').reverse()[0], //get file name
-          //           isDir: false,
-          //           // thumbnailUrl: ''
-          //         }))
-          //       )
-          //     }
-          //     console.log(chonkyFiles)
-          //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
+        //     console.debug('ChonkyFiles', chonkyFiles)
+        //     setFiles(chonkyFiles)
+        //   })
+        //   .catch((err) => {
+        //     console.error(err)
+        //   })
 
-          //     if (s3Prefixes) {
-          //       chonkyFiles.push(
-          //         ...s3Prefixes.map((prefix, index) => ({
-          //           id: prefix.Prefix,
-          //           name: prefix.Prefix.split('/').reverse()[1],
-          //           isDir: true
-          //         }))
-          //       )
-          //     }
-
-          //     console.debug('ChonkyFiles', chonkyFiles)
-          //     setFiles(chonkyFiles)
-          //   })
-          //   .catch((err) => {
-          //     console.error(err)
-          //   })
-
-        })()
+      })()
     }
   }
 
@@ -174,8 +183,6 @@ const App = ({ signOut, user }) => {
 
   //--------------------------------------------------
   //
-  //
-  //
   //--------------------------------------------------
   const handleFileAction = useCallback((data) => {
     switch (data.id) {
@@ -217,16 +224,53 @@ const App = ({ signOut, user }) => {
           )
         })
         break
+
       default:
         break
     }
 
   }, [])
 
+  const onFileUpload = (files) => {
+    // let folderDepth = folderChain.length
+    // let curFolderId = folderChain[folderDepth - 1].id
+    // let keyPrefix = curFolderId === '/'
+    //   ? ''
+    //   : curFolderId + '/'
+    //console.log(files)
+    //console.log(credentials.current)
+
+    console.debug('Upload files: ', files)
+
+    files.map((file, index) => {
+      Storage.put(file.name, file, { level: 'protected' })
+        .then((res) => {
+          console.log('Upload success', res)
+
+          DataStore.save(
+            new Image({
+              "name": file.name,
+              "size": file.size,
+              "path": "sample image path",
+            })
+          )
+            .then((res) => {
+              console.log('Datastore save success', res)
+            })
+            .catch((err) => {
+              console.error(err)
+            })
+
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    })
+  }
+
+
   //--------------------------------------------------
-  //
-  //
-  //
+  // rendering function
   //--------------------------------------------------
   return (
     <div>
@@ -235,11 +279,12 @@ const App = ({ signOut, user }) => {
           width: '100%',
         }}
         p={'10px'}
-        >
+      >
 
-        <Appbar
+        <NemuBar
           username={user.username}
-          onClick={signOut} />
+          onClick={signOut}
+        />
 
         <Box
           sx={{
@@ -248,9 +293,11 @@ const App = ({ signOut, user }) => {
             display: 'flex',
           }}
           p={'10px'}
-          >
+        >
 
-          <SideBar />
+          <SideBar
+            onClickCameraOpen={() => { setCameraDialog(true) }}
+          />
 
           <FileBrowser
             files={files}
@@ -262,30 +309,36 @@ const App = ({ signOut, user }) => {
       </Box>
 
       <FileUploadDialog
-        open={isOpenFileUploadDialog}
+        open={openFileUploadDialog}
         onClose={() => { setFileUploadDialog(false) }}
-        onSave={(files) => { //file submit process
-          // let folderDepth = folderChain.length
-          // let curFolderId = folderChain[folderDepth - 1].id
-          // let keyPrefix = curFolderId === '/'
-          //   ? ''
-          //   : curFolderId + '/'
-          //console.log(files)
+        onSave={(files) => { onFileUpload(files) }}
+      />
 
-          console.debug('Upload files: ', files)
+      <CameraDialog
+        open={openCameraDialog}
+        onClose={() => { setCameraDialog(false) }}
+        onShoot={callbackSetCapturedImage}
+      />
 
-          files.map((file, index) => {
-            return (
-              Storage.put(file.name, file, { level: 'protected' })
-                .then((res) => {
-                  console.log('Upload success', res)
-                  fetchS3Bucket()
-                })
-                .catch((err) => {
-                  console.error(err)
-                })
-            )
-          })
+      <CapturedImageDialog
+        open={openCapturedImageDialog}
+        onClose={() => { setCapturedImageDialog(false) }}
+        srcImg={capturedImage}
+        onSubmit={() => {
+          // console.debug('onSubmit')
+          let tmp = capturedImage
+          tmp = tmp.replace("data:image/jpeg;base64", '')
+
+          // console.debug(tmp)
+          let bin = Buffer.from(tmp, 'base64')
+          let file = new File([bin.buffer], 'test.jpg', {type: "image/jpeg"})
+          // console.debug(file)
+
+          onFileUpload([file]) //call file upload function
+
+        }} //Image upload without annotation
+        onAnnotation={() => {
+          console.log('on Annotaion')
         }}
       />
 

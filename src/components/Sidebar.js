@@ -6,7 +6,7 @@ import FolderIcon from '@mui/icons-material/Folder'
 import CameraIcon from '@mui/icons-material/Camera'
 import SendIcon from '@mui/icons-material/Send'
 
-import SidebarItem from './SidebarItem'
+import SidebarItem from './SideBarItem'
 
 const Sidebar = () => {
   const handleCameraOpen = () => {
