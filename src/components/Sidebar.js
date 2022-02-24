@@ -6,7 +6,7 @@ import FolderIcon from '@mui/icons-material/Folder'
 import CameraIcon from '@mui/icons-material/Camera'
 import SendIcon from '@mui/icons-material/Send'
 
-import SidebarItem from './SideBarItem'
+import SideBarItem from './SideBarItem'
 
 const SideBar = (props) => {
   return (
@@ -24,7 +24,7 @@ const SideBar = (props) => {
       >
 
         <List>
-          <SidebarItem
+          <SideBarItem
             title='Folder'
             icon={<FolderIcon />} />
         </List>
@@ -40,14 +40,14 @@ const SideBar = (props) => {
             </ListSubheader>
           }>
 
-          <SidebarItem
+          <SideBarItem
             title='Camera open'
             icon={<CameraIcon />}
             // onClick={() => { setCameraDialog(true) }}
             onClick={props.onClickCameraOpen}
           />
 
-          <SidebarItem
+          <SideBarItem
             title='None'
             icon={<SendIcon />} />
 
