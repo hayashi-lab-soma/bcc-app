@@ -6,7 +6,7 @@ import FolderIcon from '@mui/icons-material/Folder'
 import CameraIcon from '@mui/icons-material/Camera'
 import SendIcon from '@mui/icons-material/Send'
 
-import SideBarItem from './SidebarItem'
+import SideBarItem from './SideBarItem'
 
 const SideBar = (props) => {
   return (
