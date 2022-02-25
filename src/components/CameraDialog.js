@@ -18,11 +18,13 @@ const CameraDialog = (props) => {
         }}
         p={'10px'}>
 
-        <Webcam
+        {/* <Webcam
           ref={refWebcam}
           //width={1280}
           //height={720}
-          screenshotFormat="image/jpeg" />
+          screenshotFormat="image/jpeg" /> */}
+
+          <input type='file' accept='image/*' capture='environment'></input>
 
         <IconButton
           onClick={() => {props.onShoot(refWebcam.current.getScreenshot())}}

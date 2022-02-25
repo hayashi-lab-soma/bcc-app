@@ -307,7 +307,8 @@ const App = ({ signOut, user }) => {
 
         </Box>
 
-        <BottomBar>
+        <BottomBar
+          onClickCameraOpen={() => { setCameraDialog(true) }}>
         </BottomBar>
 
       </Box>

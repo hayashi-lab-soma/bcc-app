@@ -8,7 +8,7 @@ import FolderIcon from '@mui/icons-material/Folder'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
 
 
-const BottomBar = () => {
+const BottomBar = (props) => {
   return (
     <div>
       <AppBar
@@ -26,12 +26,14 @@ const BottomBar = () => {
               </IconButton>
 
               <IconButton
-                size='large'>
+                size='large'
+                >
                 <FolderIcon fontSize='inherit' />
               </IconButton>
 
               <IconButton
-                size='large'>
+                size='large'
+                onClick={props.onClickCameraOpen}>
                 <CameraAltIcon fontSize='inherit' />
               </IconButton>
 
