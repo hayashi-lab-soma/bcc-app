@@ -41,7 +41,7 @@ const SideBar = (props) => {
           }>
 
           <SideBarItem
-            title='Camera open'
+            title='Camera'
             icon={<CameraIcon />}
             // onClick={() => { setCameraDialog(true) }}
             onClick={props.onClickCameraOpen}

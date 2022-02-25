@@ -14,7 +14,7 @@ import { Box, } from '@mui/material'
 import { ChonkyActions } from 'chonky'
 import { DropzoneDialog, } from 'material-ui-dropzone'
 
-import { NemuBar, SideBar, FileBrowser, FileUploadDialog, CameraDialog, CapturedImageDialog } from './components'
+import { NemuBar, SideBar, BottomBar, FileBrowser, FileUploadDialog, CameraDialog, CapturedImageDialog } from './components'
 
 Amplify.configure(awsconfig);
 
@@ -279,8 +279,9 @@ const App = ({ signOut, user }) => {
       <Box
         sx={{
           width: '100%',
+          height: '100%'
         }}
-        p={'10px'}
+        p={'5px'}
       >
 
         <NemuBar
@@ -288,18 +289,15 @@ const App = ({ signOut, user }) => {
           onClick={signOut}
         />
 
+        {/* <SideBar
+            onClickCameraOpen={() => { setCameraDialog(true) }}
+          /> */}
+
         <Box
           sx={{
-            width: '100%',
-            minHeight: '500px',
-            display: 'flex',
-          }}
-          p={'10px'}
-        >
-
-          <SideBar
-            onClickCameraOpen={() => { setCameraDialog(true) }}
-          />
+            mt: '5px',
+            bottom: 0
+          }}>
 
           <FileBrowser
             files={files}
@@ -308,6 +306,10 @@ const App = ({ signOut, user }) => {
           />
 
         </Box>
+
+        <BottomBar>
+        </BottomBar>
+
       </Box>
 
       <FileUploadDialog

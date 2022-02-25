@@ -8,11 +8,12 @@ setChonkyDefaults({ iconComponent: ChonkyIconFA });
 
 const FileBrowser = (props) => {
   return (
-    <Box
-      sx={{
-        width: '100%',
+
+    <div
+      style={{
+        height: 500
       }}
-      p={1}>
+    >
 
       <FullFileBrowser
         files={props.files}
@@ -28,7 +29,7 @@ const FileBrowser = (props) => {
           ]
         }
       />
-    </Box>
+    </div>
   )
 }
 
