@@ -12,9 +12,9 @@ import awsconfig from './aws-exports';
 
 import { Box, } from '@mui/material'
 import { ChonkyActions } from 'chonky'
-import { DropzoneDialog, } from 'material-ui-dropzone'
 
-import { NemuBar, SideBar, BottomBar, FileBrowser, FileUploadDialog, CameraDialog, CapturedImageDialog } from './components'
+import { NemuBar, BottomBar, S3Browser, FileUploadDialog, CameraDialog, CapturedImageDialog } from './components'
+
 
 Amplify.configure(awsconfig);
 
@@ -211,18 +211,33 @@ const App = ({ signOut, user }) => {
         const selFiles = data.state.selectedFiles
         console.log(selFiles)
 
-        selFiles.map((file, index) => {
-          return (
-            Storage.remove(file.id) //public level object
-              .then((res) => {
-                console.log(res)
-                fetchS3Bucket()
-              })
-              .catch((err) => {
-                console.err(err)
-              })
-          )
+        const promise = new Promise((resolve, reject) => {
+          selFiles.map((file, index) => {
+            Storage.remove(file.id, {level: 'protected'})
+            .then((res) => {
+              console.log('Removed: ', res)
+              resolve()
+            })
+            .catch((err) => {
+              console.error(err)
+            })
+          })
         })
+
+        promise.then(() => {
+          fetchS3Bucket()
+        })
+
+        // selFiles.map((file, index) => {
+        //   Storage.remove(file.id, { level: 'protected' })
+        //     .then((res) => {
+        //       console.log(res)
+        //     })
+        //     .catch((err) => {
+        //       console.err(err)
+        //     })
+        // })
+
         break
 
       default:
@@ -299,10 +314,10 @@ const App = ({ signOut, user }) => {
             bottom: 0
           }}>
 
-          <FileBrowser
+          <S3Browser
             files={files}
             folderChain={folderChain}
-            handleFileAction={handleFileAction}
+            onFileAction={handleFileAction}
           />
 
         </Box>
@@ -338,11 +353,12 @@ const App = ({ signOut, user }) => {
           let bin = Buffer.from(tmp, 'base64')
 
           let now = new Date();
-          let strTime = now.toUTCString()
+          // let strTime = now.toUTCString()
+          let strTime = now.getTime()
 
           let file = new File(
             [bin.buffer],       //body
-            strTime + '.jpg',   //file name
+            'IMG_' + strTime + '.jpg',   //file name
             { type: "image/jpeg" })
           // console.debug(file)
 
