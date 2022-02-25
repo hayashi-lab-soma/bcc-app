@@ -7,7 +7,6 @@ import HomeIcon from '@mui/icons-material/Home'
 import FolderIcon from '@mui/icons-material/Folder'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
 
-
 const BottomBar = (props) => {
   return (
     <div>
@@ -26,8 +25,7 @@ const BottomBar = (props) => {
               </IconButton>
 
               <IconButton
-                size='large'
-                >
+                size='large'>
                 <FolderIcon fontSize='inherit' />
               </IconButton>
 

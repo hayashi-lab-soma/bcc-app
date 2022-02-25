@@ -1,6 +1,7 @@
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 import { Dialog, IconButton, } from '@mui/material'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
+import CameraIcon from '@mui/icons-material/Camera'
 import Webcam from 'react-webcam'
 
 const CameraDialog = (props) => {
@@ -22,12 +23,12 @@ const CameraDialog = (props) => {
           screenshotFormat="image/jpeg"
           forceScreenshotSourceSize={true} />
 
-          {/* <input type='file' accept='image/*' capture='camera'></input> */}
+        {/* <input type='file' accept='image/*' capture='camera'></input> */}
 
         <IconButton
-          onClick={() => {props.onShoot(refWebcam.current.getScreenshot())}}
+          onClick={() => { props.onShoot(refWebcam.current.getScreenshot()) }}
           p={'10px'}>
-          <CameraAltIcon fontSize='large'/>
+          <CameraIcon fontSize='large' />
         </IconButton>
 
       </Dialog>
