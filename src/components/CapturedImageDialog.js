@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Dialog, Button, } from '@mui/material'
+import { Box, Grid, Dialog, Button, DialogContent, DialogTitle, DialogActions } from '@mui/material'
 
 const CapturedImageDialog = (props) => {
   return (
@@ -8,21 +8,19 @@ const CapturedImageDialog = (props) => {
       <Dialog
         open={props.open}
         onClose={props.onClose}
-        p={'10px'}>
+        sx={{ width: '100%' }}
+      >
+        {/* <DialogTitle >Captured image</DialogTitle> */}
 
-        <img src={props.srcImg} alt='Captured ...' />
+        <DialogContent style={{ objectFit: 'contain' }}>
+          <img src={props.srcImg} alt='Captured ...' />
+        </DialogContent>
 
-        <Box
-          sx={{
-            display: 'flex'
-          }}>
-
+        <DialogActions>
           <Button variant='contained' onClick={props.onClose}>Cancel</Button>
           <Button variant='contained' onClick={props.onSubmit}>Submit</Button>
           <Button variant='contained' onClick={props.onAnnotation}>Annotation</Button>
-
-        </Box>
-
+        </DialogActions>
       </Dialog>
     </div>
   )
