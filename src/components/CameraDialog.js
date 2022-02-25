@@ -14,15 +14,13 @@ const CameraDialog = (props) => {
         onClose={props.onClose}
         sx={{
           width: '100%',
-          minWidth: '640px'
         }}
         p={'10px'}>
 
         <Webcam
           ref={refWebcam}
-          //width={1280}
-          //height={720}
-          screenshotFormat="image/jpeg" />
+          screenshotFormat="image/jpeg"
+          forceScreenshotSourceSize={true} />
 
           {/* <input type='file' accept='image/*' capture='camera'></input> */}
 
