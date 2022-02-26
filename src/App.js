@@ -83,28 +83,99 @@ const App = ({ signOut, user }) => {
           if (!credentials.current) return
           if (!s3.current) return
 
-          Storage.list('', { level: 'protected' })
-            .then((res) => {
-              console.debug('List: ', res)
+          const UserId = await Auth.currentUserInfo()
 
-              
+          // console.debug(UserId.id)
+          console.debug('Current prefix: ', prefix)
+
+          // Storage.list(prefix !== '/' ? prefix : '',
+          //   { level: 'protected' })
+          //   .then((res) => {
+          //     console.debug('Fetch res: ', res)
+
+          //     const chonkyFiles = []
+
+          //     res.forEach((object, index) => {
+          //       // console.debug(object.key.split('/'))
+          //       if (object.size) {
+          //         chonkyFiles.push(
+          //           {
+          //             id: object.key,
+          //             name: object.key,
+          //             isDir: false
+          //           }
+          //         )
+          //       }
+          //       else {
+          //         let _elems1 = object.key.split('/').slice(0, -1)
+          //         console.debug(_elems1)
+
+          //         let elems = _elems1
+
+          //         if (elems.length === 1) {
+          //           chonkyFiles.push(
+          //             {
+          //               id: object.key,
+          //               name: object.key.slice(0, -1),
+          //               isDir: true
+          //             }
+          //           )
+          //         }
+          //       }
+          //     })
+
+
+
+          //     setFiles(chonkyFiles)
+
+          //   })
+          //   .catch((err) => {
+          //     console.err(err)
+          //   })
+
+          s3.current.listObjectsV2({
+            Bucket: awsconfig.aws_user_files_s3_bucket,
+            Delimiter: '/',
+            Prefix: 'protected/' + UserId.id + '/' + (prefix !== '/' ? prefix : '')
+          })
+            .promise()
+            .then((res) => {
+              console.debug(res)
 
               const chonkyFiles = []
-              chonkyFiles.push(
-                ...res.map((object, index) => ({
-                  id: object.key,
-                  name: object.key,
-                  isDir: false,
-                  // thumbnailUrl: ''
-                }))
-              )
+              const s3Objects = res.Contents
+              const s3Prefixes = res.CommonPrefixes
 
+              if (s3Objects) {
+                chonkyFiles.push(
+                  ...s3Objects.map((object, index) => ({
+                    id: object.Key.replace('protected/' + UserId.id + '/', ''),
+                    name: object.Key.split('/').reverse()[0], //get file name
+                    isDir: false,
+                    thumbnailUrl: 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/ap-northeast-1%3A6d2639f5-1a6c-4b09-96b0-c217998c646b/' + object.Key.split('/').reverse()[0]
+                  }))
+                )
+              }
+
+              if (s3Prefixes) {
+                chonkyFiles.push(
+                  ...s3Prefixes.map((prefix, index) => ({
+                    id: prefix.Prefix.replace('protected/' + UserId.id + '/', ''),
+                    name: prefix.Prefix.split('/').reverse()[1],
+                    isDir: true
+                  }))
+                )
+              }
+
+              console.debug(chonkyFiles)
               setFiles(chonkyFiles)
-
             })
             .catch((err) => {
-              console.err(err)
+              console.error(err)
             })
+
+
+
 
           // const params = {
           //   Bucket: awsconfig.aws_user_files_s3_bucket,
