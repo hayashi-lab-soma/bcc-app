@@ -12,7 +12,7 @@ const S3Browser = (props) => {
 
     <div
       style={{
-        height: '800px'
+        height: '500px'
       }}
     >
 

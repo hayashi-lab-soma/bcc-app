@@ -10,10 +10,12 @@ import '@aws-amplify/ui-react/styles.css'
 
 import awsconfig from './aws-exports';
 
-import { Box, } from '@mui/material'
+import { Box, Fab, } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 import { ChonkyActions } from 'chonky'
 
 import { NemuBar, BottomBar, S3Browser, FileUploadDialog, CameraDialog, CapturedImageDialog } from './components'
+import FolderCreateDialog from './components/FolderCreateDialog';
 
 
 Amplify.configure(awsconfig);
@@ -32,6 +34,12 @@ const App = ({ signOut, user }) => {
   // File upload
   // const [isOpenFolderCreateForm, setFolderCreateForm] = useState(false)
   const [openFileUploadDialog, setFileUploadDialog] = useState(false)
+
+  //----------------------------------------
+  // Folder create
+  const [openFolderCreateDialog, setFolderCreateDialog] = useState(false)
+  const refCreateFolderNameInput = useRef(null)
+
 
   //----------------------------------------
   // Camera and image cupture
@@ -77,7 +85,9 @@ const App = ({ signOut, user }) => {
 
           Storage.list('', { level: 'protected' })
             .then((res) => {
-              console.debug('res: ', res)
+              console.debug('List: ', res)
+
+              
 
               const chonkyFiles = []
               chonkyFiles.push(
@@ -213,30 +223,20 @@ const App = ({ signOut, user }) => {
 
         const promise = new Promise((resolve, reject) => {
           selFiles.map((file, index) => {
-            Storage.remove(file.id, {level: 'protected'})
-            .then((res) => {
-              console.log('Removed: ', res)
-              resolve()
-            })
-            .catch((err) => {
-              console.error(err)
-            })
+            Storage.remove(file.id, { level: 'protected' })
+              .then((res) => {
+                console.log('Removed: ', res)
+                resolve()
+              })
+              .catch((err) => {
+                console.error(err)
+              })
           })
         })
 
         promise.then(() => {
           fetchS3Bucket()
         })
-
-        // selFiles.map((file, index) => {
-        //   Storage.remove(file.id, { level: 'protected' })
-        //     .then((res) => {
-        //       console.log(res)
-        //     })
-        //     .catch((err) => {
-        //       console.err(err)
-        //     })
-        // })
 
         break
 
@@ -247,13 +247,6 @@ const App = ({ signOut, user }) => {
   }, [])
 
   const onFileUpload = (files) => {
-    // let folderDepth = folderChain.length
-    // let curFolderId = folderChain[folderDepth - 1].id
-    // let keyPrefix = curFolderId === '/'
-    //   ? ''
-    //   : curFolderId + '/'
-    //console.log(files)
-    //console.log(credentials.current)
 
     console.debug('Upload files: ', files)
 
@@ -283,6 +276,17 @@ const App = ({ signOut, user }) => {
           console.error(err)
         })
     })
+  }
+
+  const onFolderCreate = (fname) => {
+    // console.debug(fname)
+    Storage.put(fname + '/', null, { level: 'protected' })
+      .then((res) => {
+        console.log('Create prefix: ', res)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
   }
 
 
@@ -320,6 +324,22 @@ const App = ({ signOut, user }) => {
             onFileAction={handleFileAction}
           />
 
+          <Fab
+            style={{
+              margin: 0,
+              top: 'auto',
+              left: 'auto',
+              right: '20px',
+              bottom: '100px',
+              position: 'fixed',
+              borderRadius: '30px'
+            }}
+            size='large'
+            onClick={() => { setFolderCreateDialog(true) }}
+          >
+            <AddIcon />
+          </Fab>
+
         </Box>
 
         <BottomBar
@@ -332,6 +352,16 @@ const App = ({ signOut, user }) => {
         open={openFileUploadDialog}
         onClose={() => { setFileUploadDialog(false) }}
         onSave={(files) => { onFileUpload(files) }}
+      />
+
+      <FolderCreateDialog
+        open={openFolderCreateDialog}
+        onClose={() => { setFolderCreateDialog(false) }}
+        inputRef={refCreateFolderNameInput}
+        onCreate={() => {
+          // console.debug(refCreateFolderNameInput.current.value)
+          onFolderCreate(refCreateFolderNameInput.current.value)
+        }}
       />
 
       <CameraDialog
