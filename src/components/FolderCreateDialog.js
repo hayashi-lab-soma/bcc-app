@@ -11,14 +11,14 @@ const FolderCreateDialog = (props) => {
 
         <Box
           p={'10px'}>
-          <DialogTitle>New Folder</DialogTitle>
+          <DialogTitle>新しいフォルダ</DialogTitle>
 
           <TextField
             inputRef={props.inputRef} />
 
           <DialogActions>
-            <Button variant='text' size='small' onClick={props.onClose}>Cancel</Button>
-            <Button variant='text' size='small' onClick={props.onCreate}>Create</Button>
+            <Button variant='text' size='small' onClick={props.onClose}>キャンセル</Button>
+            <Button variant='text' size='small' onClick={props.onCreate}>作成</Button>
           </DialogActions>
 
         </Box>

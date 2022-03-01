@@ -3,7 +3,7 @@ import { Buffer } from 'buffer'
 import './App.css';
 
 import { Amplify, Auth, Storage, DataStore, } from 'aws-amplify';
-import { withAuthenticator, } from '@aws-amplify/ui-react'
+import { Button, withAuthenticator, } from '@aws-amplify/ui-react'
 import { Image, } from './models'
 import AWS from 'aws-sdk'
 import '@aws-amplify/ui-react/styles.css'
