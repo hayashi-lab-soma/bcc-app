@@ -14,7 +14,7 @@ import { Box, Fab, } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { ChonkyActions } from 'chonky'
 
-import { NemuBar, BottomBar, S3Browser, FileUploadDialog, CameraDialog, CapturedImageDialog } from './components'
+import { NemuBar, BottomBar, S3Browser, FileUploadDialog, CameraDialog, CapturedImageDialog, AddDialog } from './components'
 import FolderCreateDialog from './components/FolderCreateDialog';
 
 
@@ -29,6 +29,10 @@ const App = ({ signOut, user }) => {
   const [files, setFiles] = useState([])
   const [folderChain, setFolderChain] = useState([])
   const [prefix, setPrefix] = useState('')
+
+  //----------------------------------------
+  // Add dialog
+  const [openAddDialog, setAddDialog] = useState(false)
 
   //----------------------------------------
   // File upload
@@ -406,7 +410,8 @@ const App = ({ signOut, user }) => {
               borderRadius: '30px'
             }}
             size='large'
-            onClick={() => { setFolderCreateDialog(true) }}
+            // onClick={() => { setFolderCreateDialog(true) }}
+            onClick={() => {setAddDialog(true)}}
           >
             <AddIcon />
           </Fab>
@@ -418,6 +423,10 @@ const App = ({ signOut, user }) => {
         </BottomBar>
 
       </Box>
+
+      <AddDialog
+        open={openAddDialog}
+        onClose={() => { setAddDialog(false) }} />
 
       <FileUploadDialog
         open={openFileUploadDialog}
