@@ -1,6 +1,7 @@
 import React from 'react'
-import { Box, Grid, Stack, } from '@mui/material'
-import { Dialog, IconButton, DialogContent, DialogActions, } from '@mui/material'
+import { Box, DialogTitle, Grid, Stack, } from '@mui/material'
+import { Dialog, DialogContent, DialogActions, } from '@mui/material'
+import { VStackIconButton } from './common'
 
 import FolderIcon from '@mui/icons-material/Folder'
 import UploadIcon from '@mui/icons-material/Upload'
@@ -14,39 +15,42 @@ const AddDialog = (props) => {
         open={props.open}
         onClose={props.onClose}
       >
+        <DialogTitle></DialogTitle>
 
-        <DialogContent>
+        <DialogContent
+        sx={{
+          mt: 1,
+          mb: 1,
+          mr: 3,
+          ml: 3,
+        }}>
 
-          <Grid container
-            spacing={12}>
+          <Stack
+            direction={'row'}
+            alignItems={'center'}
+            justifyContent={'space-evenly'}
+            spacing={10}>
 
-            <Grid item>
-              <Stack justifyContent={'center'}>
-                <IconButton >
-                  <FolderIcon fontSize='large' />
-                </IconButton>
-                <label>フォルダ作成</label>
-              </Stack>
-            </Grid>
+            <VStackIconButton
+              title='フォルダ作成'
+              icon={<FolderIcon fontSize='large' />}
+              onClick={props.onClickFolder}
+            />
 
-            <Grid item>
-              <Stack justifyContent={'center'}>
-                <IconButton>
-                  <UploadIcon fontSize='large' />
-                </IconButton>
-                <label>アップロード</label>
-              </Stack>
-            </Grid>
+            <VStackIconButton
+              title='アップロード'
+              icon={<UploadIcon fontSize='large' />}
+              onClick={props.onClickUpload}
+            />
 
-            <Grid item>
-              <Stack justifyContent={'center'}>
-                <IconButton>
-                  <CameraAltIcon fontSize='large' />
-                </IconButton>
-                <label>撮影</label>
-              </Stack>
-            </Grid>
-          </Grid>
+            <VStackIconButton
+              title='撮影'
+              icon={<CameraAltIcon fontSize='large' />}
+              onClick={props.onClickCamera}
+            />
+
+          </Stack>
+
         </DialogContent>
 
       </Dialog>

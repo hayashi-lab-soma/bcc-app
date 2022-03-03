@@ -35,9 +35,8 @@ const CameraDialog = (props) => {
 
           <IconButton
             onClick={() => { props.onShoot(refWebcam.current.getScreenshot()) }}
-            p={'10px'}
-            size='large'>
-            <CameraIcon fontSize='inherit' />
+            p={'10px'}>
+            <CameraIcon fontSize='large' />
           </IconButton>
 
         </Box>

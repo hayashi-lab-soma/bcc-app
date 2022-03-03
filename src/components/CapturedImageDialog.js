@@ -14,13 +14,15 @@ const CapturedImageDialog = (props) => {
 
         <DialogContent style={{ objectFit: 'contain' }}>
           <img src={props.srcImg} alt='Captured ...' />
+
+          <DialogActions>
+            <Button variant='contained' onClick={props.onClose}>Cancel</Button>
+            <Button variant='contained' onClick={props.onSubmit}>Submit</Button>
+            {/* <Button variant='contained' onClick={props.onAnnotation}>Annotation</Button> */}
+          </DialogActions>
+
         </DialogContent>
 
-        <DialogActions>
-          <Button variant='contained' onClick={props.onClose}>Cancel</Button>
-          <Button variant='contained' onClick={props.onSubmit}>Submit</Button>
-          <Button variant='contained' onClick={props.onAnnotation}>Annotation</Button>
-        </DialogActions>
       </Dialog>
     </div>
   )

@@ -20,6 +20,8 @@ import FolderCreateDialog from './components/FolderCreateDialog';
 
 Amplify.configure(awsconfig);
 
+const THUMBNEILS_BUCKET_URL = 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/ap-northeast-1%3A6d2639f5-1a6c-4b09-96b0-c217998c646b/'
+
 const isFetch = true
 
 const App = ({ signOut, user }) => {
@@ -128,8 +130,6 @@ const App = ({ signOut, user }) => {
           //       }
           //     })
 
-
-
           //     setFiles(chonkyFiles)
 
           //   })
@@ -156,7 +156,9 @@ const App = ({ signOut, user }) => {
                     id: object.Key.replace('protected/' + UserId.id + '/', ''),
                     name: object.Key.split('/').reverse()[0], //get file name
                     isDir: false,
-                    thumbnailUrl: 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/ap-northeast-1%3A6d2639f5-1a6c-4b09-96b0-c217998c646b/' + object.Key.split('/').reverse()[0]
+                    thumbnailUrl: THUMBNEILS_BUCKET_URL 
+                    + (prefix !== '/' ? prefix : '')
+                    + object.Key.split('/').reverse()[0]
                   }))
                 )
               }
@@ -177,53 +179,6 @@ const App = ({ signOut, user }) => {
             .catch((err) => {
               console.error(err)
             })
-
-
-
-
-          // const params = {
-          //   Bucket: awsconfig.aws_user_files_s3_bucket,
-          //   Delimiter: '/',
-          //   Prefix: prefix !== '/' ? prefix : 'public/'
-          // }
-
-          // s3.current.listObjectsV2(params)
-          //   .promise()
-          //   .then((res) => {
-
-          //     const chonkyFiles = []
-          //     const s3Objects = res.Contents
-          //     const s3Prefixes = res.CommonPrefixes
-
-          //     if (s3Objects) {
-          //       chonkyFiles.push(
-          //         ...s3Objects.map((object, index) => ({
-          //           id: object.Key,
-          //           name: object.Key.split('/').reverse()[0], //get file name
-          //           isDir: false,
-          //           // thumbnailUrl: ''
-          //         }))
-          //       )
-          //     }
-          //     console.log(chonkyFiles)
-          //     // chonkyFiles.splice(chonkyFiles.findIndex(o => o.id === prefix), 1)
-
-          //     if (s3Prefixes) {
-          //       chonkyFiles.push(
-          //         ...s3Prefixes.map((prefix, index) => ({
-          //           id: prefix.Prefix,
-          //           name: prefix.Prefix.split('/').reverse()[1],
-          //           isDir: true
-          //         }))
-          //       )
-          //     }
-
-          //     console.debug('ChonkyFiles', chonkyFiles)
-          //     setFiles(chonkyFiles)
-          //   })
-          //   .catch((err) => {
-          //     console.error(err)
-          //   })
 
         })()
     }
@@ -323,10 +278,13 @@ const App = ({ signOut, user }) => {
 
   const onFileUpload = (files) => {
 
+    console.debug('Prefix: ', prefix)
     console.debug('Upload files: ', files)
 
     files.map((file, index) => {
-      Storage.put(file.name, file, { level: 'protected' })
+      Storage.put((prefix !== '/' ? prefix : '') + file.name,
+        file,
+        { level: 'protected' })
         .then((res) => {
           console.log('Upload success', res)
 
@@ -358,6 +316,7 @@ const App = ({ signOut, user }) => {
     Storage.put(fname + '/', null, { level: 'protected' })
       .then((res) => {
         console.log('Create prefix: ', res)
+        fetchS3Bucket()
       })
       .catch((err) => {
         console.error(err)
@@ -411,36 +370,53 @@ const App = ({ signOut, user }) => {
             }}
             size='large'
             // onClick={() => { setFolderCreateDialog(true) }}
-            onClick={() => {setAddDialog(true)}}
+            onClick={() => { setAddDialog(true) }}
           >
             <AddIcon />
           </Fab>
 
         </Box>
 
-        <BottomBar
+        {/* <BottomBar
           onClickCameraOpen={() => { setCameraDialog(true) }}>
-        </BottomBar>
+        </BottomBar> */}
 
       </Box>
 
       <AddDialog
         open={openAddDialog}
-        onClose={() => { setAddDialog(false) }} />
+        onClose={() => { setAddDialog(false) }}
+        onClickFolder={() => {
+          setFolderCreateDialog(true) //
+          setAddDialog(false)         //
+        }}
+        onClickUpload={() => {
+          setFileUploadDialog(true)
+          setAddDialog(false)
+        }}
+        onClickCamera={() => {
+          setCameraDialog(true)
+          setAddDialog(false)
+        }} />
 
-      <FileUploadDialog
-        open={openFileUploadDialog}
-        onClose={() => { setFileUploadDialog(false) }}
-        onSave={(files) => { onFileUpload(files) }}
-      />
 
       <FolderCreateDialog
         open={openFolderCreateDialog}
         onClose={() => { setFolderCreateDialog(false) }}
         inputRef={refCreateFolderNameInput}
         onCreate={() => {
-          // console.debug(refCreateFolderNameInput.current.value)
           onFolderCreate(refCreateFolderNameInput.current.value)
+          setFolderCreateDialog(false)
+        }}
+      />
+
+
+      <FileUploadDialog
+        open={openFileUploadDialog}
+        onClose={() => { setFileUploadDialog(false) }}
+        onSave={(files) => {
+          onFileUpload(files)
+          setFileUploadDialog(false)
         }}
       />
 
@@ -470,7 +446,6 @@ const App = ({ signOut, user }) => {
             [bin.buffer],       //body
             'IMG_' + strTime + '.jpg',   //file name
             { type: "image/jpeg" })
-          // console.debug(file)
 
           onFileUpload([file]) //call file upload function
 

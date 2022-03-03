@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Dialog, DialogActions, DialogTitle, TextField } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 
 const FolderCreateDialog = (props) => {
   return (
@@ -9,10 +9,9 @@ const FolderCreateDialog = (props) => {
         onClose={props.onClose}
       >
 
-        <Box
-          p={'10px'}>
-          <DialogTitle>新しいフォルダ</DialogTitle>
+        <DialogTitle>新しいフォルダ</DialogTitle>
 
+        <DialogContent>
           <TextField
             inputRef={props.inputRef} />
 
@@ -20,8 +19,10 @@ const FolderCreateDialog = (props) => {
             <Button variant='text' size='small' onClick={props.onClose}>キャンセル</Button>
             <Button variant='text' size='small' onClick={props.onCreate}>作成</Button>
           </DialogActions>
+          
+        </DialogContent>
 
-        </Box>
+
 
       </Dialog>
     </div>
