@@ -3,7 +3,7 @@ import { Buffer } from 'buffer'
 import './App.css';
 
 import { Amplify, Auth, Storage, DataStore, } from 'aws-amplify';
-import { Button, withAuthenticator, } from '@aws-amplify/ui-react'
+import { withAuthenticator, } from '@aws-amplify/ui-react'
 import { Image, } from './models'
 import AWS from 'aws-sdk'
 import '@aws-amplify/ui-react/styles.css'
@@ -11,6 +11,7 @@ import '@aws-amplify/ui-react/styles.css'
 import awsconfig from './aws-exports';
 
 import { Box, Fab, } from '@mui/material'
+
 import AddIcon from '@mui/icons-material/Add'
 import { ChonkyActions } from 'chonky'
 
@@ -29,9 +30,9 @@ const App = ({ signOut, user }) => {
   const credentials = useRef(null)
   const s3 = useRef(null)
 
-  const [files, setFiles] = useState([])
-  const [folderChain, setFolderChain] = useState([])
-  const [prefix, setPrefix] = useState('')
+  const [files, setFiles] = useState([]) //all S3 objects (file, folder, ...)
+  const [folderChain, setFolderChain] = useState([]) //folder chain
+  const [prefix, setPrefix] = useState('') //current folder
 
   //----------------------------------------
   // Add dialog
@@ -47,7 +48,6 @@ const App = ({ signOut, user }) => {
   const [openFolderCreateDialog, setFolderCreateDialog] = useState(false)
   const refCreateFolderNameInput = useRef(null)
 
-
   //----------------------------------------
   // Camera and image cupture
   const [openCameraDialog, setCameraDialog] = useState(false)
@@ -61,13 +61,15 @@ const App = ({ signOut, user }) => {
   }, [])
   //----------------------------------------
 
+  const [isMenu, setMenu] = useState(false)
+
   // Effect (componentDidMount)
   useEffect(() => {
     // Get current cridentials
     (async () => {
       credentials.current = await Auth.currentCredentials()
       let group = credentials.current
-      
+
 
       s3.current = new AWS.S3({
         credentials: credentials.current,
@@ -147,8 +149,6 @@ const App = ({ signOut, user }) => {
           })
             .promise()
             .then((res) => {
-              console.debug(res)
-
               const chonkyFiles = []
               const s3Objects = res.Contents
               const s3Prefixes = res.CommonPrefixes
@@ -159,10 +159,10 @@ const App = ({ signOut, user }) => {
                     id: object.Key.replace('protected/' + UserId.id + '/', ''),
                     name: object.Key.split('/').reverse()[0], //get file name
                     isDir: false,
-                    thumbnailUrl: THUMBNEILS_BUCKET_URL 
-                    + UserId.id + '/'
-                    + (prefix !== '/' ? prefix : '')
-                    + object.Key.split('/').reverse()[0]
+                    thumbnailUrl: THUMBNEILS_BUCKET_URL
+                      + UserId.id + '/'
+                      + (prefix !== '/' ? prefix : '')
+                      + object.Key.split('/').reverse()[0]
                   }))
                 )
               }
@@ -317,7 +317,10 @@ const App = ({ signOut, user }) => {
 
   const onFolderCreate = (fname) => {
     // console.debug(fname)
-    Storage.put(fname + '/', null, { level: 'protected' })
+    Storage.put((prefix !== '/' ? prefix : '')
+      + fname + '/',
+      null,
+      { level: 'protected' })
       .then((res) => {
         console.log('Create prefix: ', res)
         fetchS3Bucket()
@@ -327,6 +330,10 @@ const App = ({ signOut, user }) => {
       })
   }
 
+
+  const handleClick = () => {
+    setMenu(true)
+  }
 
   //--------------------------------------------------
   // rendering function
@@ -345,10 +352,6 @@ const App = ({ signOut, user }) => {
           username={user.username}
           onClick={signOut}
         />
-
-        {/* <SideBar
-            onClickCameraOpen={() => { setCameraDialog(true) }}
-          /> */}
 
         <Box
           sx={{
@@ -380,11 +383,6 @@ const App = ({ signOut, user }) => {
           </Fab>
 
         </Box>
-
-        {/* <BottomBar
-          onClickCameraOpen={() => { setCameraDialog(true) }}>
-        </BottomBar> */}
-
       </Box>
 
       <AddDialog
@@ -401,8 +399,8 @@ const App = ({ signOut, user }) => {
         onClickCamera={() => {
           setCameraDialog(true)
           setAddDialog(false)
-        }} />
-
+        }}
+      />
 
       <FolderCreateDialog
         open={openFolderCreateDialog}
@@ -413,7 +411,6 @@ const App = ({ signOut, user }) => {
           setFolderCreateDialog(false)
         }}
       />
-
 
       <FileUploadDialog
         open={openFileUploadDialog}
@@ -434,32 +431,62 @@ const App = ({ signOut, user }) => {
         open={openCapturedImageDialog}
         onClose={() => { setCapturedImageDialog(false) }}
         srcImg={capturedImage}
-        onSubmit={() => {
+        files={files}
+        onSubmit={(folder) => {
 
-          // console.debug('onSubmit')
+          let new_prefix = folder
+
           let tmp = capturedImage
           tmp = tmp.replace("data:image/jpeg;base64", '')
-          // console.debug(tmp)
           let bin = Buffer.from(tmp, 'base64')
 
           let now = new Date();
-          // let strTime = now.toUTCString()
           let strTime = now.getTime()
 
-          let file = new File(
-            [bin.buffer],       //body
-            'IMG_' + strTime + '.jpg',   //file name
-            { type: "image/jpeg" })
+          let strPos = ''
 
-          onFileUpload([file]) //call file upload function
+          const getPosition = (options) => {
+            return new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject, options);
+            });
+          }
+
+          if (navigator.geolocation) {
+            getPosition()
+              .then((position) => {
+                console.log(position)
+                strPos = '_' + position.coords.latitude + '-' + position.coords.longitude
+
+                let file = new File(
+                  [bin.buffer], //body
+                  new_prefix + 'IMG_' + strTime + strPos + '.jpg', //file name
+                  { type: "image/jpeg" })
+      
+                onFileUpload([file]) //call file upload function
+      
+                setCapturedImageDialog(false)
+                setCameraDialog(true)
+
+              })
+              .catch((reject) => {
+              })
+          } else {
+            let file = new File(
+              [bin.buffer], //body
+              new_prefix + 'IMG_' + strTime + '.jpg', //file name
+              { type: "image/jpeg" })
+  
+            onFileUpload([file]) //call file upload function
+  
+            setCapturedImageDialog(false)
+            setCameraDialog(true)
+          }
 
         }} //Image upload without annotation
-        onAnnotation={() => {
-          console.log('on Annotaion')
-        }}
       />
 
     </div>
+
   );
 }
 
