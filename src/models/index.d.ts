@@ -9,7 +9,7 @@ type RectMetaData = {
 }
 
 type LabelMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
+  readOnlyFields;
 }
 
 type ImageMetaData = {
@@ -22,7 +22,6 @@ export declare class Rect {
   readonly y?: number;
   readonly width?: number;
   readonly height?: number;
-  readonly labelID: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Rect, RectMetaData>);
@@ -32,12 +31,10 @@ export declare class Rect {
 export declare class Label {
   readonly id: string;
   readonly name?: string;
-  readonly imageID: string;
-  readonly Rect?: (Rect | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Label, LabelMetaData>);
-  static copyOf(source: Label, mutator: (draft: MutableModel<Label, LabelMetaData>) => MutableModel<Label, LabelMetaData> | void): Label;
+  constructor(init: ModelInit<Label>);
+  static copyOf(source: Label, mutator: (draft: MutableModel<Label>) => MutableModel<Label> | void): Label;
 }
 
 export declare class Image {
@@ -46,7 +43,6 @@ export declare class Image {
   readonly name?: string;
   readonly size?: number;
   readonly path?: string;
-  readonly Labels?: (Label | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Image, ImageMetaData>);

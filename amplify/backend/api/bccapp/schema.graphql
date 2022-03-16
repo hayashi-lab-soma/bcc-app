@@ -4,14 +4,13 @@ type Rect @model @auth(rules: [{allow: public}]) {
   y: Int
   width: Int
   height: Int
-  labelID: ID! @index(name: "byLabel")
 }
 
 type Label @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
-  imageID: ID! @index(name: "byImage")
-  Rect: [Rect] @hasMany(indexName: "byLabel", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
 
 type Image @model @auth(rules: [{allow: public}]) {
@@ -20,7 +19,6 @@ type Image @model @auth(rules: [{allow: public}]) {
   name: String
   size: Int
   path: String
-  Labels: [Label] @hasMany(indexName: "byImage", fields: ["id"])
   createdAt: AWSDateTime
 }
  

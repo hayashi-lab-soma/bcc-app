@@ -38,13 +38,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "labelID": {
-                    "name": "labelID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -68,15 +61,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byLabel",
-                        "fields": [
-                            "labelID"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -113,42 +97,19 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "imageID": {
-                    "name": "imageID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Rect": {
-                    "name": "Rect",
-                    "isArray": true,
-                    "type": {
-                        "model": "Rect"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "labelID"
-                    }
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -157,15 +118,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byImage",
-                        "fields": [
-                            "imageID"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -223,20 +175,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "Labels": {
-                    "name": "Labels",
-                    "isArray": true,
-                    "type": {
-                        "model": "Label"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "imageID"
-                    }
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -281,5 +219,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "8587ca99d90c0c020ef42795bce3a1b2"
+    "version": "60396ed7f08521ae66c58c76783279fb"
 };

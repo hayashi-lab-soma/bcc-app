@@ -2,8 +2,10 @@
   "resourceName": "s3bccappstoragedev",
   "bucketName": "bcc-app-storage-dev",
   "policyUUID": "b41cbf5b",
-  "storageAccess": "auth",
-  "guestAccess": [],
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
   "authAccess": [
     "READ",
     "CREATE_AND_UPDATE",

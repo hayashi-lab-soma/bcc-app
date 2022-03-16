@@ -20,7 +20,8 @@ import FolderCreateDialog from './components/FolderCreateDialog';
 
 Amplify.configure(awsconfig);
 
-const THUMBNEILS_BUCKET_URL = 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/ap-northeast-1%3A6d2639f5-1a6c-4b09-96b0-c217998c646b/'
+// const THUMBNEILS_BUCKET_URL = 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/ap-northeast-1%3A6d2639f5-1a6c-4b09-96b0-c217998c646b/'
+const THUMBNEILS_BUCKET_URL = 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/'
 
 const isFetch = true
 
@@ -65,6 +66,8 @@ const App = ({ signOut, user }) => {
     // Get current cridentials
     (async () => {
       credentials.current = await Auth.currentCredentials()
+      let group = credentials.current
+      
 
       s3.current = new AWS.S3({
         credentials: credentials.current,
@@ -157,6 +160,7 @@ const App = ({ signOut, user }) => {
                     name: object.Key.split('/').reverse()[0], //get file name
                     isDir: false,
                     thumbnailUrl: THUMBNEILS_BUCKET_URL 
+                    + UserId.id + '/'
                     + (prefix !== '/' ? prefix : '')
                     + object.Key.split('/').reverse()[0]
                   }))
