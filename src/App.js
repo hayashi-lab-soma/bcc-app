@@ -4,7 +4,7 @@ import './App.css';
 
 import { Amplify, Auth, Storage, DataStore, } from 'aws-amplify';
 import { withAuthenticator, } from '@aws-amplify/ui-react'
-import { Image, } from './models'
+import { Image, Location } from './models'
 import AWS from 'aws-sdk'
 import '@aws-amplify/ui-react/styles.css'
 
@@ -68,8 +68,6 @@ const App = ({ signOut, user }) => {
     // Get current cridentials
     (async () => {
       credentials.current = await Auth.currentCredentials()
-      let group = credentials.current
-
 
       s3.current = new AWS.S3({
         credentials: credentials.current,
@@ -280,10 +278,15 @@ const App = ({ signOut, user }) => {
 
   }, [])
 
-  const onFileUpload = (files) => {
+  const onFileUpload = (files, location) => {
 
     console.debug('Prefix: ', prefix)
     console.debug('Upload files: ', files)
+
+    let UserId
+    (async () => {
+      UserId = await Auth.currentUserInfo()
+    })()
 
     files.map((file, index) => {
       Storage.put((prefix !== '/' ? prefix : '') + file.name,
@@ -296,7 +299,15 @@ const App = ({ signOut, user }) => {
             new Image({
               "name": file.name,
               "size": file.size,
-              "path": "",
+              "auth": UserId.username,
+              "url": awsconfig.aws_user_files_s3_bucket + '/'
+                + UserId.id + '/'
+                + res.key,
+
+              "location": new Location({
+                "latitude": parseFloat(location.latitude),
+                "longitude": parseFloat(location.longitude)
+              })
             })
           )
             .then((res) => {
@@ -454,16 +465,17 @@ const App = ({ signOut, user }) => {
           if (navigator.geolocation) {
             getPosition()
               .then((position) => {
-                console.log(position)
+                // console.log(position)
                 strPos = '_' + position.coords.latitude + '-' + position.coords.longitude
 
                 let file = new File(
                   [bin.buffer], //body
                   new_prefix + 'IMG_' + strTime + strPos + '.jpg', //file name
                   { type: "image/jpeg" })
-      
-                onFileUpload([file]) //call file upload function
-      
+
+                onFileUpload(
+                  [file], position.coords) //call file upload function
+
                 setCapturedImageDialog(false)
                 setCameraDialog(true)
 
@@ -475,9 +487,9 @@ const App = ({ signOut, user }) => {
               [bin.buffer], //body
               new_prefix + 'IMG_' + strTime + '.jpg', //file name
               { type: "image/jpeg" })
-  
+
             onFileUpload([file]) //call file upload function
-  
+
             setCapturedImageDialog(false)
             setCameraDialog(true)
           }
