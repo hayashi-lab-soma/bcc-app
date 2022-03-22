@@ -1,42 +1,84 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
-import { Buffer } from 'buffer'
-import './App.css';
+import React, { useEffect, useState, } from 'react'
 
-import { Amplify, Auth, Storage, DataStore, } from 'aws-amplify';
+import { Box, Button, IconButton } from '@mui/material'
+import { AppBar, Toolbar, } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material'
+
+import { Amplify, API, } from 'aws-amplify'
+
 import { withAuthenticator, } from '@aws-amplify/ui-react'
-import { Image, } from './models'
-import AWS from 'aws-sdk'
 import '@aws-amplify/ui-react/styles.css'
 
+import { listImages, } from './graphql/queries'
+
+import { NemuBar, } from './components'
+
 import awsconfig from './aws-exports';
-
-import { Box, Fab, } from '@mui/material'
-
-import AddIcon from '@mui/icons-material/Add'
-import { ChonkyActions } from 'chonky'
-
-import { NemuBar, BottomBar, S3Browser, FileUploadDialog, CameraDialog, CapturedImageDialog, AddDialog } from './components'
-import FolderCreateDialog from './components/FolderCreateDialog';
-
-
 Amplify.configure(awsconfig);
 
-// const THUMBNEILS_BUCKET_URL = 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/ap-northeast-1%3A6d2639f5-1a6c-4b09-96b0-c217998c646b/'
-const THUMBNEILS_BUCKET_URL = 'https://bcc-app-storage-thumbs.s3.ap-northeast-1.amazonaws.com/protected/'
-
-const isFetch = true
+const BUCKET = awsconfig.aws_user_files_s3_bucket
 
 const App = ({ signOut, user }) => {
-  const credentials = useRef(null)
-  const s3 = useRef(null)
+  
+  const [images, setImages] = useState([])
+  const [isFetching, setFething] = useState(false)
+
+  useEffect(() => {
+    fetchImages()
+    console.log(BUCKET, user)
+  }, [])
+
+  const fetchImages = async () => {
+    setFething(true)
+
+    try {
+      const data = await API.graphql({ query: listImages })
+      setImages(data.data.listImages.items)
+      setFething(false)
+    }
+    catch (err) {
+      console.error(err)
+    }
+  }
 
   //--------------------------------------------------
   // rendering function
   //--------------------------------------------------
   return (
     <div>
-    </div>
+      <NemuBar username={user.username} onClick={signOut}/>
 
+      <h1>Albums</h1>
+
+      <h1>Images</h1>
+      <Box
+        sx={{ ml: 5, mr: 5 }} s>
+        <ImageList
+          cols={3}
+          gap={8}>
+
+          {
+            images.map(image => (
+              <ImageListItem key={image.id}>
+                <img
+                  // src={`${image.url}?w=300&fit=crop&auto=format`}
+                  src={`${process.env.PUBLIC_URL}/frame0000.jpg`}
+                  alt={image.name}
+                  loading="lazy"
+                />
+                <ImageListItemBar
+                  title={image.name}
+                  subtitle={image.auther}>
+                </ImageListItemBar>
+              </ImageListItem>
+            ))
+          }
+
+        </ImageList>
+      </Box>
+
+    </div>
   );
 }
 

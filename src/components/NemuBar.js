@@ -1,11 +1,12 @@
 import React from 'react'
+import {Box} from '@mui/material'
 import { AppBar, Button, Toolbar, IconButton } from '@mui/material'
 import { Select, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 
 const NemuBar = (props) => {
   return (
-    <div>
+    <Box>
       <AppBar position='static' color='primary'>
         <Toolbar
           color='inherit'>
@@ -24,11 +25,9 @@ const NemuBar = (props) => {
             {props.username}
           </Button>
 
-
-          
         </Toolbar>
       </AppBar>
-    </div>
+    </Box>
   )
 }
 

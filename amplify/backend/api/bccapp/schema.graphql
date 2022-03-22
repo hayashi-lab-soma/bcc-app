@@ -1,5 +1,4 @@
-type Rect @model @auth(rules: [{allow: public}]) {
-  id: ID!
+type Rect {
   x: Int
   y: Int
   width: Int
@@ -15,10 +14,16 @@ type Label @model @auth(rules: [{allow: public}]) {
 
 type Image @model @auth(rules: [{allow: public}]) {
   id: ID!
-  auth: String
+  auther: String
   name: String
   size: Int
-  path: String
+  url: String
   createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Album @model @auth(rules: [{allow: public}]){
+  id: ID!
+  images: [Image] @hasMany
 }
  
