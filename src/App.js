@@ -53,7 +53,6 @@ const App = ({ signOut, user }) => {
 
       <h1>Images</h1>
       
-
       <Box
         sx={{ ml: 5, mr: 5 }} s>
         <ImageList
