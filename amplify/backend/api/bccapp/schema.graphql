@@ -5,6 +5,11 @@ type Rect {
   height: Int
 }
 
+type Location {
+  latitude: Float
+  longitude: Float
+}
+
 type Label @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
@@ -18,6 +23,7 @@ type Image @model @auth(rules: [{allow: public}]) {
   name: String
   size: Int
   url: String
+  location: Location
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

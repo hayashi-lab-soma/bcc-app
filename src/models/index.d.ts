@@ -10,6 +10,12 @@ export declare class Rect {
   constructor(init: ModelInit<Rect>);
 }
 
+export declare class Location {
+  readonly latitude?: number | null;
+  readonly longitude?: number | null;
+  constructor(init: ModelInit<Location>);
+}
+
 type LabelMetaData = {
   readOnlyFields;
 }
@@ -37,6 +43,7 @@ export declare class Image {
   readonly name?: string | null;
   readonly size?: number | null;
   readonly url?: string | null;
+  readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly albumImagesId?: string | null;
