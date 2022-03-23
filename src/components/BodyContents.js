@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { Box, Stack, Divider } from '@mui/material'
-import { CardActionArea, CardHeader, CardMedia, Grid, Typography, } from '@mui/material'
+import { Box, Stack, Divider, Button, TextField } from '@mui/material'
+import { CardActionArea, CardMedia, Grid, Typography, } from '@mui/material'
 import { Card, CardContent } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 
-import { API, Auth } from 'aws-amplify'
+import { API, Auth, graphqlOperation } from 'aws-amplify'
 import { Album, } from '../models'
+import { createAlbum, } from '../graphql/mutations'
 import { listImages, listAlbums } from '../graphql/queries'
 
 const AlbumList = (props) => {
@@ -18,8 +20,16 @@ const AlbumList = (props) => {
 
   return (
     <Box>
-      <Box sx={{ mt: 1, mb: 1 }}>
-        <Typography>アルバム</Typography>
+      <Box
+        sx={{ mt: 1, mb: 1 }}
+        display='flex'
+        flexDirection='row'
+      >
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography>アルバム</Typography>
+        </Box>
+
+        <Button onClick={props.onClickCreate}>作成</Button>
       </Box>
 
       <Stack
@@ -115,6 +125,31 @@ const ImageList = (props) => {
   )
 }
 
+const AlbumCreateForm = (props) => {
+  const albumName = useRef('')
+
+  return (
+    <Dialog open={props.open} onClose={props.onClose}>
+      <DialogTitle>アルバム名</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          margin='dense'
+          id="name"
+          label="アルバム名"
+          fullWidth
+          variant='standard'
+          inputRef={albumName}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.onCancel}>キャンセル</Button>
+        <Button
+          onClick={() => { props.onCreate(albumName.current.value) }}>作成</Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
 
 const BodyContents = (props) => {
 
@@ -124,6 +159,27 @@ const BodyContents = (props) => {
   const [album, setAlbum] = useState(null)
   const [images, setImages] = useState([])
 
+  const [openAlbumCreateForm, setAlbumCreateForm] = useState(false)
+  const handleCreateAlbum = async (albumName) => {
+
+    let item = {
+      name: albumName,
+      auther: props.username,
+      autherid: credential.identityId
+    }
+
+    // console.log(item)
+
+    try {
+      await API.graphql(graphqlOperation(createAlbum, {input: item}))
+      fetchAlbums()
+    }
+    catch (err) {
+      console.error({ err })
+    }
+
+    setAlbumCreateForm(false)
+  }
 
   //--------------------------------------------------
   useEffect(() => { //ComponentDidMount effect
@@ -209,8 +265,9 @@ const BodyContents = (props) => {
 
       <AlbumList
         albums={albums}
+        onClickCreate={() => { setAlbumCreateForm(true) }}
         onClickAlbum={(album) => {
-          console.log(album)
+          // console.log(album)
           setAlbum(album)
         }} />
 
@@ -221,6 +278,13 @@ const BodyContents = (props) => {
       <ImageList
         album={album}
         images={images} />
+
+      <AlbumCreateForm
+        open={openAlbumCreateForm}
+        onClose={() => { setAlbumCreateForm(false) }}
+        onCancel={() => { setAlbumCreateForm(false) }}
+        onCreate={(name) => { handleCreateAlbum(name) }}
+      />
 
     </Box>
   )
