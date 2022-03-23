@@ -95,8 +95,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "url": {
-                    "name": "url",
+                "key": {
+                    "name": "key",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "thumbnail": {
+                    "name": "thumbnail",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -301,5 +308,5 @@ export const schema = {
             }
         }
     },
-    "version": "9845a557f909347cb907e6ccb87a8d78"
+    "version": "d9d173268678df3b66fc798011ff5da8"
 };

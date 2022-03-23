@@ -23,7 +23,8 @@ type Image @model @auth(rules: [{allow: public}]) {
   size: Int
   auther: String
   autherid: String
-  url: String
+  key: String
+  thumbnail: String
   location: Location
   createdAt: AWSDateTime
   updatedAt: AWSDateTime

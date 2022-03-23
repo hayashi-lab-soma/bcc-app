@@ -43,7 +43,8 @@ export declare class Image {
   readonly size?: number | null;
   readonly auther?: string | null;
   readonly autherid?: string | null;
-  readonly url?: string | null;
+  readonly key?: string | null;
+  readonly thumbnail?: string | null;
   readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

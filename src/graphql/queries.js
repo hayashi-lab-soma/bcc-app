@@ -70,7 +70,8 @@ export const getImage = /* GraphQL */ `
       size
       auther
       autherid
-      url
+      key
+      thumbnail
       location {
         latitude
         longitude
@@ -97,7 +98,8 @@ export const listImages = /* GraphQL */ `
         size
         auther
         autherid
-        url
+        key
+        thumbnail
         createdAt
         updatedAt
         _version
@@ -129,7 +131,8 @@ export const syncImages = /* GraphQL */ `
         size
         auther
         autherid
-        url
+        key
+        thumbnail
         createdAt
         updatedAt
         _version

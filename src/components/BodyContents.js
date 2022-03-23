@@ -10,6 +10,9 @@ import { Album, } from '../models'
 import { createAlbum, } from '../graphql/mutations'
 import { listImages, listAlbums } from '../graphql/queries'
 
+const THUMBNAIL_BUCKET = "bcc-app-storage-thumbs"
+const THUMBNAIL_URL = `https://${THUMBNAIL_BUCKET}.s3.ap-northeast-1.amazonaws.com/`
+
 const AlbumList = (props) => {
   const all = new Album({
     name: 'all'
@@ -79,13 +82,14 @@ const AlbumList = (props) => {
 }
 
 const Image = (props) => {
+  console.log(encodeURI(`${THUMBNAIL_URL}protected/${props.userId}/${props.image.key}`))
   return (
     <Card>
       <CardActionArea>
         <CardMedia
           component='img'
-          image={`${process.env.PUBLIC_URL}/frame0000.jpg`}
-          alt='image' />
+          image={encodeURI(`${THUMBNAIL_URL}protected/${props.id}/${props.image.key}`)}
+          alt={props.image.key} />
 
         <CardContent>
           <Typography gutterBottom>
@@ -116,7 +120,9 @@ const ImageList = (props) => {
         {
           props.images.map((image, idx) => (
             <Grid item xs={2} key={image.id}>
-              <Image image={image} />
+              <Image
+                userId={props.userId}
+                image={image} />
             </Grid>
           ))
         }
@@ -171,7 +177,7 @@ const BodyContents = (props) => {
     // console.log(item)
 
     try {
-      await API.graphql(graphqlOperation(createAlbum, {input: item}))
+      await API.graphql(graphqlOperation(createAlbum, { input: item }))
       fetchAlbums()
     }
     catch (err) {
@@ -189,7 +195,6 @@ const BodyContents = (props) => {
   const getCurrentCredentials = async () => {
     const _credential = await Auth.currentUserCredentials()
     setCredential(_credential)
-    // console.debug(_credential)
   }
   //--------------------------------------------------
 
@@ -207,6 +212,7 @@ const BodyContents = (props) => {
         query: listAlbums
       })
       setAlbums(data.data.listAlbums.items)
+      setAlbum({name: 'all'})
     }
     catch (err) {
       console.error({ err })
@@ -214,7 +220,6 @@ const BodyContents = (props) => {
   }
 
   const fetchImages = async () => {
-
     try {
       if (credential === null) return
 
@@ -237,13 +242,14 @@ const BodyContents = (props) => {
         filter = {
           and: [
             { autherid: { 'eq': credential.identityId } },
-            { albumImagesId: { 'beginsWith': album.id } }
+            { albumImagesId: { 'eq': album.id } }
           ]
         }
       } //else
 
       let variables = {
-        filter: filter
+        filter: filter,
+        limit: 200
       }
 
       // console.log(variables)
@@ -252,6 +258,8 @@ const BodyContents = (props) => {
         query: listImages,
         variables: variables
       })
+
+      console.log(data.data.listImages.items.length)
 
       setImages(data.data.listImages.items)
     }
@@ -276,6 +284,7 @@ const BodyContents = (props) => {
       </Box>
 
       <ImageList
+        userId={credential === null ? '' : credential.identityId}
         album={album}
         images={images} />
 

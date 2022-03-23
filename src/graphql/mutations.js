@@ -60,7 +60,8 @@ export const createImage = /* GraphQL */ `
       size
       auther
       autherid
-      url
+      key
+      thumbnail
       location {
         latitude
         longitude
@@ -85,7 +86,8 @@ export const updateImage = /* GraphQL */ `
       size
       auther
       autherid
-      url
+      key
+      thumbnail
       location {
         latitude
         longitude
@@ -110,7 +112,8 @@ export const deleteImage = /* GraphQL */ `
       size
       auther
       autherid
-      url
+      key
+      thumbnail
       location {
         latitude
         longitude
