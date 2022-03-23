@@ -56,10 +56,15 @@ export const createImage = /* GraphQL */ `
   ) {
     createImage(input: $input, condition: $condition) {
       id
-      auther
       name
       size
+      auther
+      autherid
       url
+      location {
+        latitude
+        longitude
+      }
       createdAt
       updatedAt
       _version
@@ -76,10 +81,15 @@ export const updateImage = /* GraphQL */ `
   ) {
     updateImage(input: $input, condition: $condition) {
       id
-      auther
       name
       size
+      auther
+      autherid
       url
+      location {
+        latitude
+        longitude
+      }
       createdAt
       updatedAt
       _version
@@ -96,10 +106,15 @@ export const deleteImage = /* GraphQL */ `
   ) {
     deleteImage(input: $input, condition: $condition) {
       id
-      auther
       name
       size
+      auther
+      autherid
       url
+      location {
+        latitude
+        longitude
+      }
       createdAt
       updatedAt
       _version
@@ -116,6 +131,9 @@ export const createAlbum = /* GraphQL */ `
   ) {
     createAlbum(input: $input, condition: $condition) {
       id
+      name
+      auther
+      autherid
       images {
         nextToken
         startedAt
@@ -135,6 +153,9 @@ export const updateAlbum = /* GraphQL */ `
   ) {
     updateAlbum(input: $input, condition: $condition) {
       id
+      name
+      auther
+      autherid
       images {
         nextToken
         startedAt
@@ -154,6 +175,9 @@ export const deleteAlbum = /* GraphQL */ `
   ) {
     deleteAlbum(input: $input, condition: $condition) {
       id
+      name
+      auther
+      autherid
       images {
         nextToken
         startedAt

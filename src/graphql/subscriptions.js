@@ -44,10 +44,15 @@ export const onCreateImage = /* GraphQL */ `
   subscription OnCreateImage {
     onCreateImage {
       id
-      auther
       name
       size
+      auther
+      autherid
       url
+      location {
+        latitude
+        longitude
+      }
       createdAt
       updatedAt
       _version
@@ -61,10 +66,15 @@ export const onUpdateImage = /* GraphQL */ `
   subscription OnUpdateImage {
     onUpdateImage {
       id
-      auther
       name
       size
+      auther
+      autherid
       url
+      location {
+        latitude
+        longitude
+      }
       createdAt
       updatedAt
       _version
@@ -78,10 +88,15 @@ export const onDeleteImage = /* GraphQL */ `
   subscription OnDeleteImage {
     onDeleteImage {
       id
-      auther
       name
       size
+      auther
+      autherid
       url
+      location {
+        latitude
+        longitude
+      }
       createdAt
       updatedAt
       _version
@@ -95,6 +110,9 @@ export const onCreateAlbum = /* GraphQL */ `
   subscription OnCreateAlbum {
     onCreateAlbum {
       id
+      name
+      auther
+      autherid
       images {
         nextToken
         startedAt
@@ -111,6 +129,9 @@ export const onUpdateAlbum = /* GraphQL */ `
   subscription OnUpdateAlbum {
     onUpdateAlbum {
       id
+      name
+      auther
+      autherid
       images {
         nextToken
         startedAt
@@ -127,6 +148,9 @@ export const onDeleteAlbum = /* GraphQL */ `
   subscription OnDeleteAlbum {
     onDeleteAlbum {
       id
+      name
+      auther
+      autherid
       images {
         nextToken
         startedAt

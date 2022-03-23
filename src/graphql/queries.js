@@ -66,10 +66,15 @@ export const getImage = /* GraphQL */ `
   query GetImage($id: ID!) {
     getImage(id: $id) {
       id
-      auther
       name
       size
+      auther
+      autherid
       url
+      location {
+        latitude
+        longitude
+      }
       createdAt
       updatedAt
       _version
@@ -88,9 +93,10 @@ export const listImages = /* GraphQL */ `
     listImages(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        auther
         name
         size
+        auther
+        autherid
         url
         createdAt
         updatedAt
@@ -119,9 +125,10 @@ export const syncImages = /* GraphQL */ `
     ) {
       items {
         id
-        auther
         name
         size
+        auther
+        autherid
         url
         createdAt
         updatedAt
@@ -139,6 +146,9 @@ export const getAlbum = /* GraphQL */ `
   query GetAlbum($id: ID!) {
     getAlbum(id: $id) {
       id
+      name
+      auther
+      autherid
       images {
         nextToken
         startedAt
@@ -160,6 +170,9 @@ export const listAlbums = /* GraphQL */ `
     listAlbums(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        name
+        auther
+        autherid
         createdAt
         updatedAt
         _version
@@ -186,6 +199,9 @@ export const syncAlbums = /* GraphQL */ `
     ) {
       items {
         id
+        name
+        auther
+        autherid
         createdAt
         updatedAt
         _version

@@ -6,16 +6,13 @@
     "gqlSchemaPath": "/Users/tominaga/ws/bcc-app/amplify/backend/api/bccapp/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
-      "keyDescription": "api key description",
-      "expirationTime": 30
+      "expirationTime": 365,
+      "apiKeyExpirationDate": "2023-03-23T04:24:24.623Z",
+      "keyDescription": "public"
     },
     "additionalAuthTypes": [
       {
         "mode": "AWS_IAM"
-      },
-      {
-        "mode": "AMAZON_COGNITO_USER_POOLS",
-        "cognitoUserPoolId": "authbccapp"
       }
     ],
     "conflictResolution": {

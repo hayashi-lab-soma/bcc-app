@@ -41,19 +41,13 @@
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 365,
-              "apiKeyExpirationDate": "2023-03-22T07:14:05.732Z",
+              "apiKeyExpirationDate": "2023-03-23T04:24:24.623Z",
               "description": "public"
             }
           },
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "AWS_IAM"
-            },
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authbccapp"
-              }
             }
           ]
         }

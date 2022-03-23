@@ -39,9 +39,10 @@ export declare class Label {
 
 export declare class Image {
   readonly id: string;
-  readonly auther?: string | null;
   readonly name?: string | null;
   readonly size?: number | null;
+  readonly auther?: string | null;
+  readonly autherid?: string | null;
   readonly url?: string | null;
   readonly location?: Location | null;
   readonly createdAt?: string | null;
@@ -53,6 +54,9 @@ export declare class Image {
 
 export declare class Album {
   readonly id: string;
+  readonly name?: string | null;
+  readonly auther?: string | null;
+  readonly autherid?: string | null;
   readonly images?: (Image | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

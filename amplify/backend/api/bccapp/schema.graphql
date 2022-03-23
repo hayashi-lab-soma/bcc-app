@@ -19,17 +19,21 @@ type Label @model @auth(rules: [{allow: public}]) {
 
 type Image @model @auth(rules: [{allow: public}]) {
   id: ID!
-  auther: String
   name: String
   size: Int
+  auther: String
+  autherid: String
   url: String
   location: Location
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
 
-type Album @model @auth(rules: [{allow: public}]){
+type Album @model @auth(rules: [{allow: public}]) {
   id: ID!
+  name: String
+  auther: String
+  autherid: String
   images: [Image] @hasMany
 }
  
