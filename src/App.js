@@ -29,7 +29,6 @@ const App = ({ signOut, user }) => {
         username={user.username}
         onClick={signOut} />
 
-
       <BodyContents
         username={user.username} />
 

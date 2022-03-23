@@ -1,139 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { Box, Stack, Divider, Button, TextField } from '@mui/material'
-import { CardActionArea, CardMedia, Grid, Typography, } from '@mui/material'
-import { Card, CardContent } from '@mui/material'
+import ImageList from './ImageList'
+import AlbumList from './AlbumList'
+
+import { Box, Divider, Button, TextField } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 
 import { API, Auth, graphqlOperation } from 'aws-amplify'
-import { Album, } from '../models'
 import { createAlbum, } from '../graphql/mutations'
 import { listImages, listAlbums } from '../graphql/queries'
 
 const THUMBNAIL_BUCKET = "bcc-app-storage-thumbs"
-const THUMBNAIL_URL = `https://${THUMBNAIL_BUCKET}.s3.ap-northeast-1.amazonaws.com/`
-
-const AlbumList = (props) => {
-  const all = new Album({
-    name: 'all'
-  })
-  const nonalbum = new Album({
-    name: 'nonalbum',
-  })
-
-  return (
-    <Box>
-      <Box
-        sx={{ mt: 1, mb: 1 }}
-        display='flex'
-        flexDirection='row'
-      >
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography>アルバム</Typography>
-        </Box>
-
-        <Button onClick={props.onClickCreate}>作成</Button>
-      </Box>
-
-      <Stack
-        direction='row'
-        spacing={2} >
-
-        <Card
-          key='all'
-          onClick={(event) => { props.onClickAlbum(all) }}
-        >
-          <CardActionArea>
-            <CardContent>
-              <Typography>全て</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-
-        <Card
-          key='nonalbum'
-          onClick={(event) => { props.onClickAlbum(nonalbum) }}
-        >
-          <CardActionArea>
-            <CardContent>
-              <Typography>未分類</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-
-        {
-          props.albums.map((album, idx) => (
-            <Card
-              key={album.id}
-              onClick={() => { props.onClickAlbum(album) }}
-            >
-              <CardActionArea>
-                <CardContent>
-                  <Typography variant='h7'>{album.name}</Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))
-        }
-
-      </Stack>
-    </Box>
-  )
-}
-
-const Image = (props) => {
-  console.log(encodeURI(`${THUMBNAIL_URL}protected/${props.userId}/${props.image.key}`))
-  return (
-    <Card>
-      <CardActionArea>
-        <CardMedia
-          component='img'
-          image={encodeURI(`${THUMBNAIL_URL}protected/${props.id}/${props.image.key}`)}
-          alt={props.image.key} />
-
-        <CardContent>
-          <Typography gutterBottom>
-            {new Date(props.image.createdAt).toLocaleString()}
-          </Typography>
-        </CardContent>
-
-      </CardActionArea>
-    </Card>
-  )
-}
-
-const ImageList = (props) => {
-  return (
-    <Box>
-      <Box sx={{ mt: 1, mb: 3 }}>
-        <Typography>
-          {props.album !== null
-            ? props.album.name === 'all'
-              ? '全て'
-              : props.album.name === 'nonalbum' ? '未分類' : `「${props.album.name}」`
-            : ''}
-          {`（${props.images.length}件）`}
-        </Typography>
-      </Box>
-
-      <Grid container direction='row' spacing={1}>
-        {
-          props.images.map((image, idx) => (
-            <Grid item xs={2} key={image.id}>
-              <Image
-                userId={props.userId}
-                image={image} />
-            </Grid>
-          ))
-        }
-      </Grid>
-    </Box>
-  )
-}
+const THUMBNAIL_URL = `https://${THUMBNAIL_BUCKET}.s3.ap-northeast-1.amazonaws.com/protected/`
 
 const AlbumCreateForm = (props) => {
   const albumName = useRef('')
-
   return (
     <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle>アルバム名</DialogTitle>
@@ -167,14 +48,11 @@ const BodyContents = (props) => {
 
   const [openAlbumCreateForm, setAlbumCreateForm] = useState(false)
   const handleCreateAlbum = async (albumName) => {
-
     let item = {
       name: albumName,
       auther: props.username,
       autherid: credential.identityId
     }
-
-    // console.log(item)
 
     try {
       await API.graphql(graphqlOperation(createAlbum, { input: item }))
@@ -198,26 +76,25 @@ const BodyContents = (props) => {
   }
   //--------------------------------------------------
 
+  //--------------------------------------------------
   useEffect(() => {
     fetchAlbums()
   }, [credential])
 
-  useEffect(() => {
-    fetchImages()
-  }, [album])
-
   const fetchAlbums = async () => {
     try {
-      const data = await API.graphql({
-        query: listAlbums
-      })
+      const data = await API.graphql({ query: listAlbums })
       setAlbums(data.data.listAlbums.items)
-      setAlbum({name: 'all'})
+      setAlbum({ name: 'all' })
     }
     catch (err) {
       console.error({ err })
     }
   }
+
+  useEffect(() => {
+    fetchImages()
+  }, [album])
 
   const fetchImages = async () => {
     try {
@@ -275,7 +152,6 @@ const BodyContents = (props) => {
         albums={albums}
         onClickCreate={() => { setAlbumCreateForm(true) }}
         onClickAlbum={(album) => {
-          // console.log(album)
           setAlbum(album)
         }} />
 
@@ -286,7 +162,8 @@ const BodyContents = (props) => {
       <ImageList
         userId={credential === null ? '' : credential.identityId}
         album={album}
-        images={images} />
+        images={images}
+      />
 
       <AlbumCreateForm
         open={openAlbumCreateForm}

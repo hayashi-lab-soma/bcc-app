@@ -71,7 +71,6 @@ export const getImage = /* GraphQL */ `
       auther
       autherid
       key
-      thumbnail
       location {
         latitude
         longitude
@@ -99,7 +98,6 @@ export const listImages = /* GraphQL */ `
         auther
         autherid
         key
-        thumbnail
         createdAt
         updatedAt
         _version
@@ -132,7 +130,6 @@ export const syncImages = /* GraphQL */ `
         auther
         autherid
         key
-        thumbnail
         createdAt
         updatedAt
         _version

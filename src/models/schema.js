@@ -102,13 +102,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "thumbnail": {
-                    "name": "thumbnail",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "location": {
                     "name": "location",
                     "isArray": false,
@@ -308,5 +301,5 @@ export const schema = {
             }
         }
     },
-    "version": "d9d173268678df3b66fc798011ff5da8"
+    "version": "b996c47d3a96996b7ceb84131c62cb55"
 };

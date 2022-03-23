@@ -24,7 +24,6 @@ type Image @model @auth(rules: [{allow: public}]) {
   auther: String
   autherid: String
   key: String
-  thumbnail: String
   location: Location
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
