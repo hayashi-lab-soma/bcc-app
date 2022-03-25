@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 
-import {Box, Grid, Typography} from '@mui/material'
-import {Card, CardActionArea, CardMedia, CardContent} from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
+import { Button } from '@mui/material'
+import { Card, CardActionArea, CardMedia, CardContent } from '@mui/material'
+import { DropzoneArea, DropzoneDialog } from 'material-ui-dropzone'
 
 const THUMBNAIL_BUCKET = "bcc-app-storage-thumbs"
 const THUMBNAIL_URL = `https://${THUMBNAIL_BUCKET}.s3.ap-northeast-1.amazonaws.com/protected/`
@@ -27,18 +29,14 @@ const Image = (props) => {
 }
 
 const ImageList = (props) => {
+
+  const [open, setOpen] = useState(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   return (
     <Box>
-      <Box sx={{ mt: 1, mb: 3 }}>
-        <Typography>
-          {props.album !== null
-            ? props.album.name === 'all'
-              ? '全て'
-              : props.album.name === 'nonalbum' ? '未分類' : `「${props.album.name}」`
-            : ''}
-          {`（${props.images.length}件）`}
-        </Typography>
-      </Box>
 
       <Grid container direction='row' spacing={1}>
         {
@@ -51,6 +49,23 @@ const ImageList = (props) => {
           ))
         }
       </Grid>
+
+
+      <DropzoneDialog
+        maxFileSize={500000000}
+        filesLimit={100}
+        cancelButtonText={'キャンセル'}
+        submitButtonText={'送信'}
+        previewChipProps={false}
+        showPreviews={true}
+        useChipsForPreview={false}
+        open={open}
+        onClose={handleClose}
+        onSave={(files) => {
+          console.log(files)
+        }}
+      />
+
     </Box>
   )
 }

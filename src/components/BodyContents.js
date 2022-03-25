@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ImageList from './ImageList'
 import AlbumList from './AlbumList'
 
-import { Box, Divider, Button, TextField } from '@mui/material'
+import { Box, Divider, Typography, Button, TextField } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 
 import { API, Auth, graphqlOperation } from 'aws-amplify'
@@ -159,11 +159,38 @@ const BodyContents = (props) => {
         <Divider />
       </Box>
 
+
+
+      <Box
+        sx={{ mt: 1, mb: 1 }}
+        display='flex'
+        flexDirection='row'>
+
+        <Box sx={{ mt: 1, mb: 3, flexGrow: 1 }}>
+          <Typography>
+            {album !== null
+              ? album.name === 'all'
+                ? '全て'
+                : album.name === 'nonalbum' ? '未分類' : `「${album.name}」`
+              : ''}
+            {`（${images.length}件）`}
+          </Typography>
+        </Box>
+
+        <Button onClick={() => {}}>追加</Button>
+
+      </Box>
+
+
+
+
       <ImageList
         userId={credential === null ? '' : credential.identityId}
         album={album}
         images={images}
       />
+
+      
 
       <AlbumCreateForm
         open={openAlbumCreateForm}
