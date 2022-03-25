@@ -8,7 +8,6 @@ import { Box, Divider, Typography, Button, TextField } from '@mui/material'
 import { API, Auth, graphqlOperation } from 'aws-amplify'
 import { listImages, } from '../graphql/queries'
 
-
 const THUMBNAIL_BUCKET = "bcc-app-storage-thumbs"
 const THUMBNAIL_URL = `https://${THUMBNAIL_BUCKET}.s3.ap-northeast-1.amazonaws.com/protected/`
 

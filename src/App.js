@@ -15,10 +15,11 @@ import '@aws-amplify/ui-react/styles.css'
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
-const BUCKET = awsconfig.aws_user_files_s3_bucket
-const REGION = awsconfig.aws_user_files_s3_bucket_region
+// const BUCKET = awsconfig.aws_user_files_s3_bucket
+// const REGION = awsconfig.aws_user_files_s3_bucket_region
 
 const App = ({ signOut, user }) => {
+  
   //--------------------------------------------------
   const [credential, setCredential] = useState(null)
 

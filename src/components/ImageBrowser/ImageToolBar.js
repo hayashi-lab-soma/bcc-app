@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+import { Storage } from 'aws-amplify'
+
 import { Box, Typography, Button } from '@mui/material'
 import { DropzoneDialog } from 'material-ui-dropzone'
 
@@ -7,6 +9,27 @@ const ImageToolBar = (props) => {
   const [open, setOpen] = useState(false)
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const handleCreate = async (file) => {
+    try {
+      const result = await Storage.put(
+        file.name,
+        file,
+        {
+          level: "protected",
+        }
+      )
+    }
+    catch (err) {
+      console.err({ err })
+    }
+  }
+
+  const handleCreateMulti = (files) => {
+    files.map((file, idx) => {
+      handleCreate(file)
+    })
   }
 
   return (
@@ -38,7 +61,11 @@ const ImageToolBar = (props) => {
         dropzoneText={'ファイル選択'}
         cancelButtonText={'キャンセル'}
         submitButtonText={'送信'}
-        onSave={(files) => { console.log(files) }}
+        onSave={(files) => {
+          console.log(files) 
+          // handleCreate(files[0])
+          handleCreateMulti(files)
+        }}
       />
 
     </Box>
