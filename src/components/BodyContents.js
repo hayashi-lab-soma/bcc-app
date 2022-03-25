@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import ImageList from './ImageList'
-import AlbumList from './AlbumList'
 
 import { Box, Divider, Typography, Button, TextField } from '@mui/material'
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
@@ -9,6 +8,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import { API, Auth, graphqlOperation } from 'aws-amplify'
 import { createAlbum, } from '../graphql/mutations'
 import { listImages, listAlbums } from '../graphql/queries'
+import AlbumBrowser from './AlbumBrowser/AlbumBrowser'
 
 const THUMBNAIL_BUCKET = "bcc-app-storage-thumbs"
 const THUMBNAIL_URL = `https://${THUMBNAIL_BUCKET}.s3.ap-northeast-1.amazonaws.com/protected/`
@@ -40,57 +40,42 @@ const AlbumCreateForm = (props) => {
 
 const BodyContents = (props) => {
 
-  const [credential, setCredential] = useState(null)
+  // const [credential, setCredential] = useState(null)
 
   const [albums, setAlbums] = useState([])
   const [album, setAlbum] = useState(null)
   const [images, setImages] = useState([])
 
   const [openAlbumCreateForm, setAlbumCreateForm] = useState(false)
-  const handleCreateAlbum = async (albumName) => {
-    let item = {
-      name: albumName,
-      auther: props.username,
-      autherid: credential.identityId
-    }
 
-    try {
-      await API.graphql(graphqlOperation(createAlbum, { input: item }))
-      fetchAlbums()
-    }
-    catch (err) {
-      console.error({ err })
-    }
+  // const handleCreateAlbum = async (albumName) => {
+  //   let item = {
+  //     name: albumName,
+  //     auther: props.username,
+  //     autherid: credential.identityId
+  //   }
 
-    setAlbumCreateForm(false)
-  }
+  //   try {
+  //     await API.graphql(graphqlOperation(createAlbum, { input: item }))
+  //     // fetchAlbums()
+  //   }
+  //   catch (err) {
+  //     console.error({ err })
+  //   }
 
-  //--------------------------------------------------
-  useEffect(() => { //ComponentDidMount effect
-    getCurrentCredentials()
-  }, [])
-
-  const getCurrentCredentials = async () => {
-    const _credential = await Auth.currentUserCredentials()
-    setCredential(_credential)
-  }
-  //--------------------------------------------------
+  //   setAlbumCreateForm(false)
+  // }
 
   //--------------------------------------------------
-  useEffect(() => {
-    fetchAlbums()
-  }, [credential])
+  // useEffect(() => { //ComponentDidMount effect
+  //   getCurrentCredentials()
+  // }, [])
 
-  const fetchAlbums = async () => {
-    try {
-      const data = await API.graphql({ query: listAlbums })
-      setAlbums(data.data.listAlbums.items)
-      setAlbum({ name: 'all' })
-    }
-    catch (err) {
-      console.error({ err })
-    }
-  }
+  // const getCurrentCredentials = async () => {
+  //   const _credential = await Auth.currentUserCredentials()
+  //   setCredential(_credential)
+  // }
+  //--------------------------------------------------
 
   useEffect(() => {
     fetchImages()
@@ -98,19 +83,21 @@ const BodyContents = (props) => {
 
   const fetchImages = async () => {
     try {
-      if (credential === null) return
+      // if (credential === null) return
 
       let filter = {}
 
       if (album.name === 'all') {
         filter = {
-          autherid: { 'eq': credential.identityId }
+          // autherid: { 'eq': credential.identityId }
+          autherid: { 'eq': props.identityId }
         }
       }
       else if (album.name === 'nonalbum') {
         filter = {
           and: [
-            { autherid: { 'eq': credential.identityId } },
+            // { autherid: { 'eq': credential.identityId } },
+            { autherid: { 'eq': props.identityId } },
             { albumImagesId: { 'eq': '' } }
           ]
         }
@@ -118,7 +105,8 @@ const BodyContents = (props) => {
       else {
         filter = {
           and: [
-            { autherid: { 'eq': credential.identityId } },
+            // { autherid: { 'eq': credential.identityId } },
+            { autherid: { 'eq': props.identityId } },
             { albumImagesId: { 'eq': album.id } }
           ]
         }
@@ -128,8 +116,6 @@ const BodyContents = (props) => {
         filter: filter,
         limit: 200
       }
-
-      // console.log(variables)
 
       const data = await API.graphql({
         query: listImages,
@@ -148,18 +134,17 @@ const BodyContents = (props) => {
   return (
     <Box sx={{ ml: 1, mr: 1, mt: 2 }}>
 
-      <AlbumList
-        albums={albums}
-        onClickCreate={() => { setAlbumCreateForm(true) }}
+      <AlbumBrowser
+        username={props.username}
+        identityId={props.identityId}
         onClickAlbum={(album) => {
           setAlbum(album)
-        }} />
+        }}
+      />
 
       <Box sx={{ mt: 3, mb: 3 }}>
         <Divider />
       </Box>
-
-
 
       <Box
         sx={{ mt: 1, mb: 1 }}
@@ -177,7 +162,7 @@ const BodyContents = (props) => {
           </Typography>
         </Box>
 
-        <Button onClick={() => {}}>追加</Button>
+        <Button onClick={() => { }}>追加</Button>
 
       </Box>
 
@@ -185,19 +170,20 @@ const BodyContents = (props) => {
 
 
       <ImageList
-        userId={credential === null ? '' : credential.identityId}
+        // userId={credential === null ? '' : credential.identityId}
+        userId={props.identityId}
         album={album}
         images={images}
       />
 
-      
 
-      <AlbumCreateForm
+
+      {/* <AlbumCreateForm
         open={openAlbumCreateForm}
         onClose={() => { setAlbumCreateForm(false) }}
         onCancel={() => { setAlbumCreateForm(false) }}
         onCreate={(name) => { handleCreateAlbum(name) }}
-      />
+      /> */}
 
     </Box>
   )

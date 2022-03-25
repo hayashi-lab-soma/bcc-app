@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Box, Grid, Stack, Typography, Button } from '@mui/material'
 import { Card, CardActionArea, CardContent } from '@mui/material'
 
+// props
+// album: album object
+// onClick: callback
 const Album = (props) => {
   return (
     <Card
       key={props.album.id}
-      onClick={() => { props.onClickAlbum(props.album) }}
+      onClick={() => { props.onClick(props.album) }}
     >
       <CardActionArea>
         <CardContent>
@@ -17,6 +20,9 @@ const Album = (props) => {
   )
 }
 
+// props
+// albums: Array
+// onClickAlbum: call back
 const AlbumList = (props) => {
   const all = {
     name: 'all'
@@ -27,17 +33,6 @@ const AlbumList = (props) => {
 
   return (
     <Box>
-      <Box
-        sx={{ mt: 1, mb: 1 }}
-        display='flex'
-        flexDirection='row'
-      >
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography>アルバム</Typography>
-        </Box>
-
-        <Button onClick={props.onClickCreate}>作成</Button>
-      </Box>
 
       <Stack
         direction='row'
@@ -70,6 +65,7 @@ const AlbumList = (props) => {
             <Album
               key={album.id}
               album={album}
+              onClick={props.onClickAlbum}
             />
           ))
         }

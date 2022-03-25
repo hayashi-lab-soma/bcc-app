@@ -20,6 +20,19 @@ const REGION = awsconfig.aws_user_files_s3_bucket_region
 
 const App = ({ signOut, user }) => {
   //--------------------------------------------------
+  const [credential, setCredential] = useState(null)
+
+  useEffect(() => { //ComponentDidMount effect
+    getCurrentCredentials()
+  }, [])
+
+  const getCurrentCredentials = async () => {
+    const _credential = await Auth.currentUserCredentials()
+    setCredential(_credential)
+  }
+  //--------------------------------------------------
+
+  //--------------------------------------------------
   // rendering function
   //--------------------------------------------------
   return (
@@ -29,8 +42,14 @@ const App = ({ signOut, user }) => {
         username={user.username}
         onClick={signOut} />
 
-      <BodyContents
-        username={user.username} />
+
+      {
+        credential !== null &&
+
+        <BodyContents
+          username={user.username}
+          identityId={credential.identityId} />
+      }
 
     </div>
   );
