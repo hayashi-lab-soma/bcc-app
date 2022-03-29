@@ -1,36 +1,54 @@
 import React, { useState, useEffect } from 'react'
 
-import { Storage } from 'aws-amplify'
+import { Storage, DataStore } from 'aws-amplify'
+import { Image, } from '../../models'
 
-import { Box, Typography, Button } from '@mui/material'
-import { DropzoneDialog } from 'material-ui-dropzone'
+import { Box, Typography, Button, FormControl } from '@mui/material'
+
 
 const ImageToolBar = (props) => {
-  const [open, setOpen] = useState(false)
-  const handleClose = () => {
-    setOpen(false)
-  }
 
-  const handleCreate = async (file) => {
-    try {
-      const result = await Storage.put(
-        file.name,
-        file,
-        {
-          level: "protected",
-        }
-      )
-    }
-    catch (err) {
-      console.err({ err })
-    }
-  }
+  //  const handleCreate = async (file, albumId) => {
+  // try {
+  //   const result = await Storage.put(
+  //     file.name,
+  //     file,
+  //     {
+  //       level: "protected",
+  //     }
+  //   )
+  // }
+  // catch (err) {
+  //   console.err({ err })
+  // }
 
-  const handleCreateMulti = (files) => {
-    files.map((file, idx) => {
-      handleCreate(file)
-    })
-  }
+  //   Storage.put(file.name, file, {
+  //     level: "protected",
+  //   })
+  //     .then((result) => {
+  //       console.log(result)
+
+  //       DataStore.save(
+  //         new Image({
+  //           name: file.name,
+  //           size: file.size,
+  //           auther: props.username,
+  //           autherid: props.identityId,
+  //           key: result.key,
+  //           albumImagesId: albumId
+  //         })
+  //       )
+  //         .then((result) => {
+  //           console.log(result)
+  //         })
+  //         .catch((err) => {
+  //           console.error({ err })
+  //         })
+  //     })
+  //     .catch((err) => {
+  //       console.error({ err })
+  //     })
+  // }
 
   return (
     <Box
@@ -40,33 +58,12 @@ const ImageToolBar = (props) => {
 
       <Box sx={{ mt: 1, mb: 3, flexGrow: 1 }}>
         <Typography>
-          {props.album !== null
-            ? props.album.name === 'all'
-              ? '全て'
-              : props.album.name === 'nonalbum' ? '未分類' : `「${props.album.name}」`
-            : ''}
-          {`（${props.images.length}件）`}
+          {`「${props.album.name}」`}
+          {`（${props.imagesNum} 件）`}
         </Typography>
       </Box>
 
-      <Button onClick={() => { setOpen(true) }}>追加</Button>
-
-      <DropzoneDialog
-        open={open}
-        onClose={handleClose}
-        filesLimit={100}
-        maxFileSize={20000000}
-        useChipsForPreview={false}
-        dialogTitle={'ファイルアップロード'}
-        dropzoneText={'ファイル選択'}
-        cancelButtonText={'キャンセル'}
-        submitButtonText={'送信'}
-        onSave={(files) => {
-          console.log(files) 
-          // handleCreate(files[0])
-          handleCreateMulti(files)
-        }}
-      />
+      <Button onClick={props.onCreateImage}>追加</Button>
 
     </Box>
   )

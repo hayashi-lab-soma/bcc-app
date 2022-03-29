@@ -13,8 +13,34 @@ const THUMBNAIL_URL = `https://${THUMBNAIL_BUCKET}.s3.ap-northeast-1.amazonaws.c
 
 const BodyContents = (props) => {
 
-  const [album, setAlbum] = useState(null)
+  const [albums, setAlbums] = useState([
+    {
+      id: 'all',
+      name: '全て',
+      images: []
+    },
+    {
+      id: 'non',
+      name: '未分類',
+      images: []
+    }
+  ])
+
+  const [album, setAlbum] = useState({
+    id: 'all',
+    name: '全て'
+  })
   const [image, setImage] = useState(null)
+
+  const handleFetchedAlbums = (albums) => {
+    console.debug('Existing Albums', albums)
+    setAlbums(albums)
+  }
+
+  const handleClickedAlbum = (album) => {
+    console.debug('Clicked Album', album)
+    setAlbum(album)
+  }
 
   return (
     <Box sx={{ ml: 1, mr: 1, mt: 2 }}>
@@ -22,9 +48,8 @@ const BodyContents = (props) => {
       <AlbumBrowser
         username={props.username}
         identityId={props.identityId}
-        onClickAlbum={(album) => {
-          setAlbum(album)
-        }}
+        onFetchedAlbums={handleFetchedAlbums}
+        onClickedAlbum={handleClickedAlbum}
       />
 
       <Box sx={{ mt: 3, mb: 3 }}>
@@ -34,6 +59,7 @@ const BodyContents = (props) => {
       <ImageBrowser
         username={props.username}
         identityId={props.identityId}
+        albums={albums}
         album={album}
         onClickImage={(image) => {
           setImage(image)

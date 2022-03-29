@@ -2,60 +2,113 @@ import React, { useEffect, useState } from 'react'
 
 import { API, graphqlOperation } from 'aws-amplify'
 import { listAlbums } from '../../graphql/queries'
+import { createAlbum, deleteAlbum } from '../../graphql/mutations'
 
 import AlbumToolBar from './AlbumToolBar'
+import AlbumCreateDialog from './AlbumCreateDialog'
 import AlbumList from './AlbumList'
 
 const AlbumBrowser = (props) => {
 
+  const ALL = {
+    id: 'all',
+    name: '全て',
+    images: []
+  }
+
+  const NON = {
+    id: 'non',
+    name: '未分類',
+    images: []
+  }
+
   const [albums, setAlbums] = useState([])
 
+  const [open, setOpen] = useState(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  // Component did mount
   useEffect(() => {
     fetchAlbums()
   }, [])
 
-  const fetchAlbums = async () => {
-    try {
-      const data = await API.graphql({ query: listAlbums })
-      setAlbums(data.data.listAlbums.items)
-    }
-    catch (err) {
-      console.error({ err })
-    }
-  }
+  function fetchAlbums() {
 
-  const createAlbum = async (name) => {
-    try {
-      let item = {
-        name: name,
-        auther: props.username,
-        autherid: props.identityId
-      }
+    API.graphql({ query: listAlbums})
+      .then((res) => {
+        let items = res.data.listAlbums.items
+        items = items.filter(elem => !elem._deleted)
+        items.unshift(NON)
+        items.unshift(ALL)
 
-      console.log(item)
-
-      try {
-        // await API.graphql(graphqlOperation(createAlbum, { input: item }))
-        fetchAlbums()
-      }
-      catch (err) {
+        setAlbums(items)
+        props.onFetchedAlbums(items)
+      })
+      .catch((err) => {
         console.error({ err })
-      }
-    }
-    catch (err) {
-    }
+      })
   }
 
-  const handleClickAlbum = (album) => { props.onClickAlbum(album) }
+  const handleCreateAlbum = (name) => {
+    let item = {
+      name: name,
+      auther: props.username,
+      autherid: props.identityId
+    }
+
+    console.debug('Try create Album', item)
+
+    API.graphql({ query: createAlbum, variables: { input: item } })
+      .then((res) => {
+        console.debug('Success create Album', res)
+        fetchAlbums() //fetch & rendering
+        handleClose() //close dialog
+      })
+      .catch((err) => {
+        console.error({ err })
+      })
+  }
+
+  const handleClickedAlbum = (album) => {
+    props.onClickedAlbum(album)
+  }
+
+  const handleDeleteAlbum = (album) => {
+    console.debug('Try delete Album', album)
+
+    let item = {
+      id: album.id,
+      _version: album._version,
+    }
+
+    API.graphql({ query: deleteAlbum, variables: { input: item } })
+      .then((res) => {
+        console.log('Success delete Album', res)
+        fetchAlbums()
+      })
+      .catch((err) => {
+        console.error({ err })
+      })
+  }
 
   return (
     <div>
       <AlbumToolBar
-        onCreate={createAlbum} />
+        onCreateAlbum={() => { setOpen(true) }} />
 
       <AlbumList
         albums={albums}
-        onClickAlbum={handleClickAlbum} />
+        onClickAlbum={handleClickedAlbum}
+        onDeleteAlbum={handleDeleteAlbum} />
+
+      <AlbumCreateDialog
+        open={open}
+        onClose={handleClose}
+        onCreate={handleCreateAlbum}
+      />
+
     </div>
   )
 }

@@ -1,79 +1,134 @@
 import React, { useState, useEffect } from 'react'
 
-import { API, graphqlOperation } from 'aws-amplify'
-import { listImages } from '../../graphql/queries'
+import { API, Storage, DataStore } from 'aws-amplify'
+import { Image, Location } from '../../models'
+import { listImages, } from '../../graphql/queries'
+import {createImage,} from '../../graphql/mutations'
 
 import ImageToolBar from './ImageToolBar'
 import ImageList from './ImageList'
+import ImageCreateDialog from './ImageCreateDialog'
 
 const ImageBrowser = (props) => {
+
   const [images, setImages] = useState([])
 
+  const [open, setOpen] = useState(false)
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  //Component did mount
   useEffect(() => {
     fetchImages()
-  }, [])
+  }, [props.album])
 
-  const fetchImages = async () => {
-    try {
-      // if (credential === null) return
+  const fetchImages = () => {
+    let _filter = {}
 
-      let filter = {}
-
-      if (props.album.name === 'all') {
-        filter = {
-          // autherid: { 'eq': credential.identityId }
-          autherid: { 'eq': props.identityId }
-        }
+    if (props.album.id === 'all') {
+      _filter = {
+        autherid: { 'eq': props.identityId },
       }
-      else if (props.album.name === 'nonalbum') {
-        filter = {
-          and: [
-            // { autherid: { 'eq': credential.identityId } },
-            { autherid: { 'eq': props.identityId } },
-            { albumImagesId: { 'eq': '' } }
-          ]
-        }
+    }
+    else if (props.album.id === 'non') {
+      _filter = {
+        and: [
+          { autherid: { 'eq': props.identityId } },
+          { albumImagesId: null }
+        ]
       }
-      else {
-        filter = {
-          and: [
-            // { autherid: { 'eq': credential.identityId } },
-            { autherid: { 'eq': props.identityId } },
-            { albumImagesId: { 'eq': props.album.id } }
-          ]
-        }
-      } //else
-
-      let variables = {
-        filter: filter,
-        limit: 200
+    }
+    else {
+      _filter = {
+        and: [
+          { autherid: { 'eq': props.identityId } },
+          { albumImagesId: { 'eq': props.album.id } }
+        ]
       }
+    }
 
-      const data = await API.graphql({
-        query: listImages,
-        variables: variables
+    console.debug('Filter', _filter)
+
+    API.graphql({
+      query: listImages,
+      variables: {
+        filter: _filter
+      }
+    })
+      .then((res) => {
+        let items = res.data.listImages.items
+        console.debug(`(${props.album.name}) Images`, items)
+        setImages(items)
       })
+      .catch((err) => {
+        console.error({ err })
+      })
+  }
 
-      console.log(data.data.listImages.items.length)
+  const createOneImage = (file, albumId) => {
 
-      setImages(data.data.listImages.items)
-    }
-    catch (err) {
-      console.error(err)
-    }
+    Storage.put(file.name, file, {
+      level: "protected",
+    })
+      .then((result) => {
+        console.log('Success create Image', result)
+
+        let _location = {
+          latitude: -1.0,
+          longitude: -1.0
+        }
+
+        let item = {
+          name: file.name,
+          size: file.size,
+          auther: props.username,
+          autherid: props.identityId,
+          key: result.key,
+          albumImagesId: albumId,
+          location: _location
+        }
+
+        console.debug(item)
+
+        API.graphql({query: createImage, variables: { input: item } })
+          .then((result) => {
+            console.debug('Success DataStore Image', result)
+          })
+          .catch((err) => {
+            console.error({ err })
+          })
+      })
+      .catch((err) => {
+        console.error({ err })
+      })
+  }
+
+  const handleCreateImage = (files, albumId) => {
+    files.map((file, idx) => {
+      createOneImage(file, albumId)
+    })
   }
 
   return (
     <div>
       <ImageToolBar
         album={props.album}
-        images={images} />
+        imagesNum={images.length}
+        onCreateImage={() => { setOpen(true) }}
+      />
 
       <ImageList
-        // userId={credential === null ? '' : credential.identityId}
         userId={props.identityId}
         album={props.album}
         images={images}
+      />
+
+      <ImageCreateDialog
+        albums={props.albums}
+        open={open}
+        onClose={handleClose}
+        onCreate={handleCreateImage}
       />
 
     </div>
