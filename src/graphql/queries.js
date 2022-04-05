@@ -67,13 +67,30 @@ export const getImage = /* GraphQL */ `
     getImage(id: $id) {
       id
       name
+      rect {
+        width
+        height
+      }
       size
       auther
       autherid
       key
+      date
+      time
       location {
         latitude
         longitude
+      }
+      album {
+        id
+        name
+        auther
+        autherid
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt
@@ -98,6 +115,8 @@ export const listImages = /* GraphQL */ `
         auther
         autherid
         key
+        date
+        time
         createdAt
         updatedAt
         _version
@@ -130,6 +149,8 @@ export const syncImages = /* GraphQL */ `
         auther
         autherid
         key
+        date
+        time
         createdAt
         updatedAt
         _version

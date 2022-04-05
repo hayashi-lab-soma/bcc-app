@@ -45,13 +45,30 @@ export const onCreateImage = /* GraphQL */ `
     onCreateImage {
       id
       name
+      rect {
+        width
+        height
+      }
       size
       auther
       autherid
       key
+      date
+      time
       location {
         latitude
         longitude
+      }
+      album {
+        id
+        name
+        auther
+        autherid
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt
@@ -67,13 +84,30 @@ export const onUpdateImage = /* GraphQL */ `
     onUpdateImage {
       id
       name
+      rect {
+        width
+        height
+      }
       size
       auther
       autherid
       key
+      date
+      time
       location {
         latitude
         longitude
+      }
+      album {
+        id
+        name
+        auther
+        autherid
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt
@@ -89,13 +123,30 @@ export const onDeleteImage = /* GraphQL */ `
     onDeleteImage {
       id
       name
+      rect {
+        width
+        height
+      }
       size
       auther
       autherid
       key
+      date
+      time
       location {
         latitude
         longitude
+      }
+      album {
+        id
+        name
+        auther
+        autherid
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt

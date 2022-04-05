@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { API, graphqlOperation } from 'aws-amplify'
-import { listAlbums } from '../../graphql/queries'
+import { listAlbums, getAlbum } from '../../graphql/queries'
 import { createAlbum, deleteAlbum } from '../../graphql/mutations'
 
 import AlbumToolBar from './AlbumToolBar'
@@ -34,17 +34,18 @@ const AlbumBrowser = (props) => {
     fetchAlbums()
   }, [])
 
-  function fetchAlbums() {
+  const fetchAlbums = () => {
 
-    API.graphql({ query: listAlbums})
+    API.graphql({ query: listAlbums })
       .then((res) => {
         let items = res.data.listAlbums.items
         items = items.filter(elem => !elem._deleted)
+
         items.unshift(NON)
         items.unshift(ALL)
 
-        setAlbums(items)
-        props.onFetchedAlbums(items)
+        setAlbums(items) //set Albums object
+        props.onFetchedAlbums(items) //emit Albums to BodyContents component
       })
       .catch((err) => {
         console.error({ err })

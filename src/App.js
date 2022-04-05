@@ -43,7 +43,6 @@ const App = ({ signOut, user }) => {
         username={user.username}
         onClick={signOut} />
 
-
       {
         credential !== null &&
 

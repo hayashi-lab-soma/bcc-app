@@ -63,7 +63,8 @@ const BodyContents = (props) => {
         album={album}
         onClickImage={(image) => {
           setImage(image)
-        }} />
+        }}
+      />
 
     </Box>
   )

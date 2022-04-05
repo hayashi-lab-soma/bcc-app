@@ -3,8 +3,6 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 export declare class Rect {
-  readonly x?: number | null;
-  readonly y?: number | null;
   readonly width?: number | null;
   readonly height?: number | null;
   constructor(init: ModelInit<Rect>);
@@ -39,15 +37,18 @@ export declare class Label {
 
 export declare class Image {
   readonly id: string;
-  readonly name?: string | null;
-  readonly size?: number | null;
+  readonly name: string;
+  readonly rect: Rect;
+  readonly size: number;
   readonly auther?: string | null;
   readonly autherid?: string | null;
   readonly key?: string | null;
+  readonly date?: string | null;
+  readonly time?: string | null;
   readonly location?: Location | null;
+  readonly album?: Album | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly albumImagesId?: string | null;
   constructor(init: ModelInit<Image>);
   static copyOf(source: Image, mutator: (draft: MutableModel<Image>) => MutableModel<Image> | void): Image;
 }

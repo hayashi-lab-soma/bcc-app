@@ -1,6 +1,4 @@
 type Rect {
-  x: Int
-  y: Int
   width: Int
   height: Int
 }
@@ -19,12 +17,16 @@ type Label @model @auth(rules: [{allow: public}]) {
 
 type Image @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String
-  size: Int
+  name: String!
+  rect: Rect!
+  size: Int!
   auther: String
   autherid: String
   key: String
+  date: AWSDate
+  time: AWSTime
   location: Location
+  album: Album @belongsTo
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

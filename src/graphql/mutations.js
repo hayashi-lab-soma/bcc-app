@@ -57,13 +57,30 @@ export const createImage = /* GraphQL */ `
     createImage(input: $input, condition: $condition) {
       id
       name
+      rect {
+        width
+        height
+      }
       size
       auther
       autherid
       key
+      date
+      time
       location {
         latitude
         longitude
+      }
+      album {
+        id
+        name
+        auther
+        autherid
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt
@@ -82,13 +99,30 @@ export const updateImage = /* GraphQL */ `
     updateImage(input: $input, condition: $condition) {
       id
       name
+      rect {
+        width
+        height
+      }
       size
       auther
       autherid
       key
+      date
+      time
       location {
         latitude
         longitude
+      }
+      album {
+        id
+        name
+        auther
+        autherid
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt
@@ -107,13 +141,30 @@ export const deleteImage = /* GraphQL */ `
     deleteImage(input: $input, condition: $condition) {
       id
       name
+      rect {
+        width
+        height
+      }
       size
       auther
       autherid
       key
+      date
+      time
       location {
         latitude
         longitude
+      }
+      album {
+        id
+        name
+        auther
+        autherid
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       createdAt
       updatedAt

@@ -71,14 +71,23 @@ export const schema = {
                     "name": "name",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "rect": {
+                    "name": "rect",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Rect"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "size": {
                     "name": "size",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "auther": {
@@ -102,6 +111,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "date": {
+                    "name": "date",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "time": {
+                    "name": "time",
+                    "isArray": false,
+                    "type": "AWSTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "location": {
                     "name": "location",
                     "isArray": false,
@@ -110,6 +133,19 @@ export const schema = {
                     },
                     "isRequired": false,
                     "attributes": []
+                },
+                "album": {
+                    "name": "album",
+                    "isArray": false,
+                    "type": {
+                        "model": "Album"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "albumImagesId"
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -122,13 +158,6 @@ export const schema = {
                     "name": "updatedAt",
                     "isArray": false,
                     "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "albumImagesId": {
-                    "name": "albumImagesId",
-                    "isArray": false,
-                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -251,20 +280,6 @@ export const schema = {
         "Rect": {
             "name": "Rect",
             "fields": {
-                "x": {
-                    "name": "x",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "y": {
-                    "name": "y",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "width": {
                     "name": "width",
                     "isArray": false,
@@ -301,5 +316,5 @@ export const schema = {
             }
         }
     },
-    "version": "b996c47d3a96996b7ceb84131c62cb55"
+    "version": "8380dbdf9869b4bbcf2bb5862031bc98"
 };

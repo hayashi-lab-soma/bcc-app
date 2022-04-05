@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Grid, Stack, Typography, Button } from '@mui/material'
+import { Box, Grid, Stack, Typography, Button, CardHeader } from '@mui/material'
 import { Card, CardActionArea, CardContent, CardActions } from '@mui/material'
 
 // props
 // album: album object
 // onClick: callback
 const Album = (props) => {
+
   return (
     <Card
       key={props.album.id}
     >
+      <CardHeader
+        title={props.album.name}
+      />
       <CardActionArea onClick={() => { props.onClick(props.album) }} >
         <CardContent>
           <Typography >{props.album.name}</Typography>
@@ -20,7 +24,7 @@ const Album = (props) => {
         props.album.id !== 'all' &&
         props.album.id !== 'non' &&
         <CardActions>
-          <Button onClick={() => {props.onDelete(props.album)}}>削除</Button>
+          <Button onClick={() => { props.onDelete(props.album) }}>削除</Button>
         </CardActions>
       }
 
