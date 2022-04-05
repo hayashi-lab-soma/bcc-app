@@ -21,6 +21,7 @@
     "chonky-icon-fontawesome": "^2.3.2",
     "date-fns-timezone": "^0.1.4",
     "exifreader": "^4.4.0",
+    "jimp": "^0.16.1",
     "material-ui-dropzone": "^3.5.0",
     "moment": "^2.29.1",
     "path": "^0.12.7",
