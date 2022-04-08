@@ -27,15 +27,7 @@ const Image = (props) => {
 
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={props.image.name}
-        subheader={`${_date.getFullYear()}年 ${_date.getMonth() + 1}月 ${_date.getDate()}日`}
-      />
+
       <CardActionArea>
         <CardMedia
           component='img'
@@ -43,9 +35,18 @@ const Image = (props) => {
           alt={props.image.key}
           height='180' />
       </CardActionArea>
-      <CardContent>
-        {props.image.size}
-      </CardContent>
+
+      <CardHeader
+        title={props.image.name}
+        titleTypographyProps={{variant: 'body1'}}
+        subheader={`${_date.getFullYear()}年 ${_date.getMonth() + 1}月 ${_date.getDate()}日`}
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        }
+      />
+
       <CardActions sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button onClick={() => { props.onEdit(props.image) }}>編集</Button>
         <Button onClick={() => { props.onDelete(props.image) }}>削除</Button>

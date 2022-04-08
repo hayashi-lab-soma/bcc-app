@@ -31,7 +31,7 @@ const Album = (props) => {
       <CardHeader
         title={props.album.name}
         subheader={
-          "-----"
+          ""
         }
         action={
           <IconButton aria-label="settings">
