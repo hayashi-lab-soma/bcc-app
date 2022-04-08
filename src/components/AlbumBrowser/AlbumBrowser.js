@@ -56,7 +56,7 @@ const AlbumBrowser = (props) => {
     let item = {
       name: name,
       auther: props.username,
-      autherid: props.identityId
+      autherId: props.identityId
     }
 
     console.debug('Try create Album', item)
