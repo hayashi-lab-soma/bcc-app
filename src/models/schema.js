@@ -97,8 +97,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "autherid": {
-                    "name": "autherid",
+                "autherId": {
+                    "name": "autherId",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -211,8 +211,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "autherid": {
-                    "name": "autherid",
+                "autherId": {
+                    "name": "autherId",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -316,5 +316,5 @@ export const schema = {
             }
         }
     },
-    "version": "8380dbdf9869b4bbcf2bb5862031bc98"
+    "version": "dbb960291d1837f107ef84794f828f48"
 };

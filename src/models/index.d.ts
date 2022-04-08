@@ -41,7 +41,7 @@ export declare class Image {
   readonly rect: Rect;
   readonly size: number;
   readonly auther?: string | null;
-  readonly autherid?: string | null;
+  readonly autherId?: string | null;
   readonly key?: string | null;
   readonly date?: string | null;
   readonly time?: string | null;
@@ -57,7 +57,7 @@ export declare class Album {
   readonly id: string;
   readonly name?: string | null;
   readonly auther?: string | null;
-  readonly autherid?: string | null;
+  readonly autherId?: string | null;
   readonly images?: (Image | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

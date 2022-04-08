@@ -21,7 +21,7 @@ type Image @model @auth(rules: [{allow: public}]) {
   rect: Rect!
   size: Int!
   auther: String
-  autherid: String
+  autherId: String
   key: String
   date: AWSDate
   time: AWSTime
@@ -35,7 +35,6 @@ type Album @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   auther: String
-  autherid: String
+  autherId: String
   images: [Image] @hasMany
 }
- 

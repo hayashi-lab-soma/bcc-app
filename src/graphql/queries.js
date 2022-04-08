@@ -73,7 +73,7 @@ export const getImage = /* GraphQL */ `
       }
       size
       auther
-      autherid
+      autherId
       key
       date
       time
@@ -85,7 +85,7 @@ export const getImage = /* GraphQL */ `
         id
         name
         auther
-        autherid
+        autherId
         createdAt
         updatedAt
         _version
@@ -113,7 +113,7 @@ export const listImages = /* GraphQL */ `
         name
         size
         auther
-        autherid
+        autherId
         key
         date
         time
@@ -147,7 +147,7 @@ export const syncImages = /* GraphQL */ `
         name
         size
         auther
-        autherid
+        autherId
         key
         date
         time
@@ -169,7 +169,7 @@ export const getAlbum = /* GraphQL */ `
       id
       name
       auther
-      autherid
+      autherId
       images {
         nextToken
         startedAt
@@ -193,7 +193,7 @@ export const listAlbums = /* GraphQL */ `
         id
         name
         auther
-        autherid
+        autherId
         createdAt
         updatedAt
         _version
@@ -222,7 +222,7 @@ export const syncAlbums = /* GraphQL */ `
         id
         name
         auther
-        autherid
+        autherId
         createdAt
         updatedAt
         _version

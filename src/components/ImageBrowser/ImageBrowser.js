@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 
 import { API, Storage } from 'aws-amplify'
 import { listImages, } from '../../graphql/queries'
-import { deleteImage, } from '../../graphql/mutations'
+import { deleteImage, createImage } from '../../graphql/mutations'
 
 import ImageToolBar from './ImageToolBar'
 import ImageList from './ImageList'
 import ImageCreateDialog from './ImageCreateDialog'
 
+import moment from 'moment'
 import loadImage from 'blueimp-load-image'
 // import ExifReader from 'exifreader'
 // import { resize } from 'jimp'
@@ -31,21 +32,13 @@ const ImageBrowser = (props) => {
 
     if (props.album.id === 'all') {
       _filter = {
-        autherid: { 'eq': props.identityId },
+        autherId: { 'eq': props.identityId },
       }
     }
-    // else if (props.album.id === 'non') {
-    //   _filter = {
-    //     and: [
-    //       { autherid: { 'eq': props.identityId } },
-    //       { albumImagesId: null }
-    //     ]
-    //   }
-    // }
     else {
       _filter = {
         and: [
-          { autherid: { 'eq': props.identityId } },
+          { autherId: { 'eq': props.identityId } },
           { albumImagesId: { 'eq': props.album.id } },
         ]
       }
@@ -62,47 +55,67 @@ const ImageBrowser = (props) => {
       .then((res) => {
         let items = res.data.listImages.items
         items = items.filter(elem => !elem._deleted)
-        console.debug(`Fetched (${props.album.name}) Images`, items)
+        console.debug(`Fetched Images  (${props.album.name}) `, items)
         setImages(items)
       })
       .catch((err) => {
-        console.error({ err })
+        console.error('Fetch Image Error', err.errors)
       })
   }
 
-  //
-  //
+  const imagesize = async (file) => {
+    return new Promise((resolve, reject) => {
+
+      const img = new Image()
+
+      img.onload = () => {
+        const size = {
+          width: img.naturalWidth,
+          height: img.naturalHeight
+        }
+
+        URL.revokeObjectURL(img.src)
+        resolve(size)
+      }
+
+      img.onerror = (error) => {
+        reject(error)
+      }
+
+      img.src = URL.createObjectURL(file)
+    })
+  }
+
   //
   const createSingleImage = (srcFile, albumId) => {
 
-    console.debug('Upload File Object', srcFile)
+    console.debug('Target File', srcFile)
 
-    // const makeResizeOption = (src) => {
-    //   return new Promise((resolve, reject) => {
-    //     const options = {
-    //       maxHeight: 1280,
-    //       maxWidth: 1280,
-    //       canvas: true,
-    //       orientation: true
-    //     }
-    //     //get metadata (exif data) and get photo orientation
-    //     loadImage.parseMetaData(src, (data) => {
-    //       if (data.exif) { //existing EXIF data?
-    //         options.orientation = data.exif.get('Orientation')
-    //       }
-    //       resolve(options)
-    //     })
+    const parseExifData = (src) => {
+      return new Promise((resolve, reject) => {
+        loadImage.parseMetaData(src, (data) => {
+          if (data) {
+            console.debug(data)
+            resolve(data)
+          }
+          console.warn('Uncontain EXIF data')
+          reject('Uncontain EXIF data contents')
+        })
+      })
+    }
 
-    //   })
-    // }
-
-    // const getExifData = (src) => {
-    //   return new Promise((resolve, reject) => {
-    //     loadImage.parseMetaData(src, (data) => {
-    //       resolve(data)
-    //     })
-    //   })
-    // }
+    const getCurrentPosition = () => {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords
+          let gps = {
+            latitude: latitude,
+            longitude: longitude
+          }
+          resolve(gps)
+        })
+      })
+    }
 
     const resizeImage = (src, resizeOption) => {
       return new Promise((resolve, reject) => {
@@ -121,169 +134,111 @@ const ImageBrowser = (props) => {
     }
 
     const preprocessing = async (src) => {
-      // let exif = await getExifData(src)
-      let tmp = await resizeImage(src, {
-        maxHeight: 1280,
-        maxWidth: 1280,
-        canvas: true,
-        orientation: true,
-        meta: true
-      })
+      const srcSize = await imagesize(srcFile)
+      console.debug('Src size:', srcSize)
 
-      let canvas = tmp.canvas
-      let metadata = tmp.metadate
+      const exif = await parseExifData(src)
 
-      let blob = await canvas2blob(tmp.canvas)
+      let dateTime = {}
+      let gps = {}
 
-      // console.debug(exif)
-      // console.debug(exif.exif)
-      // console.debug(canvas.width, canvas.height)
-      // console.debug(blob)
+      if ('exif' in exif) {
+        dateTime = exif.exif.get('DateTime')
+        console.debug('Date & Time from EXIF: ', dateTime)
+      }
+      else {
+        let _dateTime = new Date()
+        dateTime = moment(_dateTime).format('YYYY:MM:DD HH:mm:ss')
+        console.debug('Date & Time from device: ', dateTime)
+      }
+
+
+
+      if ('GPSInfo' in exif) {
+        const _gps = exif.exif.get('GPSInfo')
+        const lat = _gps.get('GPSLatitude')
+        const lon = _gps.get('GPSLongitude')
+      }
+      else {
+        gps = await getCurrentPosition()
+        console.debug('GPS info from device: ', gps)
+      }
+
+
+      if (Math.max(srcSize.width, srcSize.height) > 768) {
+        let tmp = await resizeImage(src, {
+          maxHeight: 768,
+          maxWidth: 768,
+          canvas: true,
+          orientation: true,
+          meta: true
+        })
+
+        const canvas = tmp.canvas
+        const width = canvas.width
+        const height = canvas.height
+        // let metadata = tmp.metadata
+
+        const blob = await canvas2blob(canvas)
+
+        let dstFile = new File([blob], 'image/jpeg')
+        return { dstFile, width, height, dateTime, gps }
+      }
+      else {
+        const width = srcSize.width
+        const height = srcSize.height
+        const dstFile = srcFile
+        return { dstFile, width, height, gps }
+      }
     }
 
-
     preprocessing(srcFile)
+      .then((res) => {
+        console.debug(res)
+
+        // Make Image model
+        let item = {
+          name: srcFile.name,
+          rect: {
+            width: res.width,
+            height: res.height
+          },
+          size: res.dstFile.size,
+          auther: props.username,
+          autherId: props.identityId,
+          albumImagesId: albumId,
+          date: moment(res.dateTime, 'YYYY:MM:DD HH:mm:ss').format('YYYY-MM-DD'),
+          time: moment(res.dateTime, 'YYYY:MM:DD HH:mm:ss').format('HH:mm:ss.sss'),
+          location: {
+            latitude: res.gps.latitude,
+            longitude: res.gps.longitude
+          }
+        }
+
+        console.debug('Create new Image item', item)
 
 
-    // makeResizeOption(srcFile)
-    //   .then((options) => {
-
-    //     resizeImage(srcFile, options)
-    //       .then((resizedBlob) => {
-    //         // console.debug(resizedBlob)
-
-    //         let resizedFile = new File([resizedBlob], 'image/jpeg')
-    //         console.debug(resizedFile)
-    //       })
-    //       .catch((err) => {
-    //         console.error(err)
-    //       })
-    //   })
-    //   .catch((err) => {
-    //     console.error(err)
-    //   })
-
-    // resizeImage(srcFile,
-    //   {
-    //     maxHeight: 1280,
-    //     maxWidth: 1280,
-    //     canvas: true,
-    //     orientation: true
-    //   })
-    //   .then((resizedBlob) => {
-    //     // console.debug(resizedBlob)
-    //     let resizedFile = new File([resizedBlob], 'image/jpeg')
-    //     console.debug(resizedFile)
-    //   })
-    //   .catch((err) => {
-    //     console.error(err)
-    //   })
-
-    // loadImage.parseMetaData(srcFile, (data) => {
-
-    //   const options = {
-    //     maxHeight: 1024,
-    //     maxWidth: 1024,
-    //     canvas: true
-    //   }
-    //   if (data.exif) {
-    //     options.orientation = data.exif.get('Orientation')
-    //   }
-
-    //   loadImage(srcFile, (canvas) => {
-
-    //     canvas.toBlob((blob) => {
-
-    //       Storage.put(srcFile.name, blob, {
-    //         level: "protected",
-    //       })
-    //         .then((res) => {
-    //           console.debug(res)
-    //         })
-    //         .catch((err) => {
-    //           console.error(err)
-    //         })
-    //     }, 'image/jpeg')
-
-    //   }, options)
-    // })
-
-    // ExifReader.load(file, { expanded: true })
-    //   .then((result) => {
-    //     let exif_file = 'file' in result ? result.file : null
-    //     let exif_data = 'exif' in result ? result.exif : null
-
-    //     console.debug('File meta data', exif_file)
-    //     console.debug('File Exif data', exif_data)
-
-    //   })
-    //   .catch((err) => {
-    //     console.error(err)
-    //   })
-
-    // Storage.put(file.name, file, {
-    //   level: "protected",
-    // })
-    //   .then((result) => {
-    //     console.log('Success create Image', result)
-    //     const Key = result.key
-
-    //     ExifReader.load(file, { expanded: true })
-    //       .then((result) => {
-    //         console.debug(result)
-    //         // console.debug(result.exif)
-
-    //         // let _rect = {
-    //         //   width: result.file['Image Width'].value,
-    //         //   height: result.file['Image Height'].value
-    //         // }
-
-    //         // let _date = ''
-    //         // let _time = ''
-    //         // if (result.exif) {
-    //         //   _date = moment(result.exif.DateTimeOriginal.description, 'YYYY:MM:DD HH:mm:ss').format('YYYY-MM-DD')
-    //         //   _time = moment(result.exif.DateTimeOriginal.description, 'YYYY:MM:DD HH:mm:ss').format('HH:mm:ss.sss')
-    //         // }
-
-    //         let _location = {
-    //           latitude: -1.0,
-    //           longitude: -1.0
-    //         }
-
-    //         let item = {
-    //           name: file.name,
-    //           rect: {
-    //             width: result.file['Image Width'].value,
-    //             height: result.file['Image Height'].value
-    //           },
-    //           size: file.size,
-    //           auther: props.username,
-    //           autherid: props.identityId,
-    //           key: Key,
-    //           albumImagesId: albumId,
-    //           date: result.exif ? moment(result.exif.DateTimeOriginal.description, 'YYYY:MM:DD HH:mm:ss').format('YYYY-MM-DD') : '2022-01-01',
-    //           time: result.exif ? moment(result.exif.DateTimeOriginal.description, 'YYYY:MM:DD HH:mm:ss').format('HH:mm:ss.sss') : '01:01:01.111',
-    //           location: _location
-    //         }
-
-    //         console.debug(item)
-
-    //         API.graphql({ query: createImage, variables: { input: item } })
-    //           .then((result) => {
-    //             console.debug('Success DataStore Image', result)
-    //           })
-    //           .catch((err) => {
-    //             console.error({ err })
-    //           })
-
-    //       })
-    //       .catch((err) => {
-    //         console.error(err)
-    //       })
-    //   })
-    //   .catch((err) => {
-    //     console.error({ err })
-    //   })
+        // PutImage to S3 Backet
+        Storage.put(srcFile.name, res.dstFile, { level: 'protected' })
+          .then((res) => {
+            item.key = res.key
+            
+            // Call GraphQL API 'Create Image'
+            API.graphql({ query: createImage, variables: { input: item } })
+              .then((result) => {
+                console.debug('Success DataStore Image', result)
+                fetchImages()
+              })
+              .catch((err) => {
+                console.error(console.error('Create Image Error', err))
+              })
+          })
+          .catch((res) => {
+          })
+      })
+      .catch((err) => {
+        console.error('Preprocessing Error', err)
+      })
   }
 
   const handleCreateImage = (files, albumId) => {

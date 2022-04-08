@@ -51,7 +51,7 @@ export const onCreateImage = /* GraphQL */ `
       }
       size
       auther
-      autherid
+      autherId
       key
       date
       time
@@ -63,7 +63,7 @@ export const onCreateImage = /* GraphQL */ `
         id
         name
         auther
-        autherid
+        autherId
         createdAt
         updatedAt
         _version
@@ -90,7 +90,7 @@ export const onUpdateImage = /* GraphQL */ `
       }
       size
       auther
-      autherid
+      autherId
       key
       date
       time
@@ -102,7 +102,7 @@ export const onUpdateImage = /* GraphQL */ `
         id
         name
         auther
-        autherid
+        autherId
         createdAt
         updatedAt
         _version
@@ -129,7 +129,7 @@ export const onDeleteImage = /* GraphQL */ `
       }
       size
       auther
-      autherid
+      autherId
       key
       date
       time
@@ -141,7 +141,7 @@ export const onDeleteImage = /* GraphQL */ `
         id
         name
         auther
-        autherid
+        autherId
         createdAt
         updatedAt
         _version
@@ -163,7 +163,7 @@ export const onCreateAlbum = /* GraphQL */ `
       id
       name
       auther
-      autherid
+      autherId
       images {
         nextToken
         startedAt
@@ -182,7 +182,7 @@ export const onUpdateAlbum = /* GraphQL */ `
       id
       name
       auther
-      autherid
+      autherId
       images {
         nextToken
         startedAt
@@ -201,7 +201,7 @@ export const onDeleteAlbum = /* GraphQL */ `
       id
       name
       auther
-      autherid
+      autherId
       images {
         nextToken
         startedAt
