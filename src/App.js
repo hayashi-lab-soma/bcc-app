@@ -6,11 +6,14 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material'
 
 import { HeaderContents, BodyContents } from './components'
+import S3ImageGallary from './ImageGallary'
 
 import { Amplify, Auth } from 'aws-amplify'
 
 import { withAuthenticator, } from '@aws-amplify/ui-react'
 import '@aws-amplify/ui-react/styles.css'
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
@@ -19,7 +22,7 @@ Amplify.configure(awsconfig);
 // const REGION = awsconfig.aws_user_files_s3_bucket_region
 
 const App = ({ signOut, user }) => {
-  
+
   //--------------------------------------------------
   const [credential, setCredential] = useState(null)
 
@@ -38,20 +41,28 @@ const App = ({ signOut, user }) => {
   //--------------------------------------------------
   return (
     <div>
-
-      <HeaderContents
-        username={user.username}
-        onClick={signOut} />
-
-      {
-        credential !== null &&
-
-        <BodyContents
+      <BrowserRouter>
+        <HeaderContents
           username={user.username}
-          identityId={credential.identityId} />
-      }
+          onClick={signOut} />
+        <Routes>
 
-    </div>
+          <Route path='/'
+            element=
+            {
+              credential !== null &&
+              <BodyContents username={user.username} identityId={credential.identityId} />
+            }
+          />
+
+          <Route path='public'
+            element={
+              <S3ImageGallary />
+            } />
+            
+        </Routes>
+      </BrowserRouter>
+    </div >
   );
 }
 

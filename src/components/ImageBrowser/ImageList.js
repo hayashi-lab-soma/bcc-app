@@ -37,7 +37,6 @@ const ImageList = (props) => {
 const Image = (props) => {
   const [signedURL, setURL] = useState('')
 
-
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
