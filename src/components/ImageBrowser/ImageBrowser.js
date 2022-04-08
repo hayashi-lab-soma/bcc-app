@@ -222,7 +222,6 @@ const ImageBrowser = (props) => {
         Storage.put(srcFile.name, res.dstFile, { level: 'protected' })
           .then((res) => {
             item.key = res.key
-            
             // Call GraphQL API 'Create Image'
             API.graphql({ query: createImage, variables: { input: item } })
               .then((result) => {
@@ -266,6 +265,8 @@ const ImageBrowser = (props) => {
         API.graphql({ query: deleteImage, variables: { input: item } })
           .then((result) => {
             console.debug(result)
+
+            fetchImages()
           })
           .catch((err) => {
             console.error(err)
