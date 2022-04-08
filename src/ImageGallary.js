@@ -45,6 +45,8 @@ const S3ImageGallary = (props) => {
                 {
                   original: res,
                   thumbnail: res,
+                  originalTitle: img.key,
+                  thumbnailTitle: img.key,
                 })
 
               setImages(_images)

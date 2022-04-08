@@ -13,6 +13,9 @@ import loadImage from 'blueimp-load-image'
 // import ExifReader from 'exifreader'
 // import { resize } from 'jimp'
 
+// const UPLOAD_IMAGE_SIZE = 768
+const UPLOAD_IMAGE_SIZE = 1280
+
 const ImageBrowser = (props) => {
 
   const [images, setImages] = useState([])
@@ -165,10 +168,10 @@ const ImageBrowser = (props) => {
       }
 
 
-      if (Math.max(srcSize.width, srcSize.height) > 768) {
+      if (Math.max(srcSize.width, srcSize.height) > UPLOAD_IMAGE_SIZE) {
         let tmp = await resizeImage(src, {
-          maxHeight: 768,
-          maxWidth: 768,
+          maxHeight: UPLOAD_IMAGE_SIZE,
+          maxWidth: UPLOAD_IMAGE_SIZE,
           canvas: true,
           orientation: true,
           meta: true
