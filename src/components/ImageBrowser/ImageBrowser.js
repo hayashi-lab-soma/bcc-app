@@ -222,7 +222,10 @@ const ImageBrowser = (props) => {
 
 
         // PutImage to S3 Backet
-        Storage.put(srcFile.name, res.dstFile, { level: 'protected' })
+        Storage.put(
+          srcFile.name,
+          res.dstFile,
+          { level: 'protected' })
           .then((res) => {
             item.key = res.key
             // Call GraphQL API 'Create Image'
