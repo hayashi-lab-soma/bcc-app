@@ -15,6 +15,9 @@ const S3ImageGallary = (props) => {
   useEffect(() => {
     (async () => {
       let tmp = await Storage.list('')
+
+      tmp.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
+
       console.debug('Fetch Public space', tmp) //tmp is list of object of s3 objects
 
       //Extraction of jpeg images

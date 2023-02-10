@@ -52,13 +52,19 @@ const ImageBrowser = (props) => {
     API.graphql({
       query: listImages,
       variables: {
+        limit: 2000,
         filter: _filter
       }
     })
       .then((res) => {
         let items = res.data.listImages.items
-        items = items.filter(elem => !elem._deleted)
+        items = items.filter(elem => !elem._deleted) //remove deleted flag data
+
+        items.sort((a, b) => -(new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()))
+
+        // sort((a, b) => -(a.lastModified.getTime()) - (b.lastModified.getTime()))
         console.debug(`Fetched Images  (${props.album.name}) `, items)
+
         setImages(items)
       })
       .catch((err) => {

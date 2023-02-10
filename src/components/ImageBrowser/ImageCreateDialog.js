@@ -95,7 +95,14 @@ const ImageCreateDialog = (props) => {
 
         <Button onClick={props.onClose} fullWidth>キャンセル</Button>
 
-        <Button onClick={() => { props.onCreate(files, albumId) }} fullWidth>送信</Button>
+        <Button
+          onClick={() => {
+            props.onCreate(files, albumId)
+            props.onClose()
+          }}
+          fullWidth>
+          送信
+        </Button>
 
       </DialogActions>
     </Dialog>
