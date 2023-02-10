@@ -19,7 +19,7 @@ const ImageList = (props) => {
     <Box>
       <Grid container direction='row' spacing={1}>
         {
-          props.images.map((image, idx) => (
+          props.images.slice(0, 30).map((image, idx) => (
             < Grid item xs={4} key={image.id} >
               <Image
                 image={image}
@@ -36,6 +36,7 @@ const ImageList = (props) => {
 
 const Image = (props) => {
   const [signedURL, setURL] = useState('')
+  const [loaded, setLoaded] = useState(false)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -58,14 +59,18 @@ const Image = (props) => {
 
   return (
     <div>
-      <Card sx={{height: '100%', width: '100%' }}>
+      <Card sx={{ height: '100%', width: '100%' }}>
 
         <CardActionArea>
+
           <CardMedia
             component='img'
             src={signedURL}
             alt={props.image.key}
-            height='180' />
+            height='180'
+            loading='eager'
+          />
+
         </CardActionArea>
 
         <CardHeader
