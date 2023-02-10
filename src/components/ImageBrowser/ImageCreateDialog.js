@@ -6,6 +6,9 @@ import { DropzoneArea } from 'material-ui-dropzone'
 
 import { Select, InputLabel, MenuItem, FormControl, } from '@material-ui/core'
 
+const UPLOAD_SIZE_LIMIT = 100 //(MB)
+const UPLOAD_FILE_LIMIT = 300 //number of images
+
 const ImageCreateDialog = (props) => {
   const [files, setFiles] = useState([])
 
@@ -24,8 +27,8 @@ const ImageCreateDialog = (props) => {
 
       <DialogContent>
         <DropzoneArea
-          maxFileSize={10000000}
-          filesLimit={100}
+          maxFileSize={UPLOAD_SIZE_LIMIT * 1000 * 1000}
+          filesLimit={UPLOAD_FILE_LIMIT}
           dropzoneText={'ファイル選択'}
           showPreviews={true}
           showPreviewsInDropzone={false}
