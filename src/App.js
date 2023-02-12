@@ -1,5 +1,7 @@
 import React, { useEffect, useState, } from 'react'
 
+import { AppHeader, } from './components/templates'
+
 import { HeaderContents, BodyContents } from './components'
 import S3ImageGallary from './ImageGallary'
 
@@ -45,7 +47,7 @@ const App = ({ signOut, user }) => {
     })
     Amplify.register(logger)
     logger.addPluggable(new AWSCloudWatchProvider())
-    logger.info(`Sing-in ${user.username}`)
+    // logger.info(`Sing-in ${user.username}`)
 
     getCurrentCredentials()
 
@@ -63,9 +65,11 @@ const App = ({ signOut, user }) => {
   return (
     <div>
       <BrowserRouter>
-        <HeaderContents
+        <AppHeader />
+
+        {/* <HeaderContents
           username={user.username}
-          onClick={signOut} />
+          onClick={signOut} /> */}
 
         <Routes>
 
