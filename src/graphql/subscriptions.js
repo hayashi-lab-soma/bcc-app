@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateLabel = /* GraphQL */ `
-  subscription OnCreateLabel {
-    onCreateLabel {
+  subscription OnCreateLabel($filter: ModelSubscriptionLabelFilterInput) {
+    onCreateLabel(filter: $filter) {
       id
       name
       createdAt
@@ -15,8 +15,8 @@ export const onCreateLabel = /* GraphQL */ `
   }
 `;
 export const onUpdateLabel = /* GraphQL */ `
-  subscription OnUpdateLabel {
-    onUpdateLabel {
+  subscription OnUpdateLabel($filter: ModelSubscriptionLabelFilterInput) {
+    onUpdateLabel(filter: $filter) {
       id
       name
       createdAt
@@ -28,8 +28,8 @@ export const onUpdateLabel = /* GraphQL */ `
   }
 `;
 export const onDeleteLabel = /* GraphQL */ `
-  subscription OnDeleteLabel {
-    onDeleteLabel {
+  subscription OnDeleteLabel($filter: ModelSubscriptionLabelFilterInput) {
+    onDeleteLabel(filter: $filter) {
       id
       name
       createdAt
@@ -41,8 +41,8 @@ export const onDeleteLabel = /* GraphQL */ `
   }
 `;
 export const onCreateImage = /* GraphQL */ `
-  subscription OnCreateImage {
-    onCreateImage {
+  subscription OnCreateImage($filter: ModelSubscriptionImageFilterInput) {
+    onCreateImage(filter: $filter) {
       id
       name
       rect {
@@ -80,8 +80,8 @@ export const onCreateImage = /* GraphQL */ `
   }
 `;
 export const onUpdateImage = /* GraphQL */ `
-  subscription OnUpdateImage {
-    onUpdateImage {
+  subscription OnUpdateImage($filter: ModelSubscriptionImageFilterInput) {
+    onUpdateImage(filter: $filter) {
       id
       name
       rect {
@@ -119,8 +119,8 @@ export const onUpdateImage = /* GraphQL */ `
   }
 `;
 export const onDeleteImage = /* GraphQL */ `
-  subscription OnDeleteImage {
-    onDeleteImage {
+  subscription OnDeleteImage($filter: ModelSubscriptionImageFilterInput) {
+    onDeleteImage(filter: $filter) {
       id
       name
       rect {
@@ -158,8 +158,8 @@ export const onDeleteImage = /* GraphQL */ `
   }
 `;
 export const onCreateAlbum = /* GraphQL */ `
-  subscription OnCreateAlbum {
-    onCreateAlbum {
+  subscription OnCreateAlbum($filter: ModelSubscriptionAlbumFilterInput) {
+    onCreateAlbum(filter: $filter) {
       id
       name
       auther
@@ -177,8 +177,8 @@ export const onCreateAlbum = /* GraphQL */ `
   }
 `;
 export const onUpdateAlbum = /* GraphQL */ `
-  subscription OnUpdateAlbum {
-    onUpdateAlbum {
+  subscription OnUpdateAlbum($filter: ModelSubscriptionAlbumFilterInput) {
+    onUpdateAlbum(filter: $filter) {
       id
       name
       auther
@@ -196,8 +196,8 @@ export const onUpdateAlbum = /* GraphQL */ `
   }
 `;
 export const onDeleteAlbum = /* GraphQL */ `
-  subscription OnDeleteAlbum {
-    onDeleteAlbum {
+  subscription OnDeleteAlbum($filter: ModelSubscriptionAlbumFilterInput) {
+    onDeleteAlbum(filter: $filter) {
       id
       name
       auther
