@@ -75,7 +75,7 @@ const Image = (props) => {
 
         <CardHeader
           title={props.image.name}
-          titleTypographyProps={{ noWrap: 'true', width: '120px', variant: 'body1' }}
+          titleTypographyProps={{ width: '120px', variant: 'body1' }}
           subheader={`${_date.getFullYear()}年 ${_date.getMonth() + 1}月 ${_date.getDate()}日`}
           action={<IconButton
             aria-label="settings"
