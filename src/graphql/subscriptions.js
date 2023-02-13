@@ -40,9 +40,9 @@ export const onDeleteLabel = /* GraphQL */ `
     }
   }
 `;
-export const onCreateImage = /* GraphQL */ `
-  subscription OnCreateImage($filter: ModelSubscriptionImageFilterInput) {
-    onCreateImage(filter: $filter) {
+export const onCreatePhoto = /* GraphQL */ `
+  subscription OnCreatePhoto($filter: ModelSubscriptionPhotoFilterInput) {
+    onCreatePhoto(filter: $filter) {
       id
       name
       rect {
@@ -67,9 +67,9 @@ export const onCreateImage = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateImage = /* GraphQL */ `
-  subscription OnUpdateImage($filter: ModelSubscriptionImageFilterInput) {
-    onUpdateImage(filter: $filter) {
+export const onUpdatePhoto = /* GraphQL */ `
+  subscription OnUpdatePhoto($filter: ModelSubscriptionPhotoFilterInput) {
+    onUpdatePhoto(filter: $filter) {
       id
       name
       rect {
@@ -94,9 +94,9 @@ export const onUpdateImage = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteImage = /* GraphQL */ `
-  subscription OnDeleteImage($filter: ModelSubscriptionImageFilterInput) {
-    onDeleteImage(filter: $filter) {
+export const onDeletePhoto = /* GraphQL */ `
+  subscription OnDeletePhoto($filter: ModelSubscriptionPhotoFilterInput) {
+    onDeletePhoto(filter: $filter) {
       id
       name
       rect {

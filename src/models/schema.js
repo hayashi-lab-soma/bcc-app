@@ -51,14 +51,23 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
                 }
             ]
         },
-        "Image": {
-            "name": "Image",
+        "Photo": {
+            "name": "Photo",
             "fields": {
                 "id": {
                     "name": "id",
@@ -150,7 +159,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Images",
+            "pluralName": "Photos",
             "attributes": [
                 {
                     "type": "model",
@@ -162,6 +171,15 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
                                 "operations": [
                                     "create",
                                     "update",
@@ -217,5 +235,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "623789c655188bc48288a36651d9fa56"
+    "version": "cf5a1a085e0ab97155f4b6c5e2e26459"
 };

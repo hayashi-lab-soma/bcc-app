@@ -62,9 +62,9 @@ export const syncLabels = /* GraphQL */ `
     }
   }
 `;
-export const getImage = /* GraphQL */ `
-  query GetImage($id: ID!) {
-    getImage(id: $id) {
+export const getPhoto = /* GraphQL */ `
+  query GetPhoto($id: ID!) {
+    getPhoto(id: $id) {
       id
       name
       rect {
@@ -89,13 +89,13 @@ export const getImage = /* GraphQL */ `
     }
   }
 `;
-export const listImages = /* GraphQL */ `
-  query ListImages(
-    $filter: ModelImageFilterInput
+export const listPhotos = /* GraphQL */ `
+  query ListPhotos(
+    $filter: ModelPhotoFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listImages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listPhotos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
@@ -116,14 +116,14 @@ export const listImages = /* GraphQL */ `
     }
   }
 `;
-export const syncImages = /* GraphQL */ `
-  query SyncImages(
-    $filter: ModelImageFilterInput
+export const syncPhotos = /* GraphQL */ `
+  query SyncPhotos(
+    $filter: ModelPhotoFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncImages(
+    syncPhotos(
       filter: $filter
       limit: $limit
       nextToken: $nextToken

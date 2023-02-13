@@ -49,12 +49,12 @@ export const deleteLabel = /* GraphQL */ `
     }
   }
 `;
-export const createImage = /* GraphQL */ `
-  mutation CreateImage(
-    $input: CreateImageInput!
-    $condition: ModelImageConditionInput
+export const createPhoto = /* GraphQL */ `
+  mutation CreatePhoto(
+    $input: CreatePhotoInput!
+    $condition: ModelPhotoConditionInput
   ) {
-    createImage(input: $input, condition: $condition) {
+    createPhoto(input: $input, condition: $condition) {
       id
       name
       rect {
@@ -79,12 +79,12 @@ export const createImage = /* GraphQL */ `
     }
   }
 `;
-export const updateImage = /* GraphQL */ `
-  mutation UpdateImage(
-    $input: UpdateImageInput!
-    $condition: ModelImageConditionInput
+export const updatePhoto = /* GraphQL */ `
+  mutation UpdatePhoto(
+    $input: UpdatePhotoInput!
+    $condition: ModelPhotoConditionInput
   ) {
-    updateImage(input: $input, condition: $condition) {
+    updatePhoto(input: $input, condition: $condition) {
       id
       name
       rect {
@@ -109,12 +109,12 @@ export const updateImage = /* GraphQL */ `
     }
   }
 `;
-export const deleteImage = /* GraphQL */ `
-  mutation DeleteImage(
-    $input: DeleteImageInput!
-    $condition: ModelImageConditionInput
+export const deletePhoto = /* GraphQL */ `
+  mutation DeletePhoto(
+    $input: DeletePhotoInput!
+    $condition: ModelPhotoConditionInput
   ) {
-    deleteImage(input: $input, condition: $condition) {
+    deletePhoto(input: $input, condition: $condition) {
       id
       name
       rect {

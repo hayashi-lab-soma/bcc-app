@@ -54,7 +54,7 @@ export declare const Label: (new (init: ModelInit<Label>) => Label) & {
   copyOf(source: Label, mutator: (draft: MutableModel<Label>) => MutableModel<Label> | void): Label;
 }
 
-type EagerImage = {
+type EagerPhoto = {
   readonly id: string;
   readonly name: string;
   readonly rect: Rect;
@@ -69,7 +69,7 @@ type EagerImage = {
   readonly updatedAt?: string | null;
 }
 
-type LazyImage = {
+type LazyPhoto = {
   readonly id: string;
   readonly name: string;
   readonly rect: Rect;
@@ -84,8 +84,8 @@ type LazyImage = {
   readonly updatedAt?: string | null;
 }
 
-export declare type Image = LazyLoading extends LazyLoadingDisabled ? EagerImage : LazyImage
+export declare type Photo = LazyLoading extends LazyLoadingDisabled ? EagerPhoto : LazyPhoto
 
-export declare const Image: (new (init: ModelInit<Image>) => Image) & {
-  copyOf(source: Image, mutator: (draft: MutableModel<Image>) => MutableModel<Image> | void): Image;
+export declare const Photo: (new (init: ModelInit<Photo>) => Photo) & {
+  copyOf(source: Photo, mutator: (draft: MutableModel<Photo>) => MutableModel<Photo> | void): Photo;
 }

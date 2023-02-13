@@ -2,5 +2,11 @@
   "AppSyncApiName": "bccapp",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2023-02-13T12:30:54.344Z"
+  "AuthModeLastUpdated": "2023-02-13T14:58:50.949Z",
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authbccapp",
+      "Outputs.UserPoolId"
+    ]
+  }
 }

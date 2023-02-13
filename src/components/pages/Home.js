@@ -6,7 +6,7 @@ import { PhotosView, PhotoPost } from '../views'
 
 import { Toolbar } from '@mui/material'
 
-import { Storage } from 'aws-amplify'
+import { Storage, } from 'aws-amplify'
 
 const Home = (props) => {
 
@@ -17,7 +17,7 @@ const Home = (props) => {
 
   const fetchS3Objects = async () => {
     try {
-      const ret = await Storage.list('req/', { level: 'protected' })
+      const ret = await Storage.list('', { level: 'protected' })
       console.debug('Fetch s3 objects', ret)
       setPhotoObjects(ret.results)
     }
@@ -28,8 +28,8 @@ const Home = (props) => {
 
   const putS3Object = async (key, file) => {
     try {
-      const ret = await Storage.put('req/' + key, file, { level: 'protected' })
-      console.debug('Put s3 object', ret)
+      console.debug('Put s3 object: ', key, file)
+      return await Storage.put('' + key, file, { level: 'private' })
     }
     catch (e) {
       console.error(e)
@@ -44,6 +44,25 @@ const Home = (props) => {
     catch (e) {
       console.error(e)
     }
+  }
+
+  const loadImage = async (src) => {
+    console.debug('LoadImage: ', src)
+
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+
+      img.onload = () => {
+        URL.revokeObjectURL(img.src);
+        resolve({
+          width: img.naturalWidth,
+          height: img.naturalHeight
+        })
+      }
+
+      img.onerror = (e) => { reject(e) }
+      img.src = URL.createObjectURL(src);
+    })
   }
 
   useEffect(() => {
@@ -76,9 +95,8 @@ const Home = (props) => {
         open={drawer} />
 
       <Toolbar />
-      
+
       <main>
-        {/* Views */}
         <PhotosView
           photos={photos} />
 
@@ -86,12 +104,27 @@ const Home = (props) => {
           onSend={async (files) => {
             // files: list of File type
             await Promise.all(files.map(async (file, idx) => {
+
               const fname = file.name.split('.').shift() //get file name without explanation
               const type = file.name.split('.').pop()
+              const fsize = file.size
               const date = new Date()
               const key = `${fname}_${date.getTime()}.${type}`
-              // console.log(key)
-              await putS3Object(key, file)
+
+              const { w, h } = await loadImage(file)
+
+              // const ret = await putS3Object(key, file)
+              // const ret2 = await DataStore.save(
+              //   new Image({
+              //     name: fname,
+              //     rect: {
+              //       width: _img.width,
+              //       height: _img.height
+              //     },
+              //     size: fsize,
+              //   })
+              // )
+
             }))
 
             fetchS3Objects()
