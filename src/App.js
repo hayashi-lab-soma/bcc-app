@@ -1,8 +1,10 @@
 import React, { useEffect, useState, } from 'react'
 
+import { Home, } from './components/pages'
 import { AppHeader, } from './components/templates'
+import { Toolbar } from '@mui/material'
 
-import { HeaderContents, BodyContents } from './components'
+import { BodyContents } from './components'
 import S3ImageGallary from './ImageGallary'
 
 import { Amplify, Auth } from 'aws-amplify'
@@ -65,11 +67,8 @@ const App = ({ signOut, user }) => {
   return (
     <div>
       <BrowserRouter>
-        <AppHeader />
 
-        {/* <HeaderContents
-          username={user.username}
-          onClick={signOut} /> */}
+
 
         <Routes>
 
@@ -77,9 +76,16 @@ const App = ({ signOut, user }) => {
             element=
             {
               credential !== null &&
-              <BodyContents
-                username={user.username}
-                identityId={credential.identityId} />
+
+              (
+                <Home
+                  username={user.username} />
+                
+              )
+              
+              // <BodyContents
+              //     username={user.username}
+              //     identityId={credential.identityId} />
             }
           />
 

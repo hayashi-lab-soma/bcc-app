@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { AppBar, Menu, } from '@mui/material'
+import { AppBar, } from '@mui/material'
 import { Toolbar, Typography, } from '@mui/material'
 import { Button, IconButton, } from '@mui/material'
 
@@ -10,7 +10,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 const AppHeader = (props) => {
   return (
     <div>
-      <AppBar>
+      <AppBar
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1
+        }}>
 
         <Toolbar>
 
@@ -19,7 +22,8 @@ const AppHeader = (props) => {
             color='inherit'
             sx={{
               mr: 2
-            }}>
+            }}
+            onClick={props.onClickMenu}>
             <MenuIcon />
           </IconButton>
 
@@ -29,15 +33,20 @@ const AppHeader = (props) => {
               display: 'flex',
               flexGrow: 1
             }}>
-            ビーチクリーンWebサービス 漂着ゴミ検出AI
+            BCWebサービス 漂着ゴミ検出
           </Typography>
 
 
-          <IconButton
+          {/* <IconButton
             size='large'
             color='inherit'>
             <AccountCircleIcon />
-          </IconButton>
+          </IconButton> */}
+
+          <Button
+            color='inherit'>
+            {props.username}
+          </Button>
 
         </Toolbar>
 
