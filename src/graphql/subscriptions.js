@@ -59,23 +59,11 @@ export const onCreateImage = /* GraphQL */ `
         latitude
         longitude
       }
-      album {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      albumImagesId
     }
   }
 `;
@@ -98,23 +86,11 @@ export const onUpdateImage = /* GraphQL */ `
         latitude
         longitude
       }
-      album {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      albumImagesId
     }
   }
 `;
@@ -136,75 +112,6 @@ export const onDeleteImage = /* GraphQL */ `
       location {
         latitude
         longitude
-      }
-      album {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      albumImagesId
-    }
-  }
-`;
-export const onCreateAlbum = /* GraphQL */ `
-  subscription OnCreateAlbum($filter: ModelSubscriptionAlbumFilterInput) {
-    onCreateAlbum(filter: $filter) {
-      id
-      name
-      auther
-      autherId
-      images {
-        nextToken
-        startedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateAlbum = /* GraphQL */ `
-  subscription OnUpdateAlbum($filter: ModelSubscriptionAlbumFilterInput) {
-    onUpdateAlbum(filter: $filter) {
-      id
-      name
-      auther
-      autherId
-      images {
-        nextToken
-        startedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteAlbum = /* GraphQL */ `
-  subscription OnDeleteAlbum($filter: ModelSubscriptionAlbumFilterInput) {
-    onDeleteAlbum(filter: $filter) {
-      id
-      name
-      auther
-      autherId
-      images {
-        nextToken
-        startedAt
       }
       createdAt
       updatedAt

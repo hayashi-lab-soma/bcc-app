@@ -26,15 +26,7 @@ type Image @model @auth(rules: [{allow: public}]) {
   date: AWSDate
   time: AWSTime
   location: Location
-  album: Album @belongsTo
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
-
-type Album @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String
-  auther: String
-  autherId: String
-  images: [Image] @hasMany
-}
+ 

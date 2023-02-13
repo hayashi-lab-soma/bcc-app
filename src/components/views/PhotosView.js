@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { } from 'react'
 
-import { ImageList, ImageListItem, } from '@mui/material'
+import { PhotoList } from '../templates'
 import { Box, Divider, Typography } from '@mui/material'
-
-import { Image } from '@aws-amplify/ui-react'
 
 const PhotosView = (props) => {
 
@@ -26,30 +24,9 @@ const PhotosView = (props) => {
             <Typography variant='h6'>{`画像一覧（${props.photos.length}件）`}</Typography>
           </Divider>
 
-          <ImageList
-            gap={8}
-            cols={3}
-            sx={{
-              width: '80%',
-              maxHeight: 600
-            }}>
-            {
-              props.photos.map((photo, idx) => {
-                return (
-                  <ImageListItem
-                    key={idx}>
+          <PhotoList
+            photos={props.photos} />
 
-                    <Image
-                      objectFit={'contain'}
-                      height={240}
-                      src={photo}
-                      alt={'posted'} />
-
-                  </ImageListItem>
-                )
-              })
-            }
-          </ImageList>
         </Box>
 
       </Box>

@@ -3,12 +3,10 @@
   "serviceConfiguration": {
     "apiName": "bccapp",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/Users/tominaga/ws/bcc-app/amplify/backend/api/bccapp/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
-      "expirationTime": 365,
-      "apiKeyExpirationDate": "2023-03-23T04:24:24.623Z",
-      "keyDescription": "public"
+      "keyDescription": "api key description",
+      "expirationTime": 30
     },
     "additionalAuthTypes": [
       {

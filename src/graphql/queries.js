@@ -81,23 +81,11 @@ export const getImage = /* GraphQL */ `
         latitude
         longitude
       }
-      album {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      albumImagesId
     }
   }
 `;
@@ -122,7 +110,6 @@ export const listImages = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        albumImagesId
       }
       nextToken
       startedAt
@@ -151,78 +138,6 @@ export const syncImages = /* GraphQL */ `
         key
         date
         time
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        albumImagesId
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getAlbum = /* GraphQL */ `
-  query GetAlbum($id: ID!) {
-    getAlbum(id: $id) {
-      id
-      name
-      auther
-      autherId
-      images {
-        nextToken
-        startedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listAlbums = /* GraphQL */ `
-  query ListAlbums(
-    $filter: ModelAlbumFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAlbums(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncAlbums = /* GraphQL */ `
-  query SyncAlbums(
-    $filter: ModelAlbumFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAlbums(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        auther
-        autherId
         createdAt
         updatedAt
         _version

@@ -71,23 +71,11 @@ export const createImage = /* GraphQL */ `
         latitude
         longitude
       }
-      album {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      albumImagesId
     }
   }
 `;
@@ -113,23 +101,11 @@ export const updateImage = /* GraphQL */ `
         latitude
         longitude
       }
-      album {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      albumImagesId
     }
   }
 `;
@@ -154,84 +130,6 @@ export const deleteImage = /* GraphQL */ `
       location {
         latitude
         longitude
-      }
-      album {
-        id
-        name
-        auther
-        autherId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      albumImagesId
-    }
-  }
-`;
-export const createAlbum = /* GraphQL */ `
-  mutation CreateAlbum(
-    $input: CreateAlbumInput!
-    $condition: ModelAlbumConditionInput
-  ) {
-    createAlbum(input: $input, condition: $condition) {
-      id
-      name
-      auther
-      autherId
-      images {
-        nextToken
-        startedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateAlbum = /* GraphQL */ `
-  mutation UpdateAlbum(
-    $input: UpdateAlbumInput!
-    $condition: ModelAlbumConditionInput
-  ) {
-    updateAlbum(input: $input, condition: $condition) {
-      id
-      name
-      auther
-      autherId
-      images {
-        nextToken
-        startedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteAlbum = /* GraphQL */ `
-  mutation DeleteAlbum(
-    $input: DeleteAlbumInput!
-    $condition: ModelAlbumConditionInput
-  ) {
-    deleteAlbum(input: $input, condition: $condition) {
-      id
-      name
-      auther
-      autherId
-      images {
-        nextToken
-        startedAt
       }
       createdAt
       updatedAt
