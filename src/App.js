@@ -2,8 +2,6 @@ import React, { useEffect, useState, } from 'react'
 
 import { Home, } from './components/pages'
 
-import S3ImageGallary from './ImageGallary'
-
 import { Amplify, Auth } from 'aws-amplify'
 import { Logger, AWSCloudWatchProvider, } from 'aws-amplify'
 
@@ -67,20 +65,11 @@ const App = ({ signOut, user }) => {
         <Routes>
 
           <Route path='/'
-            element=
-            {
-              credential !== null &&
-              (
-                <Home
-                  username={user.username} />
-              )
+            element={
+              <Home
+                username={user.username} />
             }
           />
-
-          <Route path='public'
-            element={
-              <S3ImageGallary />
-            } />
 
         </Routes>
       </BrowserRouter>
