@@ -1,25 +1,25 @@
 
 import React, { useState, useEffect } from 'react'
 
-import { AppHeader, AppDrawer, } from '../templates'
-import { PhotosView, PhotoPost } from '../views'
+import { AppBase } from '../templates'
+import { InferencedPhotos, PhotoPost } from '../views'
 
 import { Toolbar } from '@mui/material'
 
-import { Storage, } from 'aws-amplify'
+import { Storage, DataStore, } from 'aws-amplify'
+import { Photo, Rect, } from '../../models'
 
 const Home = (props) => {
 
-  const [photoObjects, setPhotoObjects] = useState([])
-  const [photos, setPhotos] = useState([])
-
-  const [drawer, setDrawer] = useState(false)
+  const [thumbnailObjects, setThumbnailObjects] = useState([])
+  const [thumbURLs, setThumbURLs] = useState([])
 
   const fetchS3Objects = async () => {
     try {
-      const ret = await Storage.list('', { level: 'protected' })
+      const ret = await Storage.list('thumb_', { level: 'protected' })
       console.debug('Fetch s3 objects', ret)
-      setPhotoObjects(ret.results)
+      const sorted_results = ret.results.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
+      setThumbnailObjects(sorted_results)
     }
     catch (e) {
       console.error(e)
@@ -71,34 +71,31 @@ const Home = (props) => {
   }, [])
 
   useEffect(async () => {
-    const tmp = photoObjects.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
+    // const tmp = photoObjects.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
 
-    await Promise.all(tmp.map(async (obj, idx) => {
+    // await Promise.all(tmp.map(async (obj, idx) => {
+    await Promise.all(thumbnailObjects.map(async (obj, idx) => {
       return await getS3ObjectURL(obj.key)
     }))
       .then((res) => {
         console.debug('Photo URLs', res)
-        setPhotos(res)
+        setThumbURLs(res)
       })
 
-  }, [photoObjects])
+  }, [thumbnailObjects])
 
   return (
     <div>
-      <AppHeader
-        username={props.username}
-        onClickMenu={() => {
-          !drawer ? setDrawer(true) : setDrawer(false)
-        }} />
-
-      <AppDrawer
-        open={drawer} />
-
-      <Toolbar />
+      <header>
+        <AppBase
+          username={props.username} />
+      </header>
 
       <main>
-        <PhotosView
-          photos={photos} />
+
+        <InferencedPhotos
+          photos={thumbnailObjects}
+          urls={thumbURLs} />
 
         <PhotoPost
           onSend={async (files) => {
@@ -112,25 +109,30 @@ const Home = (props) => {
               const key = `${fname}_${date.getTime()}.${type}`
 
               const { w, h } = await loadImage(file)
+              const mRect = new Rect({
+                width: w,
+                height: h
+              })
+              const ret = await putS3Object(key, file)
 
-              // const ret = await putS3Object(key, file)
-              // const ret2 = await DataStore.save(
-              //   new Image({
+              // DataStore.save(
+              //   new Photo({
               //     name: fname,
-              //     rect: {
-              //       width: _img.width,
-              //       height: _img.height
-              //     },
+              //     rect: mRect,
               //     size: fsize,
               //   })
               // )
-
+              //   .then((res) => {
+              //     console.debug(res)
+              //   })
+              //   .catch((e) => {
+              //     console.error(e)
+              //   })
             }))
 
-            fetchS3Objects()
+            // fetchS3Objects()
           }} />
       </main>
-
 
     </div>
   )

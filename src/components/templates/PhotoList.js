@@ -11,15 +11,16 @@ const PhotoList = (props) => {
         gap={8}
         cols={3}
         sx={{
-          width: '80%',
-          maxHeight: 600
+          maxHeight: 490
         }}>
         {
-          props.photos.map((photo, idx) => {
+          props.urls.map((url, idx) => {
+
             return (
               <Photo
-                key={idx}
-                photo={photo} />
+                title={props.photos[idx].key}
+                src={url}
+                onFullScreen={() => {props.onFullScreen(idx)}} />
             )
           })
         }
