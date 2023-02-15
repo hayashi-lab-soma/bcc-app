@@ -1,4 +1,4 @@
-import React, { useState, } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { PhotoList } from '../templates'
 import { Box, Divider, Typography } from '@mui/material'
@@ -9,6 +9,9 @@ import { Image } from '@aws-amplify/ui-react'
 import { Storage } from 'aws-amplify'
 
 const InferencedPhotos = (props) => {
+
+  const [photos, setPhotos] = useState([])
+  const [urls, setUrls] = useState([])
 
   const [open, setOpen] = useState(false)
   const [url, setURL] = useState(null)
@@ -22,6 +25,48 @@ const InferencedPhotos = (props) => {
       console.error(e)
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const rawObjects = await Storage.list('raws/', { level: 'protected' })
+        const thumbObjects = await Storage.list('thumbs/', { level: 'protected' })
+        // console.debug(rawObjects.results)
+        // console.debug(thumbObjects.results)
+
+        const sortedRaws = rawObjects.results.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
+        const sortedThumbs = thumbObjects.results.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
+
+        Promise.all(
+          sortedRaws.map((obj, i) => {
+            return {
+              title: obj.key.split('/').pop().split('_').shift(),
+              date: obj.lastModified,
+              raw: obj.key,
+              thumb: sortedThumbs[i].key
+            }
+          })
+        ).then((photos) => {
+          setPhotos(photos)
+        })
+        // console.log(photos)
+      }
+      catch (e) {
+        console.error(e)
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
+    (async () => {
+      return Promise.all(photos.map(async (photo, i) => {
+        return await Storage.get(photo.thumb, { level: 'protected' })
+      }))
+    })()
+      .then((urls) => {
+        setUrls(urls)
+      })
+  }, [photos])
 
   return (
     <div>
@@ -37,7 +82,7 @@ const InferencedPhotos = (props) => {
           sx={{
             m: 2
           }}>
-          <Typography variant='h6'>{`画像一覧（${props.photos.length}件）`}</Typography>
+          <Typography variant='h6'>{`画像一覧（${photos.length}件）`}</Typography>
         </Divider>
 
         <Box
@@ -48,15 +93,11 @@ const InferencedPhotos = (props) => {
           }}>
 
           <PhotoList
-            photos={props.photos}
-            urls={props.urls}
-            onFullScreen={async (idx) => {
-              console.log(props.photos[idx].key)
-              const _key = props.photos[idx].key.replace('thumb_', '')
-              console.log(_key)
-
+            photos={photos}
+            urls={urls}
+            onFullScreen={async (i) => {
+              const _key = photos[i].raw
               const url = await getS3ObjectURL(_key)
-
               setURL(url)
               setOpen(true)
             }} />
@@ -67,7 +108,7 @@ const InferencedPhotos = (props) => {
       <Dialog
         open={open}
         onClose={() => { setOpen(false) }}
-        >
+      >
 
         <Image
           src={url}

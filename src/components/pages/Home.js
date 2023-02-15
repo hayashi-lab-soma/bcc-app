@@ -14,32 +14,10 @@ const Home = (props) => {
   const [thumbnailObjects, setThumbnailObjects] = useState([])
   const [thumbURLs, setThumbURLs] = useState([])
 
-  const fetchS3Objects = async () => {
-    try {
-      const ret = await Storage.list('thumb_', { level: 'protected' })
-      console.debug('Fetch s3 objects', ret)
-      const sorted_results = ret.results.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
-      setThumbnailObjects(sorted_results)
-    }
-    catch (e) {
-      console.error(e)
-    }
-  }
-
   const putS3Object = async (key, file) => {
     try {
       console.debug('Put s3 object: ', key, file)
       return await Storage.put('' + key, file, { level: 'private' })
-    }
-    catch (e) {
-      console.error(e)
-    }
-  }
-
-  const getS3ObjectURL = async (key) => {
-    try {
-      const ret = await Storage.get(key, { level: 'protected' })
-      return ret
     }
     catch (e) {
       console.error(e)
@@ -65,25 +43,6 @@ const Home = (props) => {
     })
   }
 
-  useEffect(() => {
-    console.debug('S3 first fetch')
-    fetchS3Objects()
-  }, [])
-
-  useEffect(async () => {
-    // const tmp = photoObjects.sort((a, b) => -(a.lastModified.getTime() - b.lastModified.getTime()))
-
-    // await Promise.all(tmp.map(async (obj, idx) => {
-    await Promise.all(thumbnailObjects.map(async (obj, idx) => {
-      return await getS3ObjectURL(obj.key)
-    }))
-      .then((res) => {
-        console.debug('Photo URLs', res)
-        setThumbURLs(res)
-      })
-
-  }, [thumbnailObjects])
-
   return (
     <div>
       <header>
@@ -93,9 +52,7 @@ const Home = (props) => {
 
       <main>
 
-        <InferencedPhotos
-          photos={thumbnailObjects}
-          urls={thumbURLs} />
+        <InferencedPhotos />
 
         <PhotoPost
           onSend={async (files) => {
