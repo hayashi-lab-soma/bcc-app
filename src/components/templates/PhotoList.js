@@ -24,6 +24,7 @@ const PhotoList = (props) => {
               key={idx}
               title={props.photos[idx].title}
               date={props.photos[idx].date.toLocaleString()}
+              isLoding={props.photos[idx].isLoding}
               src={url}
               height={ITEM_HEIGHT}
               onFullScreen={() => { props.onFullScreen(idx) }} />
