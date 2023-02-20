@@ -4,12 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { AppBase } from '../templates'
 import { InferencedPhotos, PhotoPost } from '../views'
 
-import { Toolbar } from '@mui/material'
-
 import { Storage, DataStore, } from 'aws-amplify'
 import { Photo, Rect, } from '../../models'
 
 const Home = (props) => {
+  const [tab, setTab] = useState(0)
 
   const [thumbnailObjects, setThumbnailObjects] = useState([])
   const [thumbURLs, setThumbURLs] = useState([])
@@ -51,8 +50,8 @@ const Home = (props) => {
       </header>
 
       <main>
-
         <InferencedPhotos />
+
 
         <PhotoPost
           onSend={async (files) => {
@@ -87,7 +86,7 @@ const Home = (props) => {
               //   })
             }))
 
-            
+
 
             // fetchS3Objects()
           }} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, } from 'react'
 
-import { Home, } from './components/pages'
+import { Charts, Home, } from './components/pages'
 
 import { Amplify, Auth } from 'aws-amplify'
 import { Logger, AWSCloudWatchProvider, } from 'aws-amplify'
@@ -29,31 +29,31 @@ const logger = new Logger('BccAppLogger', LOG_LEVEL)
 const App = ({ signOut, user }) => {
 
   //--------------------------------------------------
-  const [credential, setCredential] = useState(null)
+  // const [credential, setCredential] = useState(null)
 
   //ComponentDidMount effect
-  useEffect(() => {
+  // useEffect(() => {
 
-    // change and create logStream (if there is not it)
-    Amplify.configure({
-      Logging: {
-        logGroupName: `/${loggerPrefix}/${appName}`,
-        logStreamName: user.username,
-      },
-      ...awsconfig
-    })
-    Amplify.register(logger)
-    logger.addPluggable(new AWSCloudWatchProvider())
-    // logger.info(`Sing-in ${user.username}`)
+  //   // change and create logStream (if there is not it)
+  //   Amplify.configure({
+  //     Logging: {
+  //       logGroupName: `/${loggerPrefix}/${appName}`,
+  //       logStreamName: user.username,
+  //     },
+  //     ...awsconfig
+  //   })
+  //   Amplify.register(logger)
+  //   logger.addPluggable(new AWSCloudWatchProvider())
+  //   // logger.info(`Sing-in ${user.username}`)
 
-    getCurrentCredentials()
+  //   getCurrentCredentials()
 
-  }, [])
+  // }, [])
 
-  const getCurrentCredentials = async () => {
-    const _credential = await Auth.currentUserCredentials()
-    setCredential(_credential)
-  }
+  // const getCurrentCredentials = async () => {
+  //   const _credential = await Auth.currentUserCredentials()
+  //   setCredential(_credential)
+  // }
   //--------------------------------------------------
 
   //--------------------------------------------------
@@ -64,10 +64,18 @@ const App = ({ signOut, user }) => {
       <BrowserRouter>
         <Routes>
 
-          <Route path='/'
+          <Route
+            path='/'
             element={
               <Home
                 username={user.username} />
+            }
+          />
+
+          <Route
+            path='/charts'
+            element={
+              <Charts />
             }
           />
 

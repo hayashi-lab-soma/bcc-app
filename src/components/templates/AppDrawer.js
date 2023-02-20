@@ -6,8 +6,10 @@ import { Toolbar } from '@mui/material'
 import { List, ListItem, ListItemButton, ListItemIcon } from '@mui/material'
 
 import HomeIcon from '@mui/icons-material/Home'
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import HelpIcon from '@mui/icons-material/Help'
 import SettingsIcon from '@mui/icons-material/Settings'
+import { Link } from 'react-router-dom'
 
 const AppDrawer = (props) => {
   return (
@@ -25,7 +27,16 @@ const AppDrawer = (props) => {
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
-              Home
+              <Link to='/'>Home</Link>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem key='charts'>
+            <ListItemButton>
+              <ListItemIcon>
+                <EqualizerIcon />
+              </ListItemIcon>
+              <Link to='/charts'>Charts</Link>
             </ListItemButton>
           </ListItem>
 
