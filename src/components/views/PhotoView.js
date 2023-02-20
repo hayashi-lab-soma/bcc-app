@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { PhotoList } from '../templates'
+import { PhotoList, PhotoFullScreenDialog, } from '../templates'
 import { Box, CircularProgress, DialogContent, Divider, Typography } from '@mui/material'
 import { Dialog } from '@mui/material'
 
@@ -111,32 +111,12 @@ const InferencedPhotos = (props) => {
         </Box>
       </Box>
 
-      <Dialog
+      <PhotoFullScreenDialog
         open={open}
-        onClose={() => {
-          setOpen(false)
-          setURL('')
-        }}>
-
-        <DialogContent>
-          {
-            !isLoding ?
-              <Image
-                src={url}
-                alt={'full screen'}
-                loading='lazy'
-              /> :
-              <Box
-                sx={{
-                  display: 'flex',
-                }}>
-                <CircularProgress />
-              </Box>
-          }
-
-        </DialogContent>
-
-      </Dialog>
+        onClose={() => {setOpen(false)}}
+        isLoding={isLoding}
+        url={url} />
+        
     </div >
   )
 }
