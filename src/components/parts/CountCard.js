@@ -15,6 +15,8 @@ const CountCard = (props) => {
         <Typography variant='h4'>{props.numPhotos}枚</Typography>
         <Typography color={"secondary.main"}>AI推論処理件数</Typography>
         <Typography variant='h6'>{props.numInferenced}枚</Typography>
+        <Typography color={"primary.main"}>ゴミ検出数</Typography>
+        <Typography variant='h4'>{props.numGarbages}個</Typography>
       </CardContent>
     </Card >
   )

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { CountCard, } from '../parts'
+import { CountCard, PieChartCard, BarChartCard } from '../parts'
 
-import { Box, Grid, Typography, } from '@mui/material'
-import { Card, CardContent, } from '@mui/material'
+import { Box, Grid, } from '@mui/material'
 import { Storage } from 'aws-amplify'
 import { Chart, registerables } from "chart.js"
-import { Bar, Pie } from 'react-chartjs-2'
-
 Chart.register(...registerables)
 
 const ChartsView = (props) => {
@@ -110,27 +107,6 @@ const ChartsView = (props) => {
     setNumGarbages(total)
   }, [data])
 
-  // const data = {
-  //   labels,
-  //   datasets: [
-  //     {
-  //       label: 'Garbages',
-  //       data: [1, 2, 3]
-  //     }
-  //   ]
-  // }
-  // const options = {
-  //   responsive: true,
-  //   plugins: {
-  //     legend: {
-  //       display: false,
-  //     },
-  //     title: {
-  //       display: false
-  //     }
-  //   }
-  // }
-
   return (
     <div>
       <Box
@@ -141,61 +117,21 @@ const ChartsView = (props) => {
 
         <Grid container spacing={2}>
 
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
             <CountCard
               numPhotos={numPhotos}
-              numInferenced={numInferencedPhotos} />
+              numInferenced={numInferencedPhotos}
+              numGarbages={numGarbages} />
           </Grid>
 
-          <Grid item xs={12} md={9}>
-            <Card>
-              <CardContent>
-                <Typography color={"primary.main"}>ゴミ合計数</Typography>
-                <Typography variant='h4'>{numGarbages}個</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={5}>
-            <Card>
-              <CardContent>
-                <Typography variant='h6' color={'primary.main'}>種類別割合</Typography>
-                <Pie
-                  data={data}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: {
-                        display: false
-                      },
-                      title: {
-                        display: false
-                      }
-                    }
-                  }} />
-              </CardContent>
-            </Card>
+          <Grid item xs={12} md={6}>
+            <PieChartCard
+              data={data} />
           </Grid>
 
           <Grid item xs={12} md={12}>
-            <Card>
-              <CardContent>
-                <Typography variant='h6' color={'primary.main'}>ゴミ種類別 個数</Typography>
-                <Bar
-                  data={data}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: {
-                        display: false
-                      },
-                      title: {
-                        display: false
-                      }
-                    }
-                  }} />
-              </CardContent>
-            </Card>
+            <BarChartCard 
+            data={data}/>
           </Grid>
 
         </Grid>
