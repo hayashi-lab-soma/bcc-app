@@ -87,7 +87,7 @@ const InferencedPhotos = (props) => {
           sx={{
             m: 2
           }}>
-          <Typography variant='h6'>{`画像一覧（${photos.length}件）`}</Typography>
+          <Typography variant='h6'>{`検出結果一覧（${photos.length}件）`}</Typography>
         </Divider>
 
         <Box

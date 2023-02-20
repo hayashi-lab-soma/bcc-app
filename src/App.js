@@ -26,6 +26,11 @@ const logger = new Logger('BccAppLogger', LOG_LEVEL)
 // const BUCKET = awsconfig.aws_user_files_s3_bucket
 // const REGION = awsconfig.aws_user_files_s3_bucket_region
 
+//--------------------------------------------------
+//  Component "App"
+//  role:
+//    Routing each page component which attached path
+//--------------------------------------------------
 const App = ({ signOut, user }) => {
 
   //--------------------------------------------------

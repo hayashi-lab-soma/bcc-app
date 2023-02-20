@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import { CountCard, } from '../parts'
+
 import { Box, Grid, Typography, } from '@mui/material'
 import { Card, CardContent, } from '@mui/material'
 import { Storage } from 'aws-amplify'
@@ -11,21 +13,39 @@ Chart.register(...registerables)
 const ChartsView = (props) => {
 
   const [numPhotos, setNumPhotos] = useState(0)
+  const [numInferencedPhotos, setNumInferencedPhotos] = useState(0)
   const [numGarbages, setNumGarbages] = useState(0)
   const [jsonObjs, setJsonObjs] = useState([])
 
-  const labels = ['アルミホイル', 'Battery', 'Aluminium blister pack', 'Carded blister pack', 'Other plastic bottle', 'Clear plastic bottle', 'Glass bottle', 'Plastic bottle cap', 'Metal bottle cap', 'Broken glass', 'Food Can', 'Aerosol', 'Drink can', 'Toilet tube', 'Other carton', 'Egg carton', 'Drink carton', 'Corrugated carton', 'Meal carton', 'Pizza box', 'Paper cup', 'Disposable plastic cup', 'Foam cup', 'Glass cup', 'Other plastic cup', 'Food waste', 'Glass jar', 'Plastic lid', 'Metal lid', 'Other plastic', 'Magazine paper', 'Tissues', 'Wrapping paper', 'Normal paper', 'Paper bag', 'Plastified paper bag', 'Plastic film', 'Six pack rings', 'Garbage bag', 'Other plastic wrapper', 'Single-use carrier bag', 'Polypropylene bag', 'Crisp packet', 'Spread tub', 'Tupperware', 'Disposable food container', 'Foam food container', 'Other plastic container', 'Plastic glooves', 'Plastic utensils', 'Pop tab', 'Rope & strings', 'Scrap metal', 'Shoe', 'Squeezable tube', 'Plastic straw', 'Paper straw', 'Styrofoam piece', 'Unlabeled litter', 'Cigarette']
+  const labels = [
+    'Alminum foil',
+    'Battery',
+    'Aluminium blister pack',
+    'Carded blister pack',
+    'Other plastic bottle',
+    'Clear plastic bottle',
+    'Glass bottle',
+    'Plastic bottle cap',
+    'Metal bottle cap',
+    'Broken glass', 'Food Can', 'Aerosol', 'Drink can', 'Toilet tube', 'Other carton', 'Egg carton', 'Drink carton', 'Corrugated carton', 'Meal carton', 'Pizza box', 'Paper cup', 'Disposable plastic cup', 'Foam cup', 'Glass cup', 'Other plastic cup', 'Food waste', 'Glass jar', 'Plastic lid', 'Metal lid', 'Other plastic', 'Magazine paper', 'Tissues', 'Wrapping paper', 'Normal paper', 'Paper bag', 'Plastified paper bag', 'Plastic film', 'Six pack rings', 'Garbage bag', 'Other plastic wrapper', 'Single-use carrier bag', 'Polypropylene bag', 'Crisp packet', 'Spread tub', 'Tupperware', 'Disposable food container', 'Foam food container', 'Other plastic container', 'Plastic glooves', 'Plastic utensils', 'Pop tab', 'Rope & strings', 'Scrap metal', 'Shoe', 'Squeezable tube', 'Plastic straw', 'Paper straw', 'Styrofoam piece', 'Unlabeled litter', 'Cigarette']
 
   const [data, setData] = useState({
     labels,
-    datasets: [{ label: 'Garbages', data: new Array(labels.length).fill(0) }]
+    datasets: [
+      {
+        label: 'Garbages',
+        data: new Array(labels.length).fill(0)
+      }
+    ]
   })
 
   const fetch = async () => {
     try {
-      const photos = await Storage.list('raws/', { level: 'protected' })
+      const photos = await Storage.list('', { level: 'private' })
+      const inferences = await Storage.list('raws/', { level: 'protected' })
       // console.log(photos.results.length)
       setNumPhotos(photos.results.length)
+      setNumInferencedPhotos(inferences.results.length)
     }
     catch (e) {
       console.error(e)
@@ -122,12 +142,9 @@ const ChartsView = (props) => {
         <Grid container spacing={2}>
 
           <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent>
-                <Typography color={"primary.main"}>画像枚数</Typography>
-                <Typography variant='h4'>{numPhotos}枚</Typography>
-              </CardContent>
-            </Card>
+            <CountCard
+              numPhotos={numPhotos}
+              numInferenced={numInferencedPhotos} />
           </Grid>
 
           <Grid item xs={12} md={9}>
