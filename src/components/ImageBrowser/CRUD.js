@@ -1,8 +1,0 @@
-
-const create = () => {
-
-}
-
-const read = () => {
-  
-}
