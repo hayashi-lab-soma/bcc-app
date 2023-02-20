@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { AppBase } from '../templates'
-import { InferencedPhotos, PhotoPost } from '../views'
+import { PhotoView, PhotoPost } from '../views'
 
 //--------------------------------------------------
 //  Component "HomePage"
@@ -18,7 +18,7 @@ const HomePage = (props) => {
       </header>
 
       <main>
-        <InferencedPhotos />
+        <PhotoView />
         <PhotoPost />
       </main>
 

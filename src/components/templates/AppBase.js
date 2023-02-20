@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 
-import AppHeader from './AppHeader'
-import AppDrawer from './AppDrawer'
-
+import { AppHeader, AppDrawer} from '../parts'
 import { Toolbar } from '@mui/material'
 
 const AppBase = (props) => {
