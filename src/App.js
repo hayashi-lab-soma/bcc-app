@@ -1,6 +1,6 @@
 import React, { useEffect, useState, } from 'react'
 
-import { Charts, Home, } from './components/pages'
+import { HomePage, DashboardPage } from './components/pages'
 
 import { Amplify, Auth } from 'aws-amplify'
 import { Logger, AWSCloudWatchProvider, } from 'aws-amplify'
@@ -66,17 +66,11 @@ const App = ({ signOut, user }) => {
 
           <Route
             path='/'
-            element={
-              <Home
-                username={user.username} />
-            }
+            element={<HomePage username={user.username} />}
           />
 
           <Route
-            path='/charts'
-            element={
-              <Charts />
-            }
+            path='/dashboard' element={<DashboardPage username={user.username} />}
           />
 
         </Routes>

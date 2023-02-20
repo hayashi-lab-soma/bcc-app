@@ -7,7 +7,6 @@ import { Dialog } from '@mui/material'
 import { Image } from '@aws-amplify/ui-react'
 
 import { Storage } from 'aws-amplify'
-import { setIdleTask } from 'idle-task'
 
 const InferencedPhotos = (props) => {
 

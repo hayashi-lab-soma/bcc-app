@@ -3,7 +3,7 @@ import React from 'react'
 import { ChartsView } from '../views'
 import { AppBase, } from '../templates'
 
-const Charts = (props) => {
+const DashboardPage = (props) => {
   return (
     <div>
       <header>
@@ -19,4 +19,4 @@ const Charts = (props) => {
   )
 }
 
-export default Charts
+export default DashboardPage

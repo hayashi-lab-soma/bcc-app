@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { AppBase } from '../templates'
 import { InferencedPhotos, PhotoPost } from '../views'
 
-const Home = (props) => {
+const HomePage = (props) => {
   return (
     <div>
       <header>
@@ -21,4 +21,4 @@ const Home = (props) => {
   )
 }
 
-export default Home
+export default HomePage

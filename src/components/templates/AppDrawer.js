@@ -23,21 +23,27 @@ const AppDrawer = (props) => {
 
         <List>
           <ListItem key='home'>
-            <ListItemButton>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <Link to='/'>Home</Link>
-            </ListItemButton>
+
+            <Link to='/'>
+              <ListItemButton>
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                Home
+              </ListItemButton>
+            </Link>
+
           </ListItem>
 
-          <ListItem key='charts'>
-            <ListItemButton>
-              <ListItemIcon>
-                <EqualizerIcon />
-              </ListItemIcon>
-              <Link to='/charts'>Charts</Link>
-            </ListItemButton>
+          <ListItem key='dashboard'>
+            <Link to='/dashboard'>
+              <ListItemButton>
+                <ListItemIcon>
+                  <EqualizerIcon />
+                </ListItemIcon>
+                Dashboard
+              </ListItemButton>
+            </Link>
           </ListItem>
 
           <ListItem key='help'>
