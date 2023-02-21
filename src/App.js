@@ -1,8 +1,8 @@
-import React, { useEffect, useState, } from 'react'
+import React from 'react'
 
 import { HomePage, DashboardPage } from './components/pages'
 
-import { Amplify, Auth } from 'aws-amplify'
+import { Amplify, Auth, API } from 'aws-amplify'
 import { Logger, AWSCloudWatchProvider, } from 'aws-amplify'
 
 import { withAuthenticator, } from '@aws-amplify/ui-react'
@@ -60,13 +60,15 @@ const App = ({ signOut, user }) => {
   //   setCredential(_credential)
   // }
   //--------------------------------------------------
-
+  
   //--------------------------------------------------
   // rendering function
   //--------------------------------------------------
   return (
     <div>
+      
       <BrowserRouter>
+      
         <Routes>
 
           <Route

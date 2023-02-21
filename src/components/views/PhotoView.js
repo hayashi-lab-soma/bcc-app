@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
 import { PhotoList, PhotoFullScreenDialog, } from '../templates'
-import { Box, CircularProgress, DialogContent, Divider, Typography } from '@mui/material'
-import { Dialog } from '@mui/material'
-
-import { Image } from '@aws-amplify/ui-react'
+import { Box, Divider, Typography } from '@mui/material'
 
 import { Storage } from 'aws-amplify'
 
-const InferencedPhotos = (props) => {
+const PhotosView = (props) => {
 
   const [photos, setPhotos] = useState([])
   const [urls, setUrls] = useState([])
@@ -18,7 +15,7 @@ const InferencedPhotos = (props) => {
   const [url, setURL] = useState(null)
 
   const fetch = async () => {
-    console.debug('Fetch')
+    // console.debug('Fetch')
     try {
       const rawObjects = await Storage.list('raws/', { level: 'protected' })
       const thumbObjects = await Storage.list('thumbs/', { level: 'protected' })
@@ -52,13 +49,6 @@ const InferencedPhotos = (props) => {
     fetch()
   }, [])
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     fetch()
-  //   }, 10000);
-  //   return () => clearInterval(timer)
-  // }, [])
-
   useEffect(() => {
     (async () => {
       return Promise.all(photos.map(async (photo, i) => {
@@ -75,50 +65,25 @@ const InferencedPhotos = (props) => {
 
   return (
     <div>
-      <Box
-        sx={{
-          // border: '2px solid black',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-
-        <Divider
-          textAlign='left'
-          sx={{
-            m: 2
-          }}>
-          <Typography variant='h6'>{`検出結果一覧（${photos.length}件）`}</Typography>
-        </Divider>
-
-        <Box
-          sx={{
-            mr: 5,
-            ml: 5,
-            mb: 5,
-          }}>
-
-          <PhotoList
-            photos={photos}
-            urls={urls}
-            onFullScreen={async (i) => {
-              setOpen(true)
-              setLoding(true)
-              const url = await Storage.get(photos[i].raw, { level: 'protected' })
-              setLoding(false)
-              setURL(url)
-            }} />
-
-        </Box>
-      </Box>
+      <PhotoList
+        photos={photos}
+        urls={urls}
+        onFullScreen={async (i) => {
+          setOpen(true)
+          setLoding(true)
+          const url = await Storage.get(photos[i].raw, { level: 'protected' })
+          setLoding(false)
+          setURL(url)
+        }} />
 
       <PhotoFullScreenDialog
         open={open}
-        onClose={() => {setOpen(false)}}
+        onClose={() => { setOpen(false) }}
         isLoding={isLoding}
         url={url} />
-        
+
     </div >
   )
 }
 
-export default InferencedPhotos
+export default PhotosView
