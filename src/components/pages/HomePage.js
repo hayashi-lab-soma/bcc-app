@@ -14,12 +14,13 @@ const HomePage = (props) => {
     <div>
       <header>
         <AppBase
-          username={props.username} />
+          username={props.username}
+          signOut={props.signOut} />
       </header>
 
       <main>
-        <PhotoView />
         <PhotoPost />
+        <PhotoView />
       </main>
 
     </div>

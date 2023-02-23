@@ -7,7 +7,7 @@ const PhotoList = (props) => {
   const LIST_COLS = 2
   const LIST_MAX_HEIGHT = 500
   const ITEM_HEIGHT = 200
-  const ITEM_GAP = 10
+  const ITEM_GAP = 12
 
   return (
     <div>
@@ -22,10 +22,14 @@ const PhotoList = (props) => {
 
       <ImageList
         gap={ITEM_GAP}
-        cols={LIST_COLS}
+        // cols={LIST_COLS}
+
         sx={{
+          mb: 8,
           m: 3,
-          maxHeight: LIST_MAX_HEIGHT
+          // maxHeight: LIST_MAX_HEIGHTÏ
+          gridTemplateColumns:
+            'repeat(auto-fill, minmax(280px, 1fr))!important',
         }}>
 
         {

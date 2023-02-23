@@ -5,7 +5,6 @@ import { Toolbar, Typography, } from '@mui/material'
 import { Button, IconButton, } from '@mui/material'
 
 import MenuIcon from '@mui/icons-material/Menu'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 const AppHeader = (props) => {
   return (
@@ -33,18 +32,12 @@ const AppHeader = (props) => {
               display: 'flex',
               flexGrow: 1
             }}>
-            BCWebサービス 漂着ゴミ検出
+            BCC漂着ゴミ検出ウェブサービス
           </Typography>
 
-
-          {/* <IconButton
-            size='large'
-            color='inherit'>
-            <AccountCircleIcon />
-          </IconButton> */}
-
           <Button
-            color='inherit'>
+            color='inherit'
+            onClick={props.signOut}>
             {props.username}
           </Button>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { PhotoList, PhotoFullScreenDialog, } from '../templates'
+import { DropzoneArea } from 'react-mui-dropzone'
 import { Box, Divider, Typography } from '@mui/material'
 
 import { Storage } from 'aws-amplify'
@@ -65,6 +66,8 @@ const PhotosView = (props) => {
 
   return (
     <div>
+     
+
       <PhotoList
         photos={photos}
         urls={urls}

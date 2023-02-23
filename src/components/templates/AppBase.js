@@ -11,6 +11,7 @@ const AppBase = (props) => {
     <div>
       <AppHeader
         username={props.username}
+        signOut={props.signOut}
         onClickMenu={() => {
           !drawer ? setDrawer(true) : setDrawer(false)
         }} />

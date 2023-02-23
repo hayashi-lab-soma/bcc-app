@@ -73,7 +73,7 @@ const App = ({ signOut, user }) => {
 
           <Route
             path='/'
-            element={<HomePage username={user.username} />}
+            element={<HomePage username={user.username} signOut={signOut} />}
           />
 
           <Route

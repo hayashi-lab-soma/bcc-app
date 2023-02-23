@@ -13,7 +13,8 @@ const DashboardPage = (props) => {
     <div>
       <header>
         <AppBase
-          username={props.username} />
+          username={props.username}
+          signOut={props.signOut} />
       </header>
 
       <main>
