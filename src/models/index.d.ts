@@ -30,30 +30,6 @@ export declare type Location = LazyLoading extends LazyLoadingDisabled ? EagerLo
 
 export declare const Location: (new (init: ModelInit<Location>) => Location)
 
-
-
-
-
-type EagerLabel = {
-  readonly id: string;
-  readonly name?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyLabel = {
-  readonly id: string;
-  readonly name?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Label = LazyLoading extends LazyLoadingDisabled ? EagerLabel : LazyLabel
-
-export declare const Label: (new (init: ModelInit<Label>) => Label) & {
-  copyOf(source: Label, mutator: (draft: MutableModel<Label>) => MutableModel<Label> | void): Label;
-}
-
 type EagerPhoto = {
   readonly id: string;
   readonly name: string;

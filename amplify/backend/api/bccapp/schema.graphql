@@ -8,13 +8,6 @@ type Location {
   longitude: Float
 }
 
-type Label @model @auth(rules: [{allow: public}, {allow: private}]) {
-  id: ID!
-  name: String
-  createdAt: AWSDateTime
-  updatedAt: AWSDateTime
-}
-
 type Photo @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   name: String!

@@ -4,10 +4,9 @@ import { schema } from './schema';
 
 
 
-const { Label, Photo, Rect, Location } = initSchema(schema);
+const { Photo, Rect, Location } = initSchema(schema);
 
 export {
-  Label,
   Photo,
   Rect,
   Location

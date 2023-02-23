@@ -12,7 +12,7 @@ const ChartsView = (props) => {
   const [numPhotos, setNumPhotos] = useState(0)
   const [numInferencedPhotos, setNumInferencedPhotos] = useState(0)
   const [numGarbages, setNumGarbages] = useState(0)
-  const [jsonObjs, setJsonObjs] = useState([])
+  const [resultJson, setResultJson] = useState()
 
   const labels = [
     'Alminum foil',
@@ -49,9 +49,12 @@ const ChartsView = (props) => {
     }
 
     try {
-      const jsons = await Storage.list('jsons/', { level: 'protected' })
-      // console.debug(jsons.results)
-      setJsonObjs(jsons.results)
+      const res = await Storage.list('', { level: 'protected' })
+      // const res = await Storage.list('jsons/', { level: 'protected' })
+      // console.debug(res.results)
+      const results = res.results.filter(item => item.key !== "").filter(item => item.key.split('.').pop() === "results")
+      console.debug(results)
+      setResultJson(results[0])
     }
     catch (e) {
       console.error(e)
@@ -65,47 +68,41 @@ const ChartsView = (props) => {
   useEffect(() => {
 
     (async () => {
-      const jsons = await Promise.all(jsonObjs.map(async (jsonObj, i) => {
-        const key = jsonObj.key
-        const blob = await Storage.get(key, { level: 'protected', download: true })
-        const _json = await blob.Body.text()
-        const json = JSON.parse(_json)
-        // console.log(json)
-        return json
-      }))
-      // console.log(ret)
+      const blob = await Storage.get(resultJson.key, { level: 'protected', download: true })
+      const _json = await blob.Body.text()
+      const json = JSON.parse(_json)
 
-      let newData = data.datasets[0].data
-      // console.log(newData)
+      console.debug(json)
 
-      jsons.forEach((json) => {
-        Object.keys(json).forEach((key) => {
-          // console.log(key, json[key])
-          newData[Number(key)] = newData[Number(key)] + json[key].length
-        })
-
-        setData({
-          labels,
-          datasets: [
-            {
-              // label: 'Garbages', 
-              data: newData
-            }
-          ]
-        })
-
+      let countData = new Array(labels.length).fill(0)
+      Object.keys(json).forEach((objId) => {
+        countData[Number(objId)] = Number(json[objId])
       })
+
+      // console.log(countData)
+
+      setData({
+        labels,
+        datasets: [
+          {
+            data: countData
+          }
+        ]
+      })
+
+      setNumGarbages(json['total'])
 
     })()
 
-  }, [jsonObjs])
+  }, [resultJson])
 
-  useEffect(() => {
-    const total = data.datasets[0].data.reduce((sum, elem) => {
-      return sum + elem
-    })
-    setNumGarbages(total)
-  }, [data])
+  // useEffect(() => {
+  //   const total = data.datasets[0].data.reduce((sum, elem) => {
+  //     return sum + elem
+  //   })
+  //   setNumGarbages(total)
+  //   // console.log(data)
+  // }, [data])
 
   return (
     <div>
@@ -130,8 +127,8 @@ const ChartsView = (props) => {
           </Grid>
 
           <Grid item xs={12} md={12}>
-            <BarChartCard 
-            data={data}/>
+            <BarChartCard
+              data={data} />
           </Grid>
 
         </Grid>

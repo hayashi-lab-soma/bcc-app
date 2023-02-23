@@ -5,5 +5,3 @@
  **************************************************************************/
 
 export { default as studioTheme } from "./studioTheme";
-export { default as LabelCreateForm } from "./LabelCreateForm";
-export { default as LabelUpdateForm } from "./LabelUpdateForm";

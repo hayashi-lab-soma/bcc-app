@@ -1,67 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getLabel = /* GraphQL */ `
-  query GetLabel($id: ID!) {
-    getLabel(id: $id) {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listLabels = /* GraphQL */ `
-  query ListLabels(
-    $filter: ModelLabelFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLabels(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLabels = /* GraphQL */ `
-  query SyncLabels(
-    $filter: ModelLabelFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLabels(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getPhoto = /* GraphQL */ `
   query GetPhoto($id: ID!) {
     getPhoto(id: $id) {
