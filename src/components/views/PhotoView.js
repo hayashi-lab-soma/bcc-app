@@ -28,6 +28,7 @@ const PhotosView = (props) => {
           return {
             title: obj.key.match(/\'.*?\'/),
             date: obj.lastModified,
+            size: obj.size,
             raw: obj.key,
             thumb: sortedThumbs[i].key,
             isLoding: true
