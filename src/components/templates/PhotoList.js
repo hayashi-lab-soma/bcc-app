@@ -31,7 +31,7 @@ const PhotoList = (props) => {
           justifyContent: 'center'
         }}>
         <Pagination
-          count={Math.round(props.urls.length / 10.0 + 0.5)}
+          count={Math.round(props.urls.length / 10.0)}
           color='primary'
           page={page}
           onChange={(e, page) => { setPage(page) }} />
@@ -47,14 +47,14 @@ const PhotoList = (props) => {
         }}>
 
         {
-          props.urls.slice((page - 1) * 10, (page - 1) * 10 + 10).map((url, idx) => {
+          props.urls.slice((page - 1) * 10, (page - 1) * 10 + 10).map((url, _idx) => {
+            const idx = (page - 1)*10 + _idx
             return (
               <PhotoListItem
                 key={idx}
                 title={props.photos[idx].title}
                 date={props.photos[idx].date.toLocaleString()}
-                size={props.photos[idx].size}
-                isLoding={props.photos[idx].isLoding}
+                size={props.photos[idx]}
                 src={url}
                 height={ITEM_HEIGHT}
                 onFullScreen={() => { props.onFullScreen(idx) }} />

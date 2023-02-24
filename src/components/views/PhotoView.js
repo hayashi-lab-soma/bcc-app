@@ -31,7 +31,6 @@ const PhotosView = (props) => {
             size: obj.size,
             raw: obj.key,
             thumb: sortedThumbs[i].key,
-            isLoding: true
           }
         })
       ).then((photos) => {
@@ -51,9 +50,7 @@ const PhotosView = (props) => {
   useEffect(() => {
     (async () => {
       return Promise.all(photos.map(async (photo, i) => {
-        photo.isLoding = true
         const url = await Storage.get(photo.thumb, { level: 'protected' })
-        photo.isLoding = false
         return url
       }))
     })()
@@ -64,7 +61,7 @@ const PhotosView = (props) => {
 
   return (
     <div>
-     
+
       <PhotoList
         photos={photos}
         urls={urls}
