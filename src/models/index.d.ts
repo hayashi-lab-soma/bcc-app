@@ -12,10 +12,6 @@ type LazyRect = {
   readonly height?: number | null;
 }
 
-type EventMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
 export declare type Rect = LazyLoading extends LazyLoadingDisabled ? EagerRect : LazyRect
 
 export declare const Rect: (new (init: ModelInit<Rect>) => Rect)
@@ -39,27 +35,11 @@ type EagerPhoto = {
   readonly name: string;
   readonly rect: Rect;
   readonly size: number;
-  readonly auther?: string | null;
-  readonly autherId?: string | null;
   readonly key?: string | null;
   readonly date?: string | null;
   readonly time?: string | null;
-  readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
-
-export declare class Event {
-  readonly id: string;
-  readonly name?: string | null;
-  readonly organizer?: string | null;
-  readonly date?: string | null;
-  readonly time?: string | null;
-  readonly place?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  constructor(init: ModelInit<Event, EventMetaData>);
-  static copyOf(source: Event, mutator: (draft: MutableModel<Event, EventMetaData>) => MutableModel<Event, EventMetaData> | void): Event;
 }
 
 type LazyPhoto = {
@@ -67,12 +47,9 @@ type LazyPhoto = {
   readonly name: string;
   readonly rect: Rect;
   readonly size: number;
-  readonly auther?: string | null;
-  readonly autherId?: string | null;
   readonly key?: string | null;
   readonly date?: string | null;
   readonly time?: string | null;
-  readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

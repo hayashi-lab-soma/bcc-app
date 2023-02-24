@@ -13,12 +13,9 @@ type Photo @model @auth(rules: [{allow: public}, {allow: private}]) {
   name: String!
   rect: Rect!
   size: Int!
-  auther: String
-  autherId: String
   key: String
   date: AWSDate
   time: AWSTime
-  location: Location
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
