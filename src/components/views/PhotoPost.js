@@ -7,9 +7,7 @@ import { PhotoPostDialog, PhotoPostedDialog } from '../templates'
 
 import { Storage } from 'aws-amplify'
 
-
 import AddIcon from '@mui/icons-material/Add'
-
 
 const PhotoPost = (props) => {
   // const files = useRef([])
