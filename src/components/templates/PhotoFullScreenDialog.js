@@ -7,9 +7,12 @@ import { CircularProgress } from '@mui/material'
 
 import { Image, } from '@aws-amplify/ui-react'
 
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Rotate90DegreesCwIcon from '@mui/icons-material/Rotate90DegreesCw'
 import Rotate90DegreesCcwIcon from '@mui/icons-material/Rotate90DegreesCcw'
+import { Transform } from '@mui/icons-material'
 
 const PhotoFullScreenDialog = (props) => {
 
@@ -21,9 +24,7 @@ const PhotoFullScreenDialog = (props) => {
         fullScreen
         open={props.open}
         onClose={props.onClose}
-        sx={{
-          // height: '300px'
-        }}>
+      >
 
         <DialogContent
           sx={{
@@ -77,26 +78,34 @@ const PhotoFullScreenDialog = (props) => {
 
           </Box>
 
-          {
-            showRawPhoto ?
-              <Image
-                objectFit={'contain'}
-                objectPosition={'50% 50%'}
-                src={props.rawPhotoSrc}
-                alt={'...'}
-                loading='lazy'
-                height={'100%'}
-              />
-              :
-              <Image
-                objectFit={'contain'}
-                objectPosition={'50% 50%'}
-                src={props.inputPhotoSrc}
-                alt={'...'}
-                loading='lazy'
-                height={'100%'}
-              />
-          }
+
+          <TransformWrapper
+            initialScale={1}>
+            <TransformComponent>
+              {
+                showRawPhoto ?
+                  <Image
+                    objectFit={'contain'}
+                    objectPosition={'50% 50%'}
+                    src={props.rawPhotoSrc}
+                    alt={'...'}
+                    loading='lazy'
+                    height={'100%'}
+                  />
+                  :
+                  <Image
+                    objectFit={'contain'}
+                    objectPosition={'50% 50%'}
+                    src={props.inputPhotoSrc}
+                    alt={'...'}
+                    loading='lazy'
+                    height={'100%'}
+                  />
+              }
+            </TransformComponent>
+          </TransformWrapper>
+
+
 
 
         </DialogContent>

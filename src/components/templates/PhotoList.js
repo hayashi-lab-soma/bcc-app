@@ -15,7 +15,7 @@ const PhotoList = (props) => {
         gap={ITEM_GAP}
         sx={{
           m: 3,
-          maxHeight: '500px',
+          maxHeight: 380,
           gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))!important',
         }}>
 
