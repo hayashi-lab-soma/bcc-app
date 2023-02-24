@@ -16,5 +16,47 @@
         "bccapp": {}
       }
     }
+  },
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bccapp-staging-84746-authRole",
+      "UnauthRoleArn": "arn:aws:iam::544160245808:role/amplify-bccapp-staging-84746-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::544160245808:role/amplify-bccapp-staging-84746-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-bccapp-staging-84746-deployment",
+      "UnauthRoleName": "amplify-bccapp-staging-84746-unauthRole",
+      "StackName": "amplify-bccapp-staging-84746",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:544160245808:stack/amplify-bccapp-staging-84746/a476e670-ab03-11ec-ad7b-0abeb55318e9",
+      "AmplifyAppId": "d259mard8ld388"
+    },
+    "categories": {
+      "auth": {
+        "bccapp": {}
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bccapp-dev-150346-authRole",
+      "UnauthRoleArn": "arn:aws:iam::544160245808:role/amplify-bccapp-dev-150346-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::544160245808:role/amplify-bccapp-dev-150346-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-bccapp-dev-150346-deployment",
+      "UnauthRoleName": "amplify-bccapp-dev-150346-unauthRole",
+      "StackName": "amplify-bccapp-dev-150346",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:544160245808:stack/amplify-bccapp-dev-150346/0e873c30-aa9b-11ed-a900-0a57e14c851d",
+      "AmplifyAppId": "d259mard8ld388"
+    },
+    "categories": {
+      "auth": {
+        "bccapp": {}
+      },
+      "api": {
+        "bccapp": {}
+      },
+      "storage": {
+        "s3bccappstoragedev": {}
+      }
+    }
   }
 }

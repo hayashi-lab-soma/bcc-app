@@ -1,8 +1,4 @@
-export { default as NemuBar } from './NemuBar';
-export { default as SideBar } from './SideBar';
-export { default as BottomBar } from './BottomBar';
-export { default as S3Browser } from './FileBrowser';
-export { default as AddDialog } from './AddDialog'
-export { default as FileUploadDialog } from './FileUploadDialog';
-export { default as CameraDialog } from './CameraDialog';
-export { default as CapturedImageDialog } from './CapturedImageDialog';
+export { default as HeaderContents } from './HeaderContents'
+export { default as BodyContents } from './BodyContents'
+export {default as ImageBrowser} from './ImageBrowser/ImageBrowser'
+export {default as AlbumBrowser} from './AlbumBrowser/AlbumBrowser'

@@ -1,25 +1,6 @@
-type Rect @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  x: Int
-  y: Int
+type Rect {
   width: Int
   height: Int
-}
-
-type Event @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String
-  organizer: String
-  date: AWSDate
-  time: AWSTime
-  place: String
-}
-
-type Label @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String
-  createdAt: AWSDateTime
-  updatedAt: AWSDateTime
 }
 
 type Location {
@@ -27,14 +8,18 @@ type Location {
   longitude: Float
 }
 
-type Image @model @auth(rules: [{allow: public}]) {
+type Photo @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
-  auth: String
-  name: String
-  size: Int
+  name: String!
+  rect: Rect!
+  size: Int!
+  auther: String
+  autherId: String
+  key: String
+  date: AWSDate
+  time: AWSTime
   location: Location
-  url: String
-  updatedAt: AWSDateTime
   createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
  

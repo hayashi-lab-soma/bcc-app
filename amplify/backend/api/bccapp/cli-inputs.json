@@ -3,7 +3,6 @@
   "serviceConfiguration": {
     "apiName": "bccapp",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-40dcce77-1c6b-49c5-b708-5e07af3c6fd9/amplify/backend/api/bccapp/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",
@@ -12,6 +11,10 @@
     "additionalAuthTypes": [
       {
         "mode": "AWS_IAM"
+      },
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authbccapp"
       }
     ],
     "conflictResolution": {

@@ -44,3 +44,5 @@ amplifytools.xcconfig
 #amplify-do-not-edit-end
 
 bcc-acount.txt
+
+amplify/mock-api-resources

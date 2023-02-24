@@ -1,39 +1,52 @@
-import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel } from "@aws-amplify/datastore";
+// @ts-ignore
+import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
-
-
-export declare class Location {
-  readonly latitude?: number | null;
-  readonly longitude?: number | null;
-  constructor(init: ModelInit<Location>);
+type EagerRect = {
+  readonly width?: number | null;
+  readonly height?: number | null;
 }
 
-type RectMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
+type LazyRect = {
+  readonly width?: number | null;
+  readonly height?: number | null;
 }
 
 type EventMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type LabelMetaData = {
-  readOnlyFields;
+export declare type Rect = LazyLoading extends LazyLoadingDisabled ? EagerRect : LazyRect
+
+export declare const Rect: (new (init: ModelInit<Rect>) => Rect)
+
+type EagerLocation = {
+  readonly latitude?: number | null;
+  readonly longitude?: number | null;
 }
 
-type ImageMetaData = {
-  readOnlyFields;
+type LazyLocation = {
+  readonly latitude?: number | null;
+  readonly longitude?: number | null;
 }
 
-export declare class Rect {
+export declare type Location = LazyLoading extends LazyLoadingDisabled ? EagerLocation : LazyLocation
+
+export declare const Location: (new (init: ModelInit<Location>) => Location)
+
+type EagerPhoto = {
   readonly id: string;
-  readonly x?: number | null;
-  readonly y?: number | null;
-  readonly width?: number | null;
-  readonly height?: number | null;
+  readonly name: string;
+  readonly rect: Rect;
+  readonly size: number;
+  readonly auther?: string | null;
+  readonly autherId?: string | null;
+  readonly key?: string | null;
+  readonly date?: string | null;
+  readonly time?: string | null;
+  readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  constructor(init: ModelInit<Rect, RectMetaData>);
-  static copyOf(source: Rect, mutator: (draft: MutableModel<Rect, RectMetaData>) => MutableModel<Rect, RectMetaData> | void): Rect;
 }
 
 export declare class Event {
@@ -49,24 +62,23 @@ export declare class Event {
   static copyOf(source: Event, mutator: (draft: MutableModel<Event, EventMetaData>) => MutableModel<Event, EventMetaData> | void): Event;
 }
 
-export declare class Label {
+type LazyPhoto = {
   readonly id: string;
-  readonly name?: string | null;
+  readonly name: string;
+  readonly rect: Rect;
+  readonly size: number;
+  readonly auther?: string | null;
+  readonly autherId?: string | null;
+  readonly key?: string | null;
+  readonly date?: string | null;
+  readonly time?: string | null;
+  readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  constructor(init: ModelInit<Label>);
-  static copyOf(source: Label, mutator: (draft: MutableModel<Label>) => MutableModel<Label> | void): Label;
 }
 
-export declare class Image {
-  readonly id: string;
-  readonly auth?: string | null;
-  readonly name?: string | null;
-  readonly size?: number | null;
-  readonly location?: Location | null;
-  readonly url?: string | null;
-  readonly updatedAt?: string | null;
-  readonly createdAt?: string | null;
-  constructor(init: ModelInit<Image>);
-  static copyOf(source: Image, mutator: (draft: MutableModel<Image>) => MutableModel<Image> | void): Image;
+export declare type Photo = LazyLoading extends LazyLoadingDisabled ? EagerPhoto : LazyPhoto
+
+export declare const Photo: (new (init: ModelInit<Photo>) => Photo) & {
+  copyOf(source: Photo, mutator: (draft: MutableModel<Photo>) => MutableModel<Photo> | void): Photo;
 }
