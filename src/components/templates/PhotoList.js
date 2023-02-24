@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { PhotoListItem } from '../parts'
 import { Box, Typography, Divider, ImageList } from '@mui/material'
+import { Pagination } from '@mui/material'
 
 const PhotoList = (props) => {
   const LIST_COLS = 2
@@ -9,9 +10,11 @@ const PhotoList = (props) => {
   const ITEM_HEIGHT = 200
   const ITEM_GAP = 12
 
+
+  const [page, setPage] = useState(1)
+
   return (
     <div>
-
       <Divider
         textAlign='left'
         sx={{
@@ -19,6 +22,20 @@ const PhotoList = (props) => {
         }}>
         <Typography variant='h6'>{`検出結果一覧（${props.photos.length}件）`}</Typography>
       </Divider>
+
+      <Box
+        sx={{
+          // border: '1px solid black',
+          display: 'flex',
+          flexGrow: true,
+          justifyContent: 'center'
+        }}>
+        <Pagination
+          count={Math.round(props.urls.length / 10.0 + 0.5)}
+          color='primary'
+          page={page}
+          onChange={(e, page) => { setPage(page) }} />
+      </Box>
 
       <ImageList
         gap={ITEM_GAP}
@@ -30,7 +47,7 @@ const PhotoList = (props) => {
         }}>
 
         {
-          props.urls.map((url, idx) => {
+          props.urls.slice((page - 1) * 10, (page - 1) * 10 + 10).map((url, idx) => {
             return (
               <PhotoListItem
                 key={idx}

@@ -56,8 +56,8 @@ const ChartsView = (props) => {
 
   const fetch = async () => {
     try {
-      const photos = await Storage.list('', { level: 'private' })
-      const inferences = await Storage.list('raws/', { level: 'protected' })
+      const photos = await Storage.list('', { level: 'private', pageSize: 'ALL' })
+      const inferences = await Storage.list('raws/', { level: 'protected', pageSize: 'ALL' })
       // console.log(photos.results.length)
       setNumPhotos(photos.results.length)
       setNumInferencedPhotos(inferences.results.length)
@@ -71,7 +71,7 @@ const ChartsView = (props) => {
       // const res = await Storage.list('jsons/', { level: 'protected' })
       // console.debug(res.results)
       const results = res.results.filter(item => item.key !== "").filter(item => item.key.split('.').pop() === "results")
-      console.debug(results)
+      // console.debug(results)
       setResultJson(results[0])
     }
     catch (e) {
