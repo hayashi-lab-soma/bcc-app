@@ -77,7 +77,9 @@ const PhotosView = (props) => {
         open={open}
         onClose={() => { setOpen(false) }}
         isLoding={isLoding}
-        url={url} />
+        title={'title'}
+        url={url}
+         />
 
     </div >
   )
