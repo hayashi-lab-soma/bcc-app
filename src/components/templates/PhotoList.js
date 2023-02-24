@@ -53,6 +53,7 @@ const PhotoList = (props) => {
                 key={idx}
                 title={props.photos[idx].title}
                 date={props.photos[idx].date.toLocaleString()}
+                size={props.photos[idx].size}
                 isLoding={props.photos[idx].isLoding}
                 src={url}
                 height={ITEM_HEIGHT}

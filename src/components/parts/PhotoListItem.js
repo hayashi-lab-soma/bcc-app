@@ -49,7 +49,16 @@ const PhotoListItem = (props) => {
           }}
           position='below'
           title={props.title}
-          subtitle={`${props.date}`}
+          subtitle={
+            `
+            ${props.date} 
+            (${(
+              props.size < 1000000.0 ?
+                `${Math.floor(props.size * 10.0 / 1000.0) / 10.0} KB`
+                : `${Math.floor(props.size * 10.0 / 1000000.0) / 10.0} MB`
+            )})
+            `
+          }
           actionIcon={
             <IconButton
               size='large'
