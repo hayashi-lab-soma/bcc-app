@@ -32,10 +32,11 @@ const PhotoListItem = (props) => {
         {
           !isLoding ?
             <Image
-              objectFit={'cover'}
+              objectFit={'contain'}
               height={props.height}
               src={props.src}
               alt={props.title}
+              backgroundColor={'rgba(0, 0, 0, 0.01)'}
               loading='lazy' />
             :
             <CircularProgress />
@@ -43,24 +44,12 @@ const PhotoListItem = (props) => {
 
         <ImageListItemBar
           sx={{
+            pl: 1,
             backgroundColor: 'rgba(128, 128, 128, 0.1)'
           }}
           position='below'
-          title={
-            <Box
-              sx={{
-                ml: 1
-              }}>
-              <Typography
-                variant='subtitle1'>
-                {props.title}
-              </Typography>
-              <Typography
-                variant='caption'>
-                {props.date}
-              </Typography>
-            </Box>
-          }
+          title={props.title}
+          subtitle={`${props.date}`}
           actionIcon={
             <IconButton
               size='large'
