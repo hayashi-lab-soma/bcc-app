@@ -38,9 +38,9 @@ const App = ({ signOut, user }) => {
   //--------------------------------------------------
   return (
     <div>
-      
+
       <BrowserRouter>
-      
+
         <Routes>
 
           <Route
@@ -58,4 +58,4 @@ const App = ({ signOut, user }) => {
   );
 }
 
-export default withAuthenticator(App);
+export default withAuthenticator(App, { hideSignUp: true });
