@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { AppBar, Icon, IconButton, Toolbar, Typography } from '@mui/material'
 import { Box, Button, Fab } from '@mui/material'
@@ -7,12 +7,14 @@ import { CircularProgress } from '@mui/material'
 
 import { Image, } from '@aws-amplify/ui-react'
 
-import CloseIcon from '@mui/icons-material/Close'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Rotate90DegreesCwIcon from '@mui/icons-material/Rotate90DegreesCw'
 import Rotate90DegreesCcwIcon from '@mui/icons-material/Rotate90DegreesCcw'
 
 const PhotoFullScreenDialog = (props) => {
+
+  const [showRawPhoto, setShowRawPhoto] = useState(true)
+
   return (
     <div>
       <Dialog
@@ -55,30 +57,47 @@ const PhotoFullScreenDialog = (props) => {
               {props.title}
             </Typography>
 
-            <IconButton
-              color='inherit'>
-              <Rotate90DegreesCcwIcon />
-            </IconButton>
-            <IconButton
-              color='inherit'>
-              <Rotate90DegreesCwIcon />
-            </IconButton>
+
+            {
+              showRawPhoto ?
+                <IconButton
+                  color='inherit'
+                  size='large'
+                  onClick={() => { setShowRawPhoto(false) }}>
+                  <Rotate90DegreesCcwIcon />
+                </IconButton>
+                :
+                <IconButton
+                  color='inherit'
+                  size='large'
+                  onClick={() => { setShowRawPhoto(true) }}>
+                  <Rotate90DegreesCwIcon />
+                </IconButton>
+            }
 
           </Box>
 
           {
-            !props.isLoding ?
+            showRawPhoto ?
               <Image
                 objectFit={'contain'}
                 objectPosition={'50% 50%'}
-                src={props.url}
+                src={props.rawPhotoSrc}
                 alt={'...'}
                 loading='lazy'
                 height={'100%'}
               />
               :
-              <CircularProgress />
+              <Image
+                objectFit={'contain'}
+                objectPosition={'50% 50%'}
+                src={props.inputPhotoSrc}
+                alt={'...'}
+                loading='lazy'
+                height={'100%'}
+              />
           }
+
 
         </DialogContent>
 
