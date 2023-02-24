@@ -33,20 +33,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "auther": {
-                    "name": "auther",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "autherId": {
-                    "name": "autherId",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "key": {
                     "name": "key",
                     "isArray": false,
@@ -65,15 +51,6 @@ export const schema = {
                     "name": "time",
                     "isArray": false,
                     "type": "AWSTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "location": {
-                    "name": "location",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "Location"
-                    },
                     "isRequired": false,
                     "attributes": []
                 },
@@ -169,5 +146,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "384a3d32381403b5bcb38167867b5a60"
+    "version": "6d6dd6ad5aa2fc251d6c4eb9a6bdd4bb"
 };

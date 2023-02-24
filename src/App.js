@@ -34,34 +34,6 @@ const logger = new Logger('BccAppLogger', LOG_LEVEL)
 const App = ({ signOut, user }) => {
 
   //--------------------------------------------------
-  // const [credential, setCredential] = useState(null)
-
-  //ComponentDidMount effect
-  // useEffect(() => {
-
-  //   // change and create logStream (if there is not it)
-  //   Amplify.configure({
-  //     Logging: {
-  //       logGroupName: `/${loggerPrefix}/${appName}`,
-  //       logStreamName: user.username,
-  //     },
-  //     ...awsconfig
-  //   })
-  //   Amplify.register(logger)
-  //   logger.addPluggable(new AWSCloudWatchProvider())
-  //   // logger.info(`Sing-in ${user.username}`)
-
-  //   getCurrentCredentials()
-
-  // }, [])
-
-  // const getCurrentCredentials = async () => {
-  //   const _credential = await Auth.currentUserCredentials()
-  //   setCredential(_credential)
-  // }
-  //--------------------------------------------------
-  
-  //--------------------------------------------------
   // rendering function
   //--------------------------------------------------
   return (

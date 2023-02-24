@@ -11,15 +11,9 @@ export const onCreatePhoto = /* GraphQL */ `
         height
       }
       size
-      auther
-      autherId
       key
       date
       time
-      location {
-        latitude
-        longitude
-      }
       createdAt
       updatedAt
       _version
@@ -38,15 +32,9 @@ export const onUpdatePhoto = /* GraphQL */ `
         height
       }
       size
-      auther
-      autherId
       key
       date
       time
-      location {
-        latitude
-        longitude
-      }
       createdAt
       updatedAt
       _version
@@ -65,15 +53,9 @@ export const onDeletePhoto = /* GraphQL */ `
         height
       }
       size
-      auther
-      autherId
       key
       date
       time
-      location {
-        latitude
-        longitude
-      }
       createdAt
       updatedAt
       _version

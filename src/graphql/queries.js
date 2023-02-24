@@ -11,15 +11,9 @@ export const getPhoto = /* GraphQL */ `
         height
       }
       size
-      auther
-      autherId
       key
       date
       time
-      location {
-        latitude
-        longitude
-      }
       createdAt
       updatedAt
       _version
@@ -39,8 +33,6 @@ export const listPhotos = /* GraphQL */ `
         id
         name
         size
-        auther
-        autherId
         key
         date
         time
@@ -72,8 +64,6 @@ export const syncPhotos = /* GraphQL */ `
         id
         name
         size
-        auther
-        autherId
         key
         date
         time

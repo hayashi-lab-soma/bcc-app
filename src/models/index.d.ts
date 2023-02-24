@@ -35,12 +35,9 @@ type EagerPhoto = {
   readonly name: string;
   readonly rect: Rect;
   readonly size: number;
-  readonly auther?: string | null;
-  readonly autherId?: string | null;
   readonly key?: string | null;
   readonly date?: string | null;
   readonly time?: string | null;
-  readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -50,12 +47,9 @@ type LazyPhoto = {
   readonly name: string;
   readonly rect: Rect;
   readonly size: number;
-  readonly auther?: string | null;
-  readonly autherId?: string | null;
   readonly key?: string | null;
   readonly date?: string | null;
   readonly time?: string | null;
-  readonly location?: Location | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
