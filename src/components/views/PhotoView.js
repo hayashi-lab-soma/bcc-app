@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
 import { PhotoList, PhotoFullScreenDialog, } from '../templates'
-import { DropzoneArea } from 'react-mui-dropzone'
-import { Box, Divider, Typography } from '@mui/material'
-
 import { Storage } from 'aws-amplify'
 
 const PhotosView = (props) => {
@@ -29,7 +26,7 @@ const PhotosView = (props) => {
       Promise.all(
         sortedRaws.map((obj, i) => {
           return {
-            title: obj.key.split('/').pop().split('_').shift(),
+            title: obj.key.match(/\'.*?\'/),
             date: obj.lastModified,
             raw: obj.key,
             thumb: sortedThumbs[i].key,

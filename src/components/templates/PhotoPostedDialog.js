@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, } from '@mui/material'
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, } from '@mui/material'
 import { Button } from '@mui/material'
 
 const PhotoPostedDialog = (props) => {
@@ -10,12 +10,22 @@ const PhotoPostedDialog = (props) => {
         open={props.open}
         onClose={props.onClose}>
         <DialogContent>
-          <DialogTitle>
-            画像の送信が完了しました．
-          </DialogTitle>
-          <DialogActions>
-            <Button variant='contained' onClick={props.onClose}>OK</Button>
-          </DialogActions>
+
+          {
+            props.isProgress ?
+              <CircularProgress />
+              :
+              <div>
+                <DialogTitle>
+                  画像の送信が完了しました．
+                </DialogTitle>
+                <DialogActions>
+                  <Button variant='contained' onClick={props.onClose}>OK</Button>
+                </DialogActions>
+              </div>
+          }
+
+
         </DialogContent>
       </Dialog>
     </div>

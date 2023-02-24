@@ -10,6 +10,7 @@ const PhotoPost = (props) => {
   // const files = useRef([])
   const [open, setOpen] = useState(false)
   const [open2, setOpen2] = useState(false)
+  const [isProgress, setProgress] = useState(false)
 
   return (
     <div>
@@ -51,30 +52,28 @@ const PhotoPost = (props) => {
         onSend={async (files) => {
 
           // props.onSend(files)
-          await Promise.all(files.map(async (file) => {
-            //const fname = file.name.split('.').shift() //get file name without explanation
-            //const type = file.name.split('.').pop()
-            //const date = new Date()
-            //const key = `${fname}_${date.getTime()}.${type}` //key (file object name) is fname + UTC + .jpg
-            
+          setProgress(true)
+          setOpen(false)
+          setOpen2(true)
+
+          await Promise.all(files.map(async (file) => {            
             const fname = file.name.split('.').shift()
             const key = `'${fname}'${uuidv4()}.jpg`
             try {
               const ret = await Storage.put(key, file, { level: 'private' })
-              // console.log(ret)
             }
             catch (e) {
               console.error(e)
             }
 
           }))
-          setOpen2(true)
-          setOpen(false)
+          setProgress(false)
         }}
       />
 
       <PhotoPostedDialog
         open={open2}
+        isProgress={isProgress}
         onClose={() => { setOpen2(false) }} />
 
     </div>
