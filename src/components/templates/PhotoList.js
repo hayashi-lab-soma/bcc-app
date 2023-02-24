@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { PhotoListItem } from '../parts'
-import { Typography, Divider, ImageList } from '@mui/material'
+import { Box, Typography, Divider, ImageList } from '@mui/material'
 
 const PhotoList = (props) => {
   const LIST_COLS = 2
-  const LIST_MAX_HEIGHT = 500
+  const LIST_MAX_HEIGHT = 100
   const ITEM_HEIGHT = 200
   const ITEM_GAP = 12
 
@@ -23,13 +23,10 @@ const PhotoList = (props) => {
       <ImageList
         gap={ITEM_GAP}
         // cols={LIST_COLS}
-
         sx={{
-          mb: 8,
           m: 3,
-          // maxHeight: LIST_MAX_HEIGHTÏ
-          gridTemplateColumns:
-            'repeat(auto-fill, minmax(280px, 1fr))!important',
+          maxHeight: '500px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))!important',
         }}>
 
         {
@@ -48,6 +45,7 @@ const PhotoList = (props) => {
         }
 
       </ImageList>
+
     </div >
   )
 }

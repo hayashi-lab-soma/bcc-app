@@ -64,7 +64,6 @@ const PhotosView = (props) => {
   return (
     <div>
      
-
       <PhotoList
         photos={photos}
         urls={urls}

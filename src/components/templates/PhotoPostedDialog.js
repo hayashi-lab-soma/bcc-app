@@ -10,7 +10,6 @@ const PhotoPostedDialog = (props) => {
         open={props.open}
         onClose={props.onClose}>
         <DialogContent>
-
           {
             props.isProgress ?
               <CircularProgress />
@@ -24,8 +23,6 @@ const PhotoPostedDialog = (props) => {
                 </DialogActions>
               </div>
           }
-
-
         </DialogContent>
       </Dialog>
     </div>
