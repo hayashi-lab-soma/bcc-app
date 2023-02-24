@@ -16,11 +16,7 @@ import FullScreenIcon from '@mui/icons-material/Fullscreen'
 //  --- callback functions ---
 //  onFullScreen():   Called by click "FullScreenIcon" button.
 const PhotoListItem = (props) => {
-  const [isLoding, setLoding] = useState(false)
-
-  useEffect(() => {
-    setLoding(props.isLoding)
-  }, [props.isLoding])
+  const [isLoding, setLoading] = useState(true)
 
   return (
     <div>
@@ -30,16 +26,14 @@ const PhotoListItem = (props) => {
         }}>
 
         {
-          !isLoding ?
-            <Image
-              objectFit={'contain'}
-              height={props.height}
-              src={props.src}
-              alt={props.title}
-              backgroundColor={'rgba(0, 0, 0, 0.01)'}
-              loading='lazy' />
-            :
-            <CircularProgress />
+          <Image
+            objectFit={'contain'}
+            height={props.height}
+            src={props.src}
+            alt={'Loding ...'}
+            backgroundColor={'rgba(0, 0, 0, 0.01)'}
+            loading='lazy'
+            />
         }
 
         <ImageListItemBar
