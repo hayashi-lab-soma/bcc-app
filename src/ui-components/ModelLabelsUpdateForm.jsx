@@ -8,13 +8,13 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Label } from "../models";
+import { ModelLabels } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function LabelUpdateForm(props) {
+export default function ModelLabelsUpdateForm(props) {
   const {
     id: idProp,
-    label,
+    modelLabels,
     onSuccess,
     onError,
     onSubmit,
@@ -29,21 +29,23 @@ export default function LabelUpdateForm(props) {
   const [name, setName] = React.useState(initialValues.name);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = labelRecord
-      ? { ...initialValues, ...labelRecord }
+    const cleanValues = modelLabelsRecord
+      ? { ...initialValues, ...modelLabelsRecord }
       : initialValues;
     setName(cleanValues.name);
     setErrors({});
   };
-  const [labelRecord, setLabelRecord] = React.useState(label);
+  const [modelLabelsRecord, setModelLabelsRecord] = React.useState(modelLabels);
   React.useEffect(() => {
     const queryData = async () => {
-      const record = idProp ? await DataStore.query(Label, idProp) : label;
-      setLabelRecord(record);
+      const record = idProp
+        ? await DataStore.query(ModelLabels, idProp)
+        : modelLabels;
+      setModelLabelsRecord(record);
     };
     queryData();
-  }, [idProp, label]);
-  React.useEffect(resetStateValues, [labelRecord]);
+  }, [idProp, modelLabels]);
+  React.useEffect(resetStateValues, [modelLabelsRecord]);
   const validations = {
     name: [{ type: "Required" }],
   };
@@ -103,7 +105,7 @@ export default function LabelUpdateForm(props) {
             }
           });
           await DataStore.save(
-            Label.copyOf(labelRecord, (updated) => {
+            ModelLabels.copyOf(modelLabelsRecord, (updated) => {
               Object.assign(updated, modelFields);
             })
           );
@@ -116,7 +118,7 @@ export default function LabelUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "LabelUpdateForm")}
+      {...getOverrideProps(overrides, "ModelLabelsUpdateForm")}
       {...rest}
     >
       <TextField
@@ -154,7 +156,7 @@ export default function LabelUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || label)}
+          isDisabled={!(idProp || modelLabels)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -166,7 +168,7 @@ export default function LabelUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || label) ||
+              !(idProp || modelLabels) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

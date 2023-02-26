@@ -12,25 +12,25 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type LabelCreateFormInputValues = {
+export declare type ModelLabelsCreateFormInputValues = {
     name?: string;
 };
-export declare type LabelCreateFormValidationValues = {
+export declare type ModelLabelsCreateFormValidationValues = {
     name?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type LabelCreateFormOverridesProps = {
-    LabelCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type ModelLabelsCreateFormOverridesProps = {
+    ModelLabelsCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type LabelCreateFormProps = React.PropsWithChildren<{
-    overrides?: LabelCreateFormOverridesProps | undefined | null;
+export declare type ModelLabelsCreateFormProps = React.PropsWithChildren<{
+    overrides?: ModelLabelsCreateFormOverridesProps | undefined | null;
 } & {
     clearOnSuccess?: boolean;
-    onSubmit?: (fields: LabelCreateFormInputValues) => LabelCreateFormInputValues;
-    onSuccess?: (fields: LabelCreateFormInputValues) => void;
-    onError?: (fields: LabelCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: LabelCreateFormInputValues) => LabelCreateFormInputValues;
-    onValidate?: LabelCreateFormValidationValues;
+    onSubmit?: (fields: ModelLabelsCreateFormInputValues) => ModelLabelsCreateFormInputValues;
+    onSuccess?: (fields: ModelLabelsCreateFormInputValues) => void;
+    onError?: (fields: ModelLabelsCreateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: ModelLabelsCreateFormInputValues) => ModelLabelsCreateFormInputValues;
+    onValidate?: ModelLabelsCreateFormValidationValues;
 } & React.CSSProperties>;
-export default function LabelCreateForm(props: LabelCreateFormProps): React.ReactElement;
+export default function ModelLabelsCreateForm(props: ModelLabelsCreateFormProps): React.ReactElement;
