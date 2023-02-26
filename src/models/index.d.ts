@@ -2,6 +2,20 @@ import { ModelInit, MutableModel } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
+type EagerModelAndIndex = {
+  readonly name: string;
+  readonly index: number;
+}
+
+type LazyModelAndIndex = {
+  readonly name: string;
+  readonly index: number;
+}
+
+export declare type ModelAndIndex = LazyLoading extends LazyLoadingDisabled ? EagerModelAndIndex : LazyModelAndIndex
+
+export declare const ModelAndIndex: (new (init: ModelInit<ModelAndIndex>) => ModelAndIndex)
+
 type EagerRect = {
   readonly width?: number | null;
   readonly height?: number | null;
@@ -16,19 +30,31 @@ export declare type Rect = LazyLoading extends LazyLoadingDisabled ? EagerRect :
 
 export declare const Rect: (new (init: ModelInit<Rect>) => Rect)
 
-type EagerLocation = {
-  readonly latitude?: number | null;
-  readonly longitude?: number | null;
+type LabelMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type LazyLocation = {
-  readonly latitude?: number | null;
-  readonly longitude?: number | null;
+
+
+type EagerLabel = {
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
 }
 
-export declare type Location = LazyLoading extends LazyLoadingDisabled ? EagerLocation : LazyLocation
+type LazyLabel = {
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
 
-export declare const Location: (new (init: ModelInit<Location>) => Location)
+export declare type Label = LazyLoading extends LazyLoadingDisabled ? EagerLabel : LazyLabel
+
+export declare const Label: (new (init: ModelInit<Label, LabelMetaData>) => Label) & {
+  copyOf(source: Label, mutator: (draft: MutableModel<Label, LabelMetaData>) => MutableModel<Label, LabelMetaData> | void): Label;
+}
 
 type EagerPhoto = {
   readonly id: string;

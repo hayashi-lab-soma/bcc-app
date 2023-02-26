@@ -1,11 +1,17 @@
+
+type ModelAndIndex {
+  name: String!
+  index: Int!
+}
+
+type Label @model @auth(rules: [{allow: public}, {allow: private, provider: iam}]) {
+  id: ID!
+  name: String!
+}
+
 type Rect {
   width: Int
   height: Int
-}
-
-type Location {
-  latitude: Float
-  longitude: Float
 }
 
 type Photo @model @auth(rules: [{allow: public}, {allow: private}]) {

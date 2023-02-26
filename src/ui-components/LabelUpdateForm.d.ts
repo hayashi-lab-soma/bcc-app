@@ -15,20 +15,14 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type LabelUpdateFormInputValues = {
     name?: string;
-    createdAt?: string;
-    updatedAt?: string;
 };
 export declare type LabelUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
-    createdAt?: ValidationFunction<string>;
-    updatedAt?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type LabelUpdateFormOverridesProps = {
     LabelUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
-    createdAt?: PrimitiveOverrideProps<TextFieldProps>;
-    updatedAt?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type LabelUpdateFormProps = React.PropsWithChildren<{
     overrides?: LabelUpdateFormOverridesProps | undefined | null;

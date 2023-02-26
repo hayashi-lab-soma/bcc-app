@@ -1,12 +1,47 @@
-# Component tree
-- App  
-  - HomePage(pages)  
-    - PhotoView(views)
-      - PhotoList(templates)
-        - PhotoListItem(parts)
-      - PhotoFullScreenDialog(templates)
-    - PhotoPost(views)
-      - PhotoPostDialog(templates)
-      - PhotoPostedDialog(templates)
-  - DashBoardPage(pages)
-    - ChartsView(views)
+# bccappパッケージ
+
+## はじめに
+本リポジトリは，ビーチクリーンクラウドサービスの漂着ゴミ検出解析SaaSのアプリケーション用リポジトリです．
+
+## 開発環境
+### Node & React
+node 19.5.0  
+react 17.0.2  
+
+### 3rd party
+``` npm list ```を実行するとnpmパッケージ一覧が見れます．
+
+### ローカルデバッグ方法
+``` npm start ```を実行し，``` http://localhost:3000 ```にブラウザからアクセスすることでローカルデバッグができます．
+
+## 開発者情報
+フロントエンドとなるアプリのソースコードは，srcディレクトリ以下に全て配置されています．実質コーディングしたのはsrc/componentsディレクトリ配下のjavascriptソース（.js）です．
+
+### components
+javascript + Reactアプリは，「コンポーネント」と呼ばれる単位で画面を構成し，ボタン押下などイベント処理と描画が進んでいきます．コンポーネントの設計を適当に行うと，拡張性，再利用性の低下を招き，修正を難しくします．  
+本リポジトリでは，以下のディレクトリ構造を規約としてコンポーネントを分類し設計しています．  
+#### componentsディレクトリ構造
+- pages  
+ウェブアプリの１ページを定義するコンポーネントを配置するディレクトリです．pagesコンポーネントはviewsコンポーネントを子として持ちます．
+- views  
+pagesコンポーネントの子となるコンポーネント群をviewsとします．
+フェッチ処理，PUT，GETなどAPIを叩く処理を行い，他コンポーネントにデータを配布する役割を持つコンポーネントを配置するディレクトリです．viewsコンポーネントは，templates，partsコンポーネントを子として持ちます．
+- templates  
+ベースコンポーネントの異なる比較的複雑なレイアウトを持つコンポーネントをtemplatesコンポーネントとします．複数のpartsコンポーネントを子とし，組み合わせて作成されるコンポーネントです．
+- parts  
+最小単位のコンポーネントです．このpartsコンポーネントに配置する基準として，親から渡されるpropsが少数かつ，画面のレイアウトへの依存度が低い小さい規模のコンポーネントとしています．
+
+上記分類に従う設計の例を示します．  
+Home (pages)  
+&emsp;-> PhotoView (views)  
+&emsp;&emsp;-> PhotoList (templates)  
+&emsp;&emsp;&emsp;-> PhotoListItem (parts)
+
+- Homeはpageコンポーネントであり，viewsコンポーネントを子として持つのみ．ここではウェブAPIを叩かない．
+- PhotoViewはviewsコンポーネントであり，ウェブAPIを叩いて，サーバ上のデータのフェッチ処理などを行う．またtemplatesコンポーネントを子としており，フェッチしたデータのprops渡しを行う．さらに，子コンポーネントのコールバック関数の定義も行い，PUTやGETなどのAPIもこのviewsコンポーネントが担当する．
+- PhotoListはtemplatesコンポーネントである．PhotoListItemコンポーネントを複数持ち，それらのレイアウトの決定権を持つ．
+- PhotoListItemは一枚の画像およびその画像に関する情報の表示などを行うUIコンポーネントである．視覚的な影響が大きいのはこのpartsコンポーネントである．
+
+重要なのは，__viewsコンポーネント以外のコンポーネントでAPIを叩かないことである__．可能な限りtemplates，partsコンポーネントでフェッチ，PUT，GETを行わなず，必ずviewsコンポーネントからpropsを介して表示するデータを受け取ることにする設計を遵守する．多量の小規模コンポーネントがそれぞれAPIを自由に呼び出し始めると，システム管理が異常に困難となり（どのstateが表示対象なのかあとでわからなくなる．実際なった），バグの発見ができない．また，この設計思想上，重要なデータ（フェッチしたデータなど）はviewsコンポーネントに全て集約されることとなり，stateの一元管理が可能となる．templatesおよびpartsコンポーネントは，あくまでも __渡されたデータをどのように表示するかに集中して開発すべき__ である．  
+
+以上の設計思想をマスターするには，１）propsを介した親から子への値の渡し方，２）子のコンポーネントで発生したイベントを親へ伝達する方法についてコーディングできるようになっていないければならない．
