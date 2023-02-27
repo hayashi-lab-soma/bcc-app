@@ -11,6 +11,11 @@ import HelpIcon from '@mui/icons-material/Help'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Link } from 'react-router-dom'
 
+//==========
+//  name: "AppDrawer"
+//  role:
+//  props:
+//==========
 const AppDrawer = (props) => {
   return (
     <div>
@@ -23,8 +28,7 @@ const AppDrawer = (props) => {
 
         <List>
           <ListItem key='home'>
-
-            <Link to='/' onClick={() => { props.onClose() }}>
+            <Link to='/' onClick={props.onClose}>
               <ListItemButton>
                 <ListItemIcon>
                   <HomeIcon />
@@ -32,11 +36,10 @@ const AppDrawer = (props) => {
                 Home
               </ListItemButton>
             </Link>
-
           </ListItem>
 
           <ListItem key='dashboard'>
-            <Link to='/dashboard' onClick={() => { props.onClose() }}>
+            <Link to='/dashboard' onClick={props.onClose}>
               <ListItemButton>
                 <ListItemIcon>
                   <EqualizerIcon />
