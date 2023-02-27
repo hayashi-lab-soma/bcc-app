@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { HomePage, DashboardPage } from './components/pages'
+import { AppBase } from './components/templates'
 
-import { Amplify, Auth, API } from 'aws-amplify'
-import { Logger, AWSCloudWatchProvider, } from 'aws-amplify'
+import { Amplify } from 'aws-amplify'
 
 import { withAuthenticator, } from '@aws-amplify/ui-react'
 import '@aws-amplify/ui-react/styles.css'
@@ -11,48 +11,51 @@ import '@aws-amplify/ui-react/styles.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import awsconfig from './aws-exports';
-
-const loggerPrefix = 'amplify-logger'
-const appName = 'bccapp-staging'
-const streamName = 'root'
-const LOG_LEVEL = 'INFO'
+import { Toolbar } from '@mui/material'
 
 Amplify.configure(awsconfig);
 
-const logger = new Logger('BccAppLogger', LOG_LEVEL)
+// const logger = new Logger('BccAppLogger', LOG_LEVEL)
 // Amplify.register(logger)
 // logger.addPluggable(new AWSCloudWatchProvider())
 
-// const BUCKET = awsconfig.aws_user_files_s3_bucket
-// const REGION = awsconfig.aws_user_files_s3_bucket_region
-
-//--------------------------------------------------
-//  Component "App"
-//  role:
-//    Routing each page component which attached path
-//--------------------------------------------------
+//==========
+//  name: "App"
+//  role: Routing to each page.
+//  props:
+//    "signOut": The handler function to sign out, which get from "withAuthenticator".
+//    "user": Information of sign-in user who is Cognito User.
+//==========
 const App = ({ signOut, user }) => {
 
-  //--------------------------------------------------
-  // rendering function
-  //--------------------------------------------------
   return (
     <div>
-
       <BrowserRouter>
-
-        <Routes>
-
-          <Route
-            path='/'
-            element={<HomePage username={user.username} signOut={signOut} />}
+        <header>
+          <AppBase
+            username={user.username}
+            signOut={signOut}
           />
+        </header>
 
-          <Route
-            path='/dashboard' element={<DashboardPage username={user.username} />}
-          />
+        <main>
+          <Routes>
 
-        </Routes>
+            <Route
+              path='/'
+              element={
+                <HomePage />
+              }
+            />
+
+            <Route
+              path='/dashboard' element={
+                <DashboardPage />}
+            />
+
+          </Routes>
+        </main>
+
       </BrowserRouter>
     </div >
   );
