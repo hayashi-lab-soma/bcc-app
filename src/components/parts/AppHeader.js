@@ -6,7 +6,16 @@ import { Button, IconButton, } from '@mui/material'
 
 import MenuIcon from '@mui/icons-material/Menu'
 
-const AppHeader = (props) => {
+//==========
+//  name: "AppHeader"
+//  role: Reandering Appbar.
+//  props:
+//    appTitle: Application title (string type).
+//    username: User name of current signed-in user.
+//    onClickMenu: Event handler for clicked menu button.
+//    onClickUser: Event handler for clicked user button.
+//==========
+const AppHeader = ({ appTitle, username, onClickUser, onClickMenu }) => {
   return (
     <div>
       <AppBar
@@ -22,7 +31,7 @@ const AppHeader = (props) => {
             sx={{
               mr: 2
             }}
-            onClick={props.onClickMenu}>
+            onClick={onClickMenu}>
             <MenuIcon />
           </IconButton>
 
@@ -32,13 +41,13 @@ const AppHeader = (props) => {
               display: 'flex',
               flexGrow: 1
             }}>
-            BCC漂着ゴミ検出ウェブサービス
+            {appTitle}
           </Typography>
 
           <Button
             color='inherit'
-            onClick={props.signOut}>
-            {props.username}
+            onClick={onClickUser}>
+            {username}
           </Button>
 
         </Toolbar>

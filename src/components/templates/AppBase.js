@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { AppHeader, AppDrawer} from '../parts'
+import { AppHeader, AppDrawer } from '../parts'
 import { Toolbar } from '@mui/material'
 
 //==========
@@ -10,15 +10,18 @@ import { Toolbar } from '@mui/material'
 //    username: Username strings
 //    signOut: Event handler for sign-out function
 //==========
-const AppBase = ({username, signOut}) => {
+const AppBase = ({ username, signOut }) => {
 
   const [drawer, setDrawer] = useState(false)
 
   return (
     <div>
       <AppHeader
+        appTitle={'BCCloud 漂着ゴミ検出サービス'}
         username={username}
-        signOut={signOut}
+        onClickUser={() => {
+          signOut()
+        }}
         onClickMenu={() => {
           !drawer ? setDrawer(true) : setDrawer(false)
         }} />
