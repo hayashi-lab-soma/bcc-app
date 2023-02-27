@@ -11,12 +11,6 @@ import { AppBase, } from '../templates'
 const DashboardPage = (props) => {
   return (
     <div>
-      <header>
-        <AppBase
-          username={props.username}
-          signOut={props.signOut} />
-      </header>
-
       <main>
         <ChartsView />
       </main>

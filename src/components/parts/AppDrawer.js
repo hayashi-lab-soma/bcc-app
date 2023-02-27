@@ -24,7 +24,7 @@ const AppDrawer = (props) => {
         <List>
           <ListItem key='home'>
 
-            <Link to='/'>
+            <Link to='/' onClick={() => { props.onClose() }}>
               <ListItemButton>
                 <ListItemIcon>
                   <HomeIcon />
@@ -36,7 +36,7 @@ const AppDrawer = (props) => {
           </ListItem>
 
           <ListItem key='dashboard'>
-            <Link to='/dashboard'>
+            <Link to='/dashboard' onClick={() => { props.onClose() }}>
               <ListItemButton>
                 <ListItemIcon>
                   <EqualizerIcon />

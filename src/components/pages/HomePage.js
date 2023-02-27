@@ -12,11 +12,11 @@ import { PhotoView, PhotoPost } from '../views'
 const HomePage = (props) => {
   return (
     <div>
-      <header>
+      {/* <header>
         <AppBase
           username={props.username}
           signOut={props.signOut} />
-      </header>
+      </header> */}
 
       <main>
         <PhotoPost />
