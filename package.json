@@ -17,6 +17,7 @@
     "chart.js": "^4.2.1",
     "date-fns-timezone": "^0.1.4",
     "exifreader": "^4.4.0",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-chartjs-2": "^5.2.0",

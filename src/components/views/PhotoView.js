@@ -5,6 +5,8 @@ import { Box, Divider, Typography, } from '@mui/material'
 import { Pagination } from '@mui/material'
 import { Storage } from 'aws-amplify'
 
+const SLICE_SIZE = 10
+
 const PhotosView = (props) => {
 
   const [photos, setPhotos] = useState([])
@@ -22,24 +24,35 @@ const PhotosView = (props) => {
 
   const fetch = async () => {
     try {
-      Storage.list('thumbs/', { level: 'protected', pageSize: 'ALL' })
+      //Storage.list('thumbs/', { level: 'protected', pageSize: 'ALL' })
+      Storage.list('raws/', {level: 'protected', pageSize: 'ALL'})
         .then((res) => {
-          const sortedThumbs = res.results.sort(sortbyLastModifiedTime)
+          console.log(res)
+          // const sortedThumbs = lodash.sortBy(res.results, [function(o){return o.lastModified.getTime()}])
+          // const sortedThumbs = res.results.sort(sortbyLastModifiedTime)
+          // const sortedThumbs = res.results
+
+          const sortedRaws = res.results.sort(sortbyLastModifiedTime)
 
           Promise.all(
-            sortedThumbs.map(async (thumb, i) => {
-              const raw_key = thumb.key.replace('thumbs/', 'raws/')
-              const raw_dst = await Storage.list(raw_key, { level: 'protected', pageSize: 'ALL' })
-              const input_key = thumb.key.replace('thumbs/', '')
-              const input_dst = await Storage.list(input_key, { level: 'private', pageSize: 'ALL' })
+            // sortedThumbs.map(async (thumb, i) => {
+              sortedRaws.map(async (raw, i) => {
+              // const raw_key = thumb.key.replace('thumbs/', 'raws/')
+              // const raw_dst = await Storage.list(raw_key, { level: 'protected', pageSize: 1 })
+              // const input_key = thumb.key.replace('thumbs/', '')
+              // const input_dst = await Storage.list(input_key, { level: 'private', pageSize: 1 })
 
+              const raw_key = raw.key
+              const thumb_key = raw_key.replace('raws/', 'thumbs/')
+              const input_key = raw_key.replace('raws/', '')
+              
               return {
                 title: input_key.match(/'.*?'/)[0],
-                date: input_dst.results[0].lastModified,
-                size: raw_dst.results[0].size,
+                date: raw.lastModified,
+                size: raw.size,
                 input_key: input_key,
                 raw_key: raw_key,
-                thumb_key: thumb.key
+                thumb_key: thumb_key
               }
             })
           )
@@ -47,7 +60,7 @@ const PhotosView = (props) => {
               // console.log(res)
               setPhotos(res)
               setPage(1)
-              setSlicesPhotos(res.slice(0, 10))
+              setSlicesPhotos(res.slice(0, SLICE_SIZE))
             })
         })
     }
@@ -95,7 +108,7 @@ const PhotosView = (props) => {
         </Divider>
 
         <Pagination
-          count={Math.round(photos.length / 10.0)}
+          count={Math.round(photos.length / SLICE_SIZE)}
           color='primary'
           page={page}
           sx={{
@@ -106,7 +119,7 @@ const PhotosView = (props) => {
           }}
           onChange={(e, page) => {
             setPage(page)
-            setSlicesPhotos(photos.slice((page - 1) * 10, (page - 1) * 10 + 10))
+            setSlicesPhotos(photos.slice((page - 1) * SLICE_SIZE, (page - 1) * SLICE_SIZE+ SLICE_SIZE))
           }}
         />
 

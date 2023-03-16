@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Card, CardContent, Typography} from '@mui/material'
+import { Card, CardContent, Typography } from '@mui/material'
 import { Pie } from 'react-chartjs-2'
 
 const PiChartCard = (props) => {
