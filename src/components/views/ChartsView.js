@@ -5,6 +5,7 @@ import { CountCard, PieChartCard, BarChartCard } from '../parts'
 import { Box, Grid, } from '@mui/material'
 import { Storage } from 'aws-amplify'
 import { Chart, registerables } from "chart.js"
+import { forEach } from 'lodash'
 Chart.register(...registerables)
 
 const ChartsView = (props) => {
@@ -14,50 +15,64 @@ const ChartsView = (props) => {
   const [numGarbages, setNumGarbages] = useState(0)
   const [resultJson, setResultJson] = useState()
 
-const labels = [
-    'アルミホイル',
-    'バッテリー',
-    'アルミ系',
-    'Carded blister pack',
+  const labels2 = [
+    'プラスチック製品',
     'ペットボトル',
-    'ペットボトル（透明）',
-    'ガラス製ボトル',
-    'ペットボトル（キャップ）',
+    '缶',
+    'ガラス類',
     '金属類',
-    'ガラス製品',
-    '缶（食用）',
-    'Aerosol',
-    '缶（飲料用）',
-    'ゴム製品',
-    '紙製品',
-    '紙製品',
-    '紙製品',
-    '紙製品',
-    '紙製品',
-    '紙製品',
-    '紙製品',
+    '紙類',
+    'ゴム類',
+    '発泡スチロール',
+    'ロープ・ひも類',
+    'タバコ',
+    'その他'
+  ]
+
+  const labels = [
+    '金属類',
+    'その他',
+    '金属類',
+    'その他',
+    'ペットボトル',
+    'ペットボトル',
+    'ガラス製ボトル',
+    'ペットボトル',
+    '金属類',
+    'ガラス類',
+    '缶',
+    'その他',
+    '缶',
+    'ゴム類',
+    '紙類',
+    '紙類',
+    '紙類',
+    '紙類',
+    '紙類',
+    '紙類',
+    '紙類',
     'プラスチック製品',
     'その他',
-    'ガラス製品',
+    'ガラス類',
     'プラスチック製品',
-    '残飯系',
-    'ガラス製品',
+    '生ごみ',
+    'ガラス類',
     'プラスチック製品',
-    '金属製品',
+    '金属類',
     'プラスチック製品',
-    '紙製品',
-    '紙製品',
+    '紙類',
+    '紙類',
     'プラスチック製品',
-    '紙製品',
-    '紙製品',
+    '紙類',
+    '紙類',
     'プラスチック製品',
-    'プラスチック製品',
-    'その他',
-    'その他',
     'プラスチック製品',
     'その他',
+    'その他',
     'プラスチック製品',
-    'プラスチック製品',,
+    'その他',
+    'プラスチック製品',
+    'プラスチック製品', ,
     'その他',
     'その他',
     'プラスチック製品',
@@ -141,11 +156,11 @@ const labels = [
   // ]
 
   const [data, setData] = useState({
-    labels,
+    labels: labels2,
     datasets: [
       {
         label: 'Garbages',
-        data: new Array(labels.length).fill(0)
+        data: new Array(labels2.length).fill(0)
       }
     ]
   })
@@ -175,6 +190,55 @@ const labels = [
     }
   }
 
+  const createLabelAndData = (raw_data) => {
+    let newCount = new Array(labels2.length).fill(0)
+    raw_data.forEach((id) => {
+      console.debug(id, raw_data[id])
+
+      //プラスチック類
+      newCount[0] = raw_data[7] + raw_data[21] + raw_data[24] + raw_data[27] + raw_data[29]
+        + raw_data[32] + raw_data[36] + raw_data[38] + raw_data[39] + raw_data[41]
+        + raw_data[45] + raw_data[47] + raw_data[48] + raw_data[49] + raw_data[50]
+        + raw_data[55]
+
+      //ペットボトル
+      newCount[1] = raw_data[4] + raw_data[5]
+
+      //缶
+      newCount[2] = raw_data[10] + raw_data[12]
+
+      //ガラス類
+      newCount[3] = raw_data[6] + raw_data[9] + raw_data[23] + raw_data[26]
+
+      //金属類
+      newCount[4] = raw_data[0] + raw_data[2] + raw_data[3] + raw_data[8] + raw_data[28] + raw_data[52]
+
+      //紙類
+      newCount[5] = raw_data[14] + raw_data[15] + raw_data[16] + raw_data[17] + raw_data[18]
+        + raw_data[19] + raw_data[20] + raw_data[22] + raw_data[30] + raw_data[31]
+        + raw_data[33] + raw_data[34] + raw_data[35] + raw_data[56]
+
+      //ゴム類
+      newCount[6] = raw_data[13]
+
+      //発泡スチロール類
+      newCount[7] = raw_data[46] + raw_data[57]
+
+      //ロープ・ひも類
+      newCount[8] = raw_data[51]
+
+      //タバコ
+      newCount[9] = raw_data[59]
+
+      //その他
+      newCount[10] = raw_data[1] + raw_data[11] + raw_data[25] + raw_data[37] + raw_data[40]
+        + raw_data[42] + raw_data[42] + raw_data[43] + raw_data[44] + raw_data[53]
+        + raw_data[58]
+    })
+
+    return newCount
+  }
+
   useEffect(() => {
     fetch()
   }, [])
@@ -193,13 +257,16 @@ const labels = [
         countData[Number(objId)] = Number(json[objId])
       })
 
+      let newCount = createLabelAndData(countData)
+      console.log(countData, newCount)
       // console.log(countData)
 
       setData({
-        labels,
+        labels: labels2,
         datasets: [
           {
-            data: countData
+            // label: labels2,
+            data: newCount
           }
         ]
       })
