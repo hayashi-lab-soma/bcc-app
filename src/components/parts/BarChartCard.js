@@ -9,6 +9,7 @@ const BarChartCard = (props) => {
       <CardContent>
         <Typography variant='h6' color={'primary.main'}>ゴミ種類別 個数</Typography>
         <Bar
+          aria-sort='ascending'
           data={props.data}
           options={{
             responsive: true,

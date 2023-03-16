@@ -250,7 +250,7 @@ const ChartsView = (props) => {
       const _json = await blob.Body.text()
       const json = JSON.parse(_json)
 
-      console.debug(json)
+      // console.debug(json)
 
       let countData = new Array(labels.length).fill(0)
       Object.keys(json).forEach((objId) => {
@@ -258,15 +258,27 @@ const ChartsView = (props) => {
       })
 
       let newCount = createLabelAndData(countData)
-      console.log(countData, newCount)
+      // console.log(countData, newCount)
       // console.log(countData)
 
+
+      // create object type
+      const _objDict = labels2.map((label, i) => {
+        return {
+          label: label,
+          count: newCount[i]
+        }
+      })
+
+      const objDict = _objDict.sort((a, b) => { return -(a.count - b.count) })
+
+
       setData({
-        labels: labels2,
+        labels: objDict.map((o,i) => {return o.label}),
         datasets: [
           {
             // label: labels2,
-            data: newCount
+            data: objDict.map((o,i) => {return o.count})
           }
         ]
       })
