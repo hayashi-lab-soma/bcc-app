@@ -24,6 +24,8 @@ const PhotoPostDialog = (props) => {
 
         <DialogContent>
           <DropzoneArea
+            showFileNamesInPreview={false}
+            showAlerts={false}
             filesLimit={FILES_LIMIT}
             maxFileSize={MAX_FILE_SIZE * 1000 * 1000}
             acceptedFiles={['image/jpeg']}
