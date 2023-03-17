@@ -17,7 +17,8 @@ const AppBase = ({ username, signOut }) => {
   return (
     <div>
       <AppHeader
-        appTitle={'BCCloud 漂着ゴミ検出サービス'}
+        appTitle={'BCC-AI'}
+        appSubtitle={'漂着ゴミ検出解析サービス'}
         username={username}
         onClickUser={() => {
           signOut()
@@ -31,6 +32,7 @@ const AppBase = ({ username, signOut }) => {
         onClose={() => setDrawer(false)} />
 
       <Toolbar />
+      
     </div>
   )
 }
