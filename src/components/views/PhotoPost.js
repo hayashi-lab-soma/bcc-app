@@ -11,6 +11,7 @@ const PhotoPost = (props) => {
   const [open, setOpen] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [isProgress, setProgress] = useState(false)
+  const [progressValue, setProgressValue] = useState(0)
 
   return (
     <div>
@@ -53,12 +54,29 @@ const PhotoPost = (props) => {
 
           // props.onSend(files)
           setProgress(true)
+          setProgressValue(0)
           setOpen(false)
           setOpen2(true)
 
-          await Promise.all(files.map(async (file) => {            
+          const percent = 100.0 / files.length
+
+          // await Promise.all(files.map(async (file) => {
+          //   const fname = file.name.split('.').shift()
+          //   const key = `'${fname}'${uuidv4()}.jpg`
+          //   try {
+          //     const ret = await Storage.put(key, file, { level: 'private' })
+          //     setProgressValue(progressValue + percent)
+          //   }
+          //   catch (e) {
+          //     console.error(e)
+          //   }
+          // }))
+
+
+          for(const file of files){
             const fname = file.name.split('.').shift()
             const key = `'${fname}'${uuidv4()}.jpg`
+
             try {
               const ret = await Storage.put(key, file, { level: 'private' })
             }
@@ -66,14 +84,18 @@ const PhotoPost = (props) => {
               console.error(e)
             }
 
-          }))
+            setProgressValue((prevProg) => prevProg + percent)              
+          }
+
           setProgress(false)
+          setProgressValue(0)
         }}
       />
 
       <PhotoPostedDialog
         open={open2}
         isProgress={isProgress}
+        progressValue={progressValue}
         onClose={() => { setOpen2(false) }} />
 
     </div>
